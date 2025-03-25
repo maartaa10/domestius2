@@ -1,0 +1,41 @@
+<div class="container">
+    <h1 class="title">Doméstius</h1>
+    <div class="options">
+        <div class="option" (mouseover)="showAnimalMessage()" (mouseout)="hideAnimalMessage()">ANIMALS PERDUTS</div>
+      <div class="separator"></div>
+      <div class="option" (mouseover)="showProtectorMessage()" (mouseout)="hideProtectorMessage()">PROTECTORA</div>
+    </div>
+  
+  <!--   <div *ngIf="currentSection === 'home'">
+      <h1 (click)="showProtector()">ANIMALES PERDIDOS</h1>
+    </div> -->
+  
+  <!--   <div *ngIf="currentSection === 'protectora'">
+      <h2 (click)="showAnimals()">PROTECTORA ></h2>
+      <p>
+        Aquesta pàgina és un espai dedicat a donar suport a les protectores d’animals i a promoure l’adopció responsable.
+      </p>
+      <p>
+        Amb la col·laboració de protectores i refugis registrats, oferim una plataforma on podreu publicar animals disponibles per a l’adopció, així com animals perduts o trobats.
+      </p>
+    </div> -->
+  
+    <div *ngIf="showAnimalInfo" class="animal-info">
+        <p>
+          AQUI VEURAS ANIMALS PERDUTS BLA BLA BLA    </p>
+    </div>
+  
+    <div *ngIf="showProtectorInfo" class="protector-info">
+      <p>
+        Aquesta pàgina és un espai dedicat a donar suport a les protectores d'animals i a promoure l'adopció responsable.
+        Amb la col·laboració de protectores i refugis registrats, oferim una plataforma on podeu publicar animals disponibles per a l'adopció, així com animals perduts o trobats. Les protectores poden compartir fotos, descripcions detallades i dades de contacte per facilitar la trobada d'un nou hogar per aquells animals que ho necessiten.
+      </p>
+      <p>
+        El nostre objectiu és crear una xarxa solidària que ajudi les protectores a arribar a més persones i trobar nous companys per als animals que tenen a càrrec.
+        Aquesta plataforma també permet a les persones interessades en l'adopció descobrir animals a la seva zona i col·laborar amb les protectores per millorar la qualitat de vida dels peluts.
+      </p>
+      <p>
+        Amb un sistema de notificacions personalitzades i geolocalitzades, aquesta pàgina es converteix en una eina eficaç per a totes les persones implicades en la cerca, l'adopció i la col·laboració amb les protectores d'animals.
+      </p>
+    </div>
+  </div>
