@@ -1,31 +1,40 @@
 <div class="container">
-    <h1 class="title">Doméstius</h1>
-    <div class="options">
-        <div class="option" (mouseover)="showAnimalMessage()" (mouseout)="hideAnimalMessage()">ANIMALS PERDUTS</div>
-      <div class="separator"></div>
-      <div class="option" (mouseover)="showProtectorMessage()" (mouseout)="hideProtectorMessage()">PROTECTORA</div>
+    <h1 class="title" [ngClass]="{'hide': showAnimalInfo || showProtectorInfo}">Doméstius</h1>
+    <div class="options" [ngClass]="{'hide': showAnimalInfo || showProtectorInfo}">
+      <div class="option" 
+           (click)="showAnimalMessage()" 
+           (mouseout)="hideAnimalMessage()" 
+     >
+        ANIMALS PERDUTS
+      </div>
+      <div class="separator" [ngClass]="{'hide': showAnimalInfo || showProtectorInfo}"></div>
+      <div class="option" 
+           (click)="showProtectorMessage()" 
+           (mouseout)="hideProtectorMessage()" 
+          >
+        PROTECTORA
+      </div>
     </div>
   
-  <!--   <div *ngIf="currentSection === 'home'">
-      <h1 (click)="showProtector()">ANIMALES PERDIDOS</h1>
-    </div> -->
-  
-  <!--   <div *ngIf="currentSection === 'protectora'">
-      <h2 (click)="showAnimals()">PROTECTORA ></h2>
-      <p>
-        Aquesta pàgina és un espai dedicat a donar suport a les protectores d’animals i a promoure l’adopció responsable.
-      </p>
-      <p>
-        Amb la col·laboració de protectores i refugis registrats, oferim una plataforma on podreu publicar animals disponibles per a l’adopció, així com animals perduts o trobats.
-      </p>
-    </div> -->
-  
     <div *ngIf="showAnimalInfo" class="animal-info">
-        <p>
-          AQUI VEURAS ANIMALS PERDUTS BLA BLA BLA    </p>
+      <div class="section-title">ANIMALS PERDUTS</div>
+      <p>AQUI VEURAS ANIMALS PERDUTS BLA BLA BLA</p>
+      <button class="bone">
+        <div class="c1"></div>
+        <div class="c2"></div>
+        <div class="c3"></div>
+        <div class="c4"></div>
+        <div class="b1">
+          <div class="b2"  (click)="navigate('animal-perdut')">
+            Entrar
+          </div>
+        </div>
+    </button>
+     
     </div>
   
     <div *ngIf="showProtectorInfo" class="protector-info">
+      <div class="section-title">PROTECTORA</div>
       <p>
         Aquesta pàgina és un espai dedicat a donar suport a les protectores d'animals i a promoure l'adopció responsable.
         Amb la col·laboració de protectores i refugis registrats, oferim una plataforma on podeu publicar animals disponibles per a l'adopció, així com animals perduts o trobats. Les protectores poden compartir fotos, descripcions detallades i dades de contacte per facilitar la trobada d'un nou hogar per aquells animals que ho necessiten.
@@ -37,5 +46,17 @@
       <p>
         Amb un sistema de notificacions personalitzades i geolocalitzades, aquesta pàgina es converteix en una eina eficaç per a totes les persones implicades en la cerca, l'adopció i la col·laboració amb les protectores d'animals.
       </p>
+     
+      <button class="bone">
+        <div class="c1"></div>
+        <div class="c2"></div>
+        <div class="c3"></div>
+        <div class="c4"></div>
+        <div class="b1">
+          <div class="b2"  (click)="navigate('protectora')">
+            Entrar
+          </div>
+        </div>
+    </button>
     </div>
   </div>

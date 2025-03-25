@@ -14,10 +14,7 @@
     font-weight: bold;
     color: #4b83e5;
     margin-top: 20px;
-  }
-  
-  .highlight {
-    font-weight: normal;
+    transition: opacity 0.5s;
   }
   
   .options {
@@ -29,6 +26,7 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+    transition: opacity 0.5s;
   }
   
   .option {
@@ -36,17 +34,14 @@
     text-align: center;
     font-size: 1.5rem;
     cursor: pointer;
-    transition: transform 0.2s;
-  }
-  
-  .option:hover {
-    transform: translateX(10px); 
+    transition: transform 0.5s;
   }
   
   .separator {
     width: 2px;
     height: 90vh;
     background-color: black;
+    transition: opacity 0.5s;
   }
   
   .protector-info, .animal-info {
@@ -57,4 +52,73 @@
     padding: 20px;
     border: 1px solid #ccc;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.5s;
+  }
+  
+  .slide-left {
+    transform: translateX(-100%);
+  }
+  
+  .slide-right {
+    transform: translateX(100%);
+  }
+  
+  .hidden {
+    opacity: 0;
+  }
+  
+  .hide {
+    opacity: 0;
+  }
+  .bone{
+    margin: 20px;
+    position: relative;
+    width: 150px;
+    height: 60px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+  }
+  .c1, .c2, .c3, .c4{
+    background:#fff;
+    height: 30px;
+    width: 30px;
+    border: 1px solid #000;
+    border-radius: 50%;
+    position:absolute;
+  }
+  .c1{
+    left: 0;
+    top: 0;
+  }
+  .c2{
+    right: 0;
+    top: 0;
+  }
+  .c3{
+    left: 0;
+    bottom: 0;
+  }
+  .c4{
+    bottom: 0;
+    right: 0;
+  }
+  .b1 {
+    background:#fff;
+    height: 30px;
+    width: 120px;
+    position:absolute;  
+    left: 15px;
+    top: 15px;
+  }
+  .b2 {
+    position: absolute;
+    left: 15px;
+    top: 0;
+    width: 90px;
+    height: 30px;
+    line-height: 30px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    text-align: center;
   }
