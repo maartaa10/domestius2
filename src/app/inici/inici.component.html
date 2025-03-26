@@ -3,29 +3,31 @@
     <div class="options" [ngClass]="{'hide': showAnimalInfo || showProtectorInfo}">
       <div class="option" 
            (click)="showAnimalMessage()" 
-           (mouseout)="hideAnimalMessage()" 
+         
      >
         ANIMALS PERDUTS
       </div>
       <div class="separator" [ngClass]="{'hide': showAnimalInfo || showProtectorInfo}"></div>
       <div class="option" 
            (click)="showProtectorMessage()" 
-           (mouseout)="hideProtectorMessage()" 
-          >
+       
+          >  
         PROTECTORA
       </div>
     </div>
   
     <div *ngIf="showAnimalInfo" class="animal-info">
       <div class="section-title">ANIMALS PERDUTS</div>
-      <p>AQUI VEURAS ANIMALS PERDUTS BLA BLA BLA</p>
+     <p>Aquesta pàgina és un espai dedicat a ajudar a reconnectar les persones amb els seus animals perduts i fomentar l'adopció responsable. Amb la col·laboració de protectores i refugis registrats, oferim una plataforma on es poden publicar casos d'animals perduts, trobats o disponibles per a l'adopció. Els usuaris poden compartir fotos, descripcions detallades i dades de contacte per facilitar la localització dels animals o bé per ajudar a les protectores a trobar noves famílies per aquells que busquen una llar.
+
+        El nostre objectiu és crear una comunitat solidària que millori la qualitat de vida dels animals i ajudi a les persones a trobar el seu company pelut o a oferir-li una nova oportunitat a aquells que necessiten ser adoptats. A través d'un sistema de notificacions personalitzades i geolocalitzades, aquesta pàgina esdevé una eina eficaç per a totes les persones implicades en la cerca o adopció d'animals, fomentant la seguretat, l'accessibilitat i el benestar animal en tot moment.</p>
       <button class="bone">
         <div class="c1"></div>
         <div class="c2"></div>
         <div class="c3"></div>
         <div class="c4"></div>
         <div class="b1">
-          <div class="b2"  (click)="navigate('animal-perdut')">
+          <div class="b2"  (click)="navigate('navbar')">
             Entrar
           </div>
         </div>
@@ -53,7 +55,7 @@
         <div class="c3"></div>
         <div class="c4"></div>
         <div class="b1">
-          <div class="b2"  (click)="navigate('protectora')">
+          <div class="b2"  (click)="navigate('navbar')">
             Entrar
           </div>
         </div>

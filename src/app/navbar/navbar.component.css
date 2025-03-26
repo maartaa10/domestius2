@@ -1,0 +1,14 @@
+.navbar-custom {
+    background-color: #bfe3c0; 
+  }
+  .navbar-custom .navbar-brand,
+  .navbar-custom .nav-link {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+  }
+  .navbar-custom .nav-link:hover {
+    color: #457b9d; 
+  }
+  .navbar-custom .navbar-toggler {
+    border-color: #457b9d;
+  }
