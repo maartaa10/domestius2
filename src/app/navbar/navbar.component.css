@@ -1,14 +1,42 @@
+/* Estilo general del navbar */
 .navbar-custom {
-    background-color: #bfe3c0; 
-  }
-  .navbar-custom .navbar-brand,
-  .navbar-custom .nav-link {
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
-  }
-  .navbar-custom .nav-link:hover {
-    color: #457b9d; 
-  }
-  .navbar-custom .navbar-toggler {
-    border-color: #457b9d;
-  }
+  background-color: #bfe3c0;
+  color: black;
+  padding: 10px 20px;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+.navbar-logo {
+  height: 80px;
+  margin-right: 10px;
+}
+
+.nav-link {
+  color: black;
+  font-size: 1.5rem;
+  margin-right: 15px;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: #add8e6;
+}
+
+.user-icon {
+  font-size: 1.5rem;
+  color: white;
+  transition: color 0.3s;
+}
+
+.user-icon:hover {
+  color: #add8e6;
+}
