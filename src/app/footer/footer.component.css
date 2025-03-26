@@ -1,14 +1,13 @@
-/* Estilos generales del footer */
 .footer {
-    background-color: #bfe3c0;
-    color: black;
-    padding: 20px 0;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    font-family: Arial, sans-serif;
-  }
+  background-color: #bfe3c0;
+  color: black;
+  padding: 20px 0;
+  width: 100%;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  margin-top: auto; /* Empuja el footer hacia abajo si hay espacio disponible */
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Añade una sombra para separar visualmente el footer */
+}
   
   /* Estructura del contenido */
   .footer-content {
