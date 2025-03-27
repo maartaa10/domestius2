@@ -1,46 +1,42 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ProtectoraService } from '../services/protectora.service';
+import { Protectora } from '../interfaces/protectora';
 
 @Component({
   selector: 'app-protectora',
   standalone: false,
   templateUrl: './protectora.component.html',
-  styleUrl: './protectora.component.css'
+  styleUrls: ['./protectora.component.css']
 })
-export class ProtectoraComponent {
-
+export class ProtectoraComponent implements OnInit {
   searchQuery: string = '';
   showFilters: boolean = false;
   filtros: string[] = ['Filtro 1', 'Filtro 2', 'Filtro 3'];
+  protectoras: Protectora[] = [];
+  filteredProtectoras: Protectora[] = [];
 
-  protectoras = [
-    { 
-      nombre: 'Protectora 1', 
-      contacto: '123456789', 
-      direccion: 'Calle 1', 
-      horario: '9:00 - 18:00', 
-      logo: 'https://i0.wp.com/protectoragranollers.org/wp-content/uploads/2019/11/cropped-favicon.png?fit=512%2C512&ssl=1' 
-    },
-    { 
-      nombre: 'Protectora 2', 
-      contacto: '987654321', 
-      direccion: 'Calle 2', 
-      horario: '10:00 - 19:00', 
-      logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXDQo8s5FkzuNlqvZfBkk-rhrsCtMuUyACXg&s' 
-    },
-    { 
-      nombre: 'Prova busqueda', 
-      contacto: '555555555', 
-      direccion: 'Calle 3', 
-      horario: '8:00 - 17:00', 
-      logo: 'https://voluntariat.santcugat.cat/wp-content/uploads/2024/01/Logo-Cau-Prote-Rodo.png' 
-    }
-  ];
+  constructor(private protectoraService: ProtectoraService) {}
 
-  filteredProtectoras = [...this.protectoras];
+  ngOnInit(): void {
+    this.loadProtectoras();
+  }
+
+  loadProtectoras(): void {
+    this.protectoraService.getProtectoras().subscribe({
+      next: (data) => {
+        console.log('Datos recibidos:', data); 
+        this.protectoras = data;
+        this.filteredProtectoras = data;
+      },
+      error: (err) => {
+        console.error('Error al cargar las protectoras:', err);
+      }
+    });
+  }
 
   filterProtectoras() {
     this.filteredProtectoras = this.protectoras.filter(protectora =>
-      protectora.nombre.toLowerCase().includes(this.searchQuery.toLowerCase())
+      protectora.direccion.toLowerCase().includes(this.searchQuery.toLowerCase())
     );
   }
 

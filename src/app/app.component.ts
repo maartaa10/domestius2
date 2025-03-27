@@ -10,16 +10,16 @@ import { NavigationEnd, Router } from '@angular/router';
 export class AppComponent {
   title = 'domestius2';
   showFooter: boolean = false;
-  showNavbar: boolean = true; // Controla la visibilidad del navbar
+  showNavbar: boolean = true; 
 
   constructor(private router: Router) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        // Rutas donde el footer debe mostrarse
+        
         const footerRoutes = ['/navbar', '/protectora'];
         this.showFooter = footerRoutes.includes(event.url);
 
-        // Rutas donde el navbar NO debe mostrarse
+        
         const noNavbarRoutes = ['/'];
         this.showNavbar = !noNavbarRoutes.includes(event.url);
       }

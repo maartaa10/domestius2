@@ -22,18 +22,15 @@
   
       
       <div class="protectoras-list">
-        <div 
-          *ngFor="let protectora of filteredProtectoras" 
-          class="protectora-card">
-      
-          <img [src]="protectora?.logo" alt="Logo" class="logo">
+        <div *ngFor="let protectora of filteredProtectoras" class="protectora-card">
+          <img [src]="protectora.imatge" alt="Logo" class="logo">
           <div class="info">
-            <p><strong>NOM:</strong> {{ protectora?.nombre }}</p>
-            <p><strong>TELEFON || CORREU:</strong> {{ protectora?.contacto }}</p>
-            <p><strong>DIRECCIO:</strong> {{ protectora?.direccion }}</p>
-            <p><strong>HORARI:</strong> {{ protectora?.horario }}</p>
+            <!-- <p><strong>ID:</strong> {{ protectora.id }}</p> -->
+          
+            <p><strong>Dirección:</strong> {{ protectora.direccion }}</p>
+            <p><strong>Teléfono:</strong> {{ protectora.telefono }}</p>
+           <!--  <p><strong>Verificada:</strong> {{ protectora.verificada ? 'Sí' : 'No' }}</p> -->
           </div>
-          <div class="arrow">></div>
         </div>
       </div>
     </div>

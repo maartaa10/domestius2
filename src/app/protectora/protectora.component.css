@@ -80,3 +80,47 @@
     font-size: 1.5rem;
     margin-right: 10px;
   }
+
+   /* fitxer styles.css o fitxer CSS del component */
+ 
+/* Estils per a pantalles petites (menys de 576px) */
+@media (max-width: 575px) {
+  .container {
+      max-width: 100%; /* Ajusta el max-width per a pantalles molt petites */
+  }
+}
+
+/* Estils per a pantalles mitjanes (576px a 768px) */
+@media (min-width: 576px) and (max-width: 767px) {
+  .container {
+      max-width: 100%; /* Ajusta el max-width per a pantalles petites */
+  }
+}
+
+/* Estils per a pantalles mitjanes-altes (768px a 992px) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .container {
+      max-width: 100%; /* Ajusta el max-width per a pantalles mitjanes */
+  }
+}
+
+/* Estils per a pantalles grans (992px a 1200px) */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .container {
+      max-width: 100%; /* Ajusta el max-width per a pantalles grans */
+  }
+}
+
+/* Estils per a pantalles molt grans (1200px a 1400px) */
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .container {
+      max-width: 100%; /* Ajusta el max-width per a pantalles molt grans */
+  }
+}
+
+/* Estils per a pantalles extra grans (1400px i més) */
+@media (min-width: 1400px) {
+  .container {
+      max-width: 100%; /* Ajusta el max-width per a pantalles extra grans */
+  }
+}
