@@ -4,6 +4,7 @@ import { IniciComponent } from './inici/inici.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ProtectoraComponent } from './protectora/protectora.component';
 import { FooterComponent } from './footer/footer.component';
+import { PerfilComponent } from './perfil/perfil.component';
 
 const routes: Routes = [ 
   { path: '', component: IniciComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'protectora', component: ProtectoraComponent },
 /*   { path: 'animal-perdut', component: AnimalPerdutComponent }, */
 { path: 'footer', component: FooterComponent },
+{ path: 'perfil', component: PerfilComponent },
 ];
 
 @NgModule({
