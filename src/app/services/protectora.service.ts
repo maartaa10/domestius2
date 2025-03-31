@@ -7,11 +7,14 @@ import { Protectora } from '../interfaces/protectora';
   providedIn: 'root'
 })
 export class ProtectoraService {
-  private apiUrl = 'http://127.0.0.1:8000/api/protectoras';
+  private apiUrl = 'http://127.0.0.1:8000/api';
 
   constructor(private http: HttpClient) {}
 
   getProtectoras(): Observable<Protectora[]> {
-    return this.http.get<Protectora[]>(this.apiUrl);
+    return this.http.get<Protectora[]>(`${this.apiUrl}/protectoras`);
+  }
+  getProtectora(id: number): Observable<Protectora> {
+    return this.http.get<Protectora>(`${this.apiUrl}/protectora/get/${id}`);
   }
 }

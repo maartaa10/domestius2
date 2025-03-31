@@ -16,9 +16,9 @@ export class PerfilComponent {
   constructor(private router: Router) {}
 
   cerrarSesion(): void {
-    // Aquí puedes agregar la lógica para cerrar sesión (por ejemplo, eliminar tokens)
+
     console.log('Sesión cerrada');
-    this.router.navigate(['/']); // Redirige al inicio o página de login
+    this.router.navigate(['/']);
   }
 }
 

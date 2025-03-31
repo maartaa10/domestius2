@@ -1,0 +1,16 @@
+<div class="animal-detail-container" *ngIf="animal">
+    <div class="animal-card">
+      <img [src]="animal.imatge" alt="{{ animal.nom }}" class="animal-image">
+      <div class="animal-info">
+        <h2>{{ animal.nom }}</h2>
+        <p><strong>Edad:</strong> {{ animal.edat }}</p>
+        <p><strong>Especie:</strong> {{ animal.especie }}</p>
+        <p><strong>Raza:</strong> {{ animal['raça'] }}</p>
+        <p><strong>Descripción:</strong> {{ animal.descripcio }}</p>
+        <p><strong>Estado:</strong> {{ animal.estat }}</p>
+      </div>
+    </div>
+    <div *ngIf="!animal" class="error-message">
+        <p>No se encontraron detalles para este animal.</p>
+      </div>
+  </div>

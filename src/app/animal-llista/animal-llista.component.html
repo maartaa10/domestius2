@@ -1,0 +1,58 @@
+<div class="container">
+
+    <div class="search-bar">
+      <input 
+        type="text" 
+        placeholder="Buscar animal..." 
+        [(ngModel)]="searchQuery" 
+        (input)="filterAnimals()" />
+      <button><i class="fas fa-search"></i></button>
+    </div>
+  
+    <div class="content">
+  
+        <div class="filters">
+            <h3 (click)="toggleFilters()">FILTRES</h3>
+            <div *ngIf="showFilters">
+              <div *ngFor="let filtro of filtros" class="filter">
+                <input 
+                  type="checkbox" 
+                  [checked]="selectedFilters.includes(filtro)" 
+                  (change)="toggleFilter(filtro)" 
+                /> {{ filtro }}
+              </div>
+            </div>
+          </div>
+
+      <div class="animals-list">
+        <div class="animal-card" *ngFor="let animal of animals">
+
+
+          <img [src]="animal.imatge" alt="Mascota" class="logo">
+          <div class="info">
+            <p><strong>Nombre:</strong> {{ animal.nom }}</p>
+            <p><strong>Edad:</strong> {{ animal.edat }}</p>
+            <p><strong>Especie:</strong> {{ animal.especie }}</p>
+            <p><strong>Raza:</strong> {{ animal['raça'] }}</p>
+            <p><strong>Descripción:</strong> {{ animal.descripcio }}</p>
+       <p><strong>Estado:</strong> {{ animal.estat }}</p> <!-- Aquí se muestra el estado dinámico -->
+
+             <!--  <span 
+                [ngClass]="{
+                  'lost': animal.estat === 'perdut',
+                  'last-seen': animal.estat === 'vist',
+                  'found': animal.estat === 'trobat'
+                }">
+                {{ animal.estat === 'perdut' ? 'Perdido' : animal.estat === 'vist' ? 'Visto' : 'Encontrado' }}
+              </span> -->
+            <!-- </p> -->
+          </div>
+          <div class="arrow">&gt;</div>
+        </div>
+         <div class="footer-message">
+        <p>Si ho veus, no ho ignoris, podries ser qui el faci tornar a casa.</p>
+      </div>
+      </div>
+     
+    </div>
+  </div>

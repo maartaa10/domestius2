@@ -10,6 +10,11 @@ import { FormsModule } from '@angular/forms';
 import { FooterComponent } from './footer/footer.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { PerfilComponent } from './perfil/perfil.component';
+import { AnimalPerdutComponent } from './animal-perdut/animal-perdut.component';
+import { AnimalPublicacioComponent } from './animal-publicacio/animal-publicacio.component';
+import { AnimalDetallComponent } from './animal-detall/animal-detall.component';
+import { AnimalLlistaComponent } from './animal-llista/animal-llista.component';
+import { ProtectoraDetallComponent } from './protectora-detall/protectora-detall.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +23,12 @@ import { PerfilComponent } from './perfil/perfil.component';
     NavbarComponent,
     ProtectoraComponent,
     FooterComponent,
-    PerfilComponent
+    PerfilComponent,
+    AnimalPerdutComponent,
+    AnimalPublicacioComponent,
+    AnimalDetallComponent,
+    AnimalLlistaComponent,
+    ProtectoraDetallComponent
   ],
   imports: [
     BrowserModule,

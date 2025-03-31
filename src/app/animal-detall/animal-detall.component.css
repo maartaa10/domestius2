@@ -1,0 +1,45 @@
+.animal-detail-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+  }
+  
+  .animal-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .animal-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .animal-info {
+    text-align: center;
+  }
+  
+  .animal-info h2 {
+    margin-bottom: 10px;
+  }
+  
+  .animal-info p {
+    margin: 5px 0;
+  }
+  
+  .funny-phrase {
+    margin-top: 20px;
+    font-style: italic;
+    color: #555;
+  }

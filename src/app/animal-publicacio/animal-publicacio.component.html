@@ -1,0 +1,21 @@
+<div class="grid-container">
+  <div class="animal-card" *ngFor="let animal of animals; let i = index">
+    <div class="info">
+      <img [src]="animal?.imatge" alt="{{animal?.nom}}" class="animal-image">
+      <p><strong>NOM:</strong> {{animal?.nom}}</p>
+      <p><strong>EDAT:</strong> {{animal?.edat}}</p>
+      <p><strong>DESCRIPCIÓ:</strong> {{animal?.descripcio}}</p>
+    </div>
+    <div class="status-buttons">
+      <button 
+        class="btn" 
+        [ngClass]="{
+          'lost': getStatus(i) === 'PERDUT',
+          'last-seen': getStatus(i) === 'VIST PER ÚLTIM COP',
+          'found': getStatus(i) === 'TROBAT'
+        }">
+        {{ getStatus(i) }}
+      </button>
+    </div>
+  </div>
+</div>

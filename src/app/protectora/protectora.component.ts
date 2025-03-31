@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ProtectoraService } from '../services/protectora.service';
+import { Router } from '@angular/router';
 import { Protectora } from '../interfaces/protectora';
+import { ProtectoraService } from '../services/protectora.service';
 
 @Component({
   selector: 'app-protectora',
@@ -15,7 +16,7 @@ export class ProtectoraComponent implements OnInit {
   protectoras: Protectora[] = [];
   filteredProtectoras: Protectora[] = [];
 
-  constructor(private protectoraService: ProtectoraService) {}
+  constructor(private protectoraService: ProtectoraService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadProtectoras();
@@ -24,7 +25,6 @@ export class ProtectoraComponent implements OnInit {
   loadProtectoras(): void {
     this.protectoraService.getProtectoras().subscribe({
       next: (data) => {
-        console.log('Datos recibidos:', data); 
         this.protectoras = data;
         this.filteredProtectoras = data;
       },
@@ -46,5 +46,9 @@ export class ProtectoraComponent implements OnInit {
 
   applyFilter(filtro: string) {
     console.log(`Filtro aplicado: ${filtro}`);
+  }
+
+  goToProtectoraDetails(protectoraId: number): void {
+    this.router.navigate(['/protectora-detall', protectoraId]);
   }
 }
