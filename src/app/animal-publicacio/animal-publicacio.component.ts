@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AnimalPerdutService } from '../services/animal-perdut.service';
-import { Animal } from '../interfaces/animal';
+import { Router } from '@angular/router'; // Import Router
+import { PublicacioService } from '../services/publicacio.service';
+import { Publicacio } from '../interfaces/publicacio';
 
 @Component({
   selector: 'app-animal-publicacio',
@@ -9,29 +10,30 @@ import { Animal } from '../interfaces/animal';
   styleUrls: ['./animal-publicacio.component.css']
 })
 export class AnimalPublicacioComponent implements OnInit {
-  animals: Animal[] = []; 
-  statuses: string[] = ['PERDUT', 'VIST PER ÚLTIM COP', 'TROBAT']; 
+  publicacions: Publicacio[] = []; // Lista de publicaciones
+  selectedPublicacio: Publicacio | null = null; // Publicación seleccionada
 
-  constructor(private animalPerdutService: AnimalPerdutService) {}
+  constructor(
+    private publicacioService: PublicacioService,
+    private router: Router // Inject Router here
+  ) {}
 
   ngOnInit(): void {
-    this.loadAnimals();
+    this.loadPublicacions();
   }
 
-  loadAnimals(): void {
-    this.animalPerdutService.getAnimals().subscribe({
+  loadPublicacions(): void {
+    this.publicacioService.getPublicacions().subscribe({
       next: (data) => {
-        this.animals = data; 
+        this.publicacions = data;
       },
       error: (err) => {
-        console.error('Error al cargar los animales:', err);
+        console.error('Error al cargar las publicaciones:', err);
       }
     });
   }
 
-  getStatus(index: number): string {
-
-    return this.statuses[index % this.statuses.length];
+  navigateToPublicacio(id: number): void {
+    this.router.navigate(['/publicacio', id]); // Use the injected Router instance
   }
-
 }

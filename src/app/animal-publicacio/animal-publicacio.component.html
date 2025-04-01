@@ -1,21 +1,35 @@
-<div class="grid-container">
-  <div class="animal-card" *ngFor="let animal of animals; let i = index">
-    <div class="info">
-      <img [src]="animal?.imatge" alt="{{animal?.nom}}" class="animal-image">
-      <p><strong>NOM:</strong> {{animal?.nom}}</p>
-      <p><strong>EDAT:</strong> {{animal?.edat}}</p>
-      <p><strong>DESCRIPCIÓ:</strong> {{animal?.descripcio}}</p>
-    </div>
-    <div class="status-buttons">
-      <button 
-        class="btn" 
-        [ngClass]="{
-          'lost': getStatus(i) === 'PERDUT',
-          'last-seen': getStatus(i) === 'VIST PER ÚLTIM COP',
-          'found': getStatus(i) === 'TROBAT'
-        }">
-        {{ getStatus(i) }}
-      </button>
-    </div>
+<div class="publicacions-container">
+  <div *ngFor="let publicacio of publicacions" class="publicacio-card" (click)="navigateToPublicacio(publicacio.id)">
+    <h3>{{ publicacio.tipus }}</h3>
+    <p><strong>Fecha:</strong> {{ publicacio.data }}</p>
+    <p><strong>Detalles:</strong> {{ publicacio.detalls }}</p>
+    <p><strong>Publicado por:</strong> {{ publicacio.usuari?.nom }}</p>
+    <p><strong>Animal:</strong> {{ publicacio.animal?.nom }}</p>
   </div>
+</div>
+
+<div class="details-container" *ngIf="selectedPublicacio">
+  <div class="animal-details">
+    <h3>Datos del Animal</h3>
+    <p><strong>Nombre:</strong> {{ selectedPublicacio.animal?.nom }}</p>
+    <p><strong>Edad:</strong> {{ selectedPublicacio.animal?.edat || 'No disponible' }}</p>
+    <p><strong>Especie:</strong> {{ selectedPublicacio.animal?.especie }}</p>
+    <p><strong>Raza:</strong> {{ selectedPublicacio.animal?.['raça'] || 'No disponible' }}</p>
+    <p><strong>Descripción:</strong> {{ selectedPublicacio.animal?.descripcio || 'No disponible' }}</p>
+    <p><strong>Estado:</strong> {{ selectedPublicacio.animal?.estat }}</p>
+  </div>
+
+<!--   <div class="interactions">
+    <h3>Interacciones</h3>
+    <div *ngIf="interaccions.length > 0; else noInteractions">
+      <div class="interaction-card" *ngFor="let interaccio of interaccions">
+        <p><strong>Acción:</strong> {{ interaccio.accio }}</p>
+        <p><strong>Fecha:</strong> {{ interaccio.data }}</p>
+        <p><strong>Detalles:</strong> {{ interaccio.detalls }}</p>
+      </div>
+    </div>
+    <ng-template #noInteractions>
+      <p>No hay interacciones para esta publicación.</p>
+    </ng-template>
+  </div> -->
 </div>
