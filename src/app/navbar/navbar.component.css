@@ -1,3 +1,10 @@
+:root {
+  --navbar-height: 70px; /* Define la altura de la navbar como una variable */
+}
+
+.navbar-custom {
+  height: var(--navbar-height);
+}
 .navbar-custom {
   background-color: #add8e6;
   color: black;

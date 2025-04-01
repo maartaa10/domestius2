@@ -1,6 +1,152 @@
+.body{
+  background-color: #bfe3c0;
+}
 .error-message {
     color: red;
     font-weight: bold;
     text-align: center;
     margin-top: 20px;
   }
+  /* Contenedor principal */
+.protectora-detail-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+  margin-top: 70px;
+  font-family: Arial, sans-serif;
+  background-color: #bfe3c0;
+}
+
+/* Información de la protectora */
+.protectora-info {
+  background-color: #add8e6;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.protectora-info h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.protectora-info p {
+  font-size: 1rem;
+  color: #666;
+  margin: 5px 0;
+}
+
+.protectora-info .highlight {
+  font-weight: bold;
+  color: #4b83e5;
+}
+
+/* Lista de animales */
+.animal-list {
+  width: 100%;
+  max-width: 800px;
+}
+
+.animal-list h3 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.animal-card {
+  display: flex;
+  align-items: center;
+  background-color: #add8e6;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin-bottom: 15px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.animal-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.animal-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  margin-right: 15px;
+  object-fit: cover;
+}
+
+.animal-info {
+  flex: 1;
+}
+
+.animal-info h4 {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.animal-info p {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 2px 0;
+}
+
+/* Mensaje de error */
+.error-message {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Botón de acción */
+.action-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: white;
+  background-color: #4b83e5;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  text-align: center;
+  text-decoration: none;
+}
+
+.action-button:hover {
+  background-color: #3a6bb5;
+  transform: scale(1.05);
+}
+
+.action-button:active {
+  transform: scale(1);
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .protectora-info {
+    padding: 15px;
+  }
+
+  .animal-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .animal-image {
+    margin-bottom: 10px;
+  }
+}
