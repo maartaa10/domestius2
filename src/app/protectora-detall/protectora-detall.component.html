@@ -1,14 +1,15 @@
 <div class="protectora-detail-container">
-    <div *ngIf="!errorMessage; else errorTemplate">
-      <div class="protectora-info">
-        <h2>{{ protectora?.usuari?.nom || 'Usuario desconocido' }}</h2>
-        <p><strong>Dirección:</strong> {{ protectora?.direccion || 'No disponible' }}</p>
-        <p><strong>Teléfono:</strong> {{ protectora?.telefono || 'No disponible' }}</p>
-        <p><strong>Horario:</strong> {{ protectora?.horario_apertura || 'No disponible' }} - {{ protectora?.horario_cierre || 'No disponible' }}</p>
-      </div>
-  
-      <div class="animal-list">
-        <h3>Animales de la protectora</h3>
+  <div *ngIf="!errorMessage; else errorTemplate">
+    <div class="protectora-info">
+      <h2>{{ protectora?.usuari?.nom || 'Usuario desconocido' }}</h2>
+      <p><strong>Dirección:</strong> {{ protectora?.direccion || 'No disponible' }}</p>
+      <p><strong>Teléfono:</strong> {{ protectora?.telefono || 'No disponible' }}</p>
+      <p><strong>Horario:</strong> {{ protectora?.horario_apertura || 'No disponible' }} - {{ protectora?.horario_cierre || 'No disponible' }}</p>
+    </div>
+
+    <div class="animal-list">
+      <h3>Animales de la protectora</h3>
+      <div *ngIf="animals.length > 0; else noAnimalsTemplate">
         <div class="animal-card" *ngFor="let animal of animals">
           <img [src]="animal.imatge" alt="{{ animal.nom }}" class="animal-image">
           <div class="animal-info">
@@ -19,11 +20,15 @@
           </div>
         </div>
       </div>
+      <ng-template #noAnimalsTemplate>
+        <p class="no-animals-message">No hay animales asociados a esta protectora.</p>
+      </ng-template>
     </div>
-  
-    <ng-template #errorTemplate>
-      <div class="error-message">
-        <p>{{ errorMessage }}</p>
-      </div>
-    </ng-template>
   </div>
+
+  <ng-template #errorTemplate>
+    <div class="error-message">
+      <p>{{ errorMessage }}</p>
+    </div>
+  </ng-template>
+</div>
