@@ -1,0 +1,84 @@
+<div class="add-animal-container">
+    <h2>Añadir Nuevo Animal</h2>
+    <form (ngSubmit)="onSubmit()" #animalForm="ngForm">
+      <div class="form-group">
+        <label for="nom">Nombre</label>
+        <input
+          type="text"
+          id="nom"
+          name="nom"
+          [(ngModel)]="animal.nom"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="edat">Edad</label>
+        <input
+          type="number"
+          id="edat"
+          name="edat"
+          [(ngModel)]="animal.edat"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="especie">Especie</label>
+        <input
+          type="text"
+          id="especie"
+          name="especie"
+          [(ngModel)]="animal.especie"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="raça">Raza</label>
+        <input
+          type="text"
+          id="raça"
+          name="raça"
+          [(ngModel)]="animal['raça']"
+        />
+      </div>
+      <div class="form-group">
+        <label for="descripcio">Descripción</label>
+        <textarea
+          id="descripcio"
+          name="descripcio"
+          [(ngModel)]="animal.descripcio"
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <label for="estat">Estado</label>
+        <select id="estat" name="estat" [(ngModel)]="animal.estat" required>
+          <option value="Disponible">Disponible</option>
+          <option value="Adoptado">Adoptado</option>
+          <option value="En Adopción">En Adopción</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="imatge">Imagen</label>
+        <input
+          type="text"
+          id="imatge"
+          name="imatge"
+          [(ngModel)]="animal.imatge"
+          placeholder="URL de la imagen"
+        />
+      </div>
+      <div class="form-group">
+        <label for="protectora_id">Protectora</label>
+        <select
+          id="protectora_id"
+          name="protectora_id"
+          [(ngModel)]="animal.protectora_id"
+          required
+        >
+          <option *ngFor="let protectora of protectorList" [value]="protectora.id">
+            {{ protectora.usuari?.nom || 'Protectora desconocida' }}
+          </option>
+        </select>
+      </div>
+      <button type="submit" class="action-button">Añadir Animal</button>
+    </form>
+  </div>
