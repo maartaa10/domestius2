@@ -1,0 +1,25 @@
+<div class="details-container" *ngIf="publicacio">
+    <div class="animal-details">
+      <h3>Datos del Animal</h3>
+      <img [src]="animal?.imatge || 'assets/default-animal.png'" alt="Mascota" class="logo">
+      <p><strong>Nombre:</strong> {{ animal?.nom || 'No disponible' }}</p>
+      <p><strong>Edad:</strong> {{ animal?.edat || 'No disponible' }}</p>
+      <p><strong>Especie:</strong> {{ animal?.especie || 'No disponible' }}</p>
+      <p><strong>Raza:</strong> {{ animal?.['raça'] || 'No disponible' }}</p>
+      <p><strong>Descripción:</strong> {{ animal?.descripcio || 'No disponible' }}</p>
+    </div>
+  
+    <div class="interactions">
+      <h3>Interacciones</h3>
+      <div *ngIf="interaccions.length > 0; else noInteractions">
+        <div class="interaction-card" *ngFor="let interaccio of interaccions">
+          <p><strong>Acción:</strong> {{ interaccio.accio || 'No disponible' }}</p>
+          <p><strong>Fecha:</strong> {{ interaccio.data || 'No disponible' }}</p>
+          <p><strong>Detalles:</strong> {{ interaccio.detalls || 'No disponible' }}</p>
+        </div>
+      </div>
+      <ng-template #noInteractions>
+        <p>No hay interacciones para esta publicación.</p>
+      </ng-template>
+    </div>
+  </div>

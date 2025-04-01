@@ -16,6 +16,7 @@ import { AnimalDetallComponent } from './animal-detall/animal-detall.component';
 import { AnimalLlistaComponent } from './animal-llista/animal-llista.component';
 import { ProtectoraDetallComponent } from './protectora-detall/protectora-detall.component';
 import { RegistrarAnimalComponent } from './registrar-animal/registrar-animal.component';
+import { PublicacioDetallComponent } from './publicacio-detall/publicacio-detall.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { RegistrarAnimalComponent } from './registrar-animal/registrar-animal.co
     AnimalDetallComponent,
     AnimalLlistaComponent,
     ProtectoraDetallComponent,
-    RegistrarAnimalComponent
+    RegistrarAnimalComponent,
+    PublicacioDetallComponent
   ],
   imports: [
     BrowserModule,

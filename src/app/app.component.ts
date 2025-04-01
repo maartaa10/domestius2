@@ -16,13 +16,17 @@ export class AppComponent {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         
-        const footerRoutes = ['/navbar', '/protectora','/registrar-animal','/perfil','/animal-llista','/animal-detall','/animal-publicacio','/protectora-detall'];
+       /*  const footerRoutes = ['/navbar', '/protectora','/registrar-animal','/perfil','/animal-llista','/animal-detall','/animal-publicacio','/protectora-detall','/publicacio-detall','/publicacio-llista','/publicacio-publicacio'];
         this.showFooter = footerRoutes.includes(event.url);
-
+ */
         
+        const noFooterRoutes = ['/'];
+        this.showFooter = !noFooterRoutes.includes(event.url);
+
         const noNavbarRoutes = ['/'];
         this.showNavbar = !noNavbarRoutes.includes(event.url);
       }
+      
     });
   }
 }

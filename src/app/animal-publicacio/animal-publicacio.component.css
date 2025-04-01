@@ -63,6 +63,20 @@
 .status-buttons .btn.found {
   background-color: #2ed573;
 }
+.publicacions-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.publicacio-card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 @media (max-width: 575px) {
   .container {
       max-width: 100%; /* Ajusta el max-width per a pantalles molt petites */
