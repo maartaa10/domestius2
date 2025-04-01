@@ -58,7 +58,8 @@ export class ProtectoraDetallComponent implements OnInit {
   loadAnimals(protectoraId: number): void {
     this.animalPerdutService.getAnimals().subscribe({
       next: (data) => {
-        this.animals = data.filter(animal => animal.protectora_id?.id === protectoraId);
+        // Filtrar los animales que pertenecen a la protectora seleccionada
+        this.animals = data.filter(animal => animal.protectora_id === protectoraId);
       },
       error: (err) => {
         console.error('Error al cargar los animales:', err);

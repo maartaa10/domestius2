@@ -9,6 +9,6 @@ raça: string | null;
 descripcio: string | null;
 estat : string;
 imatge: string | null;
-protectora_id: Protectora | null;
+protectora_id: number;
 
 }

@@ -13,7 +13,7 @@
           <img [src]="animal.imatge" alt="{{ animal.nom }}" class="animal-image">
           <div class="animal-info">
             <p><strong>Nombre:</strong> {{ animal.nom }}</p>
-            <p><strong>Edad:</strong> {{ animal.edat }}</p>
+            <p><strong>Edad:</strong> {{ animal.edat || 'No disponible' }}</p>
             <p><strong>Especie:</strong> {{ animal.especie }}</p>
             <p><strong>Estado:</strong> {{ animal.estat }}</p>
           </div>
