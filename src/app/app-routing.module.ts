@@ -12,6 +12,8 @@ import { AnimalLlistaComponent } from './animal-llista/animal-llista.component';
 import { ProtectoraDetallComponent } from './protectora-detall/protectora-detall.component';
 import { RegistrarAnimalComponent } from './registrar-animal/registrar-animal.component';
 import { PublicacioDetallComponent } from './publicacio-detall/publicacio-detall.component';
+import { EditarAnimalComponent } from './editar-animal/editar-animal.component';
+import { EliminarAnimalComponent } from './eliminar-animal/eliminar-animal.component';
 
 const routes: Routes = [ 
   { path: '', component: IniciComponent },
@@ -26,6 +28,8 @@ const routes: Routes = [
   { path: 'protectora-detall/:id', component: ProtectoraDetallComponent },
   { path: 'registrar-animal', component: RegistrarAnimalComponent },
   { path: 'publicacio/:id', component: PublicacioDetallComponent }, 
+  { path: 'editar-animal/:id', component: EditarAnimalComponent },
+  { path: 'eliminar-animal/:id', component: EliminarAnimalComponent },
 
 
 

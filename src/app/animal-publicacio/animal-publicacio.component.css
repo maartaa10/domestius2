@@ -68,6 +68,7 @@
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
   padding: 20px;
+  margin-top: var(--navbar-height); /* Ajusta el margen superior según la altura del navbar */
 }
 
 .publicacio-card {

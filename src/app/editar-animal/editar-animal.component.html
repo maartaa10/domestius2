@@ -1,0 +1,40 @@
+<div class="editar-animal-container" *ngIf="animal">
+    <h2>Editar Animal</h2>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="nom">Nombre</label>
+        <input type="text" id="nom" [(ngModel)]="animal.nom" name="nom" required />
+      </div>
+      <div class="form-group">
+        <label for="edat">Edad</label>
+        <input type="number" id="edat" [(ngModel)]="animal.edat" name="edat" />
+      </div>
+      <div class="form-group">
+        <label for="especie">Especie</label>
+        <input type="text" id="especie" [(ngModel)]="animal.especie" name="especie" required />
+      </div>
+      <div class="form-group">
+        <label for="raça">Raza</label>
+        <input type="text" id="raça" [(ngModel)]="animal['raça']" name="raça" />
+      </div>
+      <div class="form-group">
+        <label for="descripcio">Descripción</label>
+        <textarea id="descripcio" [(ngModel)]="animal.descripcio" name="descripcio"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="estat">Estado</label>
+        <select id="estat" [(ngModel)]="animal.estat" name="estat" required>
+          <option value="Disponible">Disponible</option>
+          <option value="Adoptado">Adoptado</option>
+          <option value="En Adopción">En Adopción</option>
+          <option value="Reservado">Reservado</option>
+          <option value="En Tratamiento">En Tratamiento</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="imatge">Imagen</label>
+        <input type="file" id="imatge" (change)="onFileSelected($event)" />
+      </div>
+      <button type="submit" class="action-button">Guardar Cambios</button>
+    </form>
+  </div>

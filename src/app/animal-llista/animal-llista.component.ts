@@ -67,6 +67,23 @@ export class AnimalLlistaComponent {
       animal.nom.toLowerCase().includes(this.searchQuery.toLowerCase())
     );
   }
+  eliminarAnimal(id: number): void {
+    const confirmDelete = confirm('¿Estás seguro de que deseas eliminar este animal?');
+    if (!confirmDelete) {
+      return;
+    }
+
+    this.animalPerdutService.deleteAnimal(id).subscribe({
+      next: () => {
+        alert('Animal eliminado con éxito.');
+        this.loadAnimals(); // Recargar la lista de animales
+      },
+      error: (err) => {
+        console.error('Error al eliminar el animal:', err);
+        alert('Hubo un error al eliminar el animal.');
+      }
+    });
+  }
   /* goToAnimalDetail(id: number): void {
     const selectedAnimal = this.animals.find(animal => animal.id === id);
     console.log('Animal seleccionado:', selectedAnimal);

@@ -22,13 +22,13 @@ export class AnimalPerdutService {
   }
 
 
-  addAnimal(animal: Animal): Observable<Animal> {
-    return this.http.post<Animal>(`${this.apiUrl}/animal/create`, animal);
+  addAnimal(animalData: FormData): Observable<Animal> {
+    return this.http.post<Animal>(`${this.apiUrl}/animal/create`, animalData);
   }
 
 
-  updateAnimal(id: number, animal: Animal): Observable<Animal> {
-    return this.http.post<Animal>(`${this.apiUrl}/animal/${id}`, animal);
+  updateAnimal(id: number, data: FormData): Observable<Animal> {
+    return this.http.post<Animal>(`${this.apiUrl}/animal/${id}`, data);
   }
 
  

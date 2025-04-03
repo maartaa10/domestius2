@@ -3,9 +3,16 @@
 }
 
 .navbar-custom {
-  height: var(--navbar-height);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--navbar-height); /* Usa la variable global */
+  z-index: 1000;
+  background-color: #add8e6;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.navbar-custom {
+/* .navbar-custom {
   background-color: #add8e6;
   color: black;
   padding: 10px 20px;
@@ -15,8 +22,8 @@
   width: 100%;
   z-index: 1000;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 70px; /* Define una altura fija */
-}
+  height: 70px; /* Define una altura fija 
+} */
 .navbar-brand {
   display: flex;
   align-items: center;

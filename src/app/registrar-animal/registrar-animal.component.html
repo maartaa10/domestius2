@@ -54,16 +54,18 @@
           <option value="Disponible">Disponible</option>
           <option value="Adoptado">Adoptado</option>
           <option value="En Adopción">En Adopción</option>
+          <option value="Reservado">Reservado</option>
+          <option value="En Tratamiento">En Tratamiento</option>
         </select>
       </div>
       <div class="form-group">
         <label for="imatge">Imagen</label>
         <input
-          type="text"
+          type="file"
           id="imatge"
           name="imatge"
-          [(ngModel)]="animal.imatge"
-          placeholder="URL de la imagen"
+          (change)="onFileSelected($event)"
+          accept="image/*"
         />
       </div>
       <div class="form-group">
@@ -79,6 +81,24 @@
           </option>
         </select>
       </div>
+      <div class="form-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="crearPublicacio" name="crearPublicacio" />
+          Crear publicación asociada
+        </label>
+      </div>
+  
+      <!-- Campo para los detalles de la publicación -->
+      <div *ngIf="crearPublicacio" class="form-group">
+        <label for="detalls">Detalles de la publicación</label>
+        <textarea
+          id="detalls"
+          name="detalls"
+          [(ngModel)]="publicacioDetalls"
+          placeholder="Escribe los detalles de la publicación..."
+        ></textarea>
+      </div>
+  
       <button type="submit" class="action-button">Añadir Animal</button>
     </form>
   </div>
