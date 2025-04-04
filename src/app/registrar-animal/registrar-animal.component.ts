@@ -26,10 +26,11 @@ export class RegistrarAnimalComponent {
     protectora_id: 0
   };
 
-  selectedFile: File | null = null; // Archivo seleccionado
+  selectedFile: File | null = null;
   protectorList: Protectora[] = [];
-  crearPublicacio: boolean = false; // Estado del checkbox
-  publicacioDetalls: string = ''; // Detalles de la publicación
+  crearPublicacio: boolean = false; 
+  publicacioTitulo: string = ''; 
+  publicacioDetalls: string = '';
 
   constructor(
     private animalPerdutService: AnimalPerdutService,
@@ -41,7 +42,6 @@ export class RegistrarAnimalComponent {
   ngOnInit(): void {
     this.loadProtectoras();
   }
-  
 
   loadProtectoras(): void {
     this.protectoraService.getProtectoras().subscribe({
@@ -111,7 +111,7 @@ export class RegistrarAnimalComponent {
   
     const publicacio: Publicacio = {
       id: 0,
-      tipus: 'Adopción',
+      tipus: this.publicacioTitulo || 'Sin título', 
       data: new Date().toISOString().split('T')[0],
       detalls: this.publicacioDetalls || `Buscamos hogar para ${animal.nom}.`,
       usuari_id: animal.protectora_id,
