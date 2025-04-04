@@ -15,7 +15,7 @@ export class AppComponent {
   constructor(private router: Router) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        
+        console.log('Navegación a:', event.url);
        /*  const footerRoutes = ['/navbar', '/protectora','/registrar-animal','/perfil','/animal-llista','/animal-detall','/animal-publicacio','/protectora-detall','/publicacio-detall','/publicacio-llista','/publicacio-publicacio'];
         this.showFooter = footerRoutes.includes(event.url);
  */

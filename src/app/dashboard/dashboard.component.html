@@ -1,0 +1,24 @@
+<div class="container mt-4">
+    <div class="card">
+      <div class="card-header">
+        <h2>Dashboard</h2>
+      </div>
+      <div class="card-body">
+        <div *ngIf="loading" class="text-center">
+          <p>Cargando información del usuario...</p>
+        </div>
+        
+        <div *ngIf="error" class="alert alert-danger">
+          {{ error }}
+        </div>
+        
+        <div *ngIf="!loading && !error" class="user-info mb-4">
+          <h3>Información del usuario</h3>
+          <p><strong>Nombre:</strong> {{ userName }}</p>
+          <p><strong>Email:</strong> {{ userEmail }}</p>
+        </div>
+        
+        <button class="btn btn-danger" (click)="logout()">Cerrar sesión</button>
+      </div>
+    </div>
+  </div>

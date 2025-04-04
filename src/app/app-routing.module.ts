@@ -14,6 +14,9 @@ import { RegistrarAnimalComponent } from './registrar-animal/registrar-animal.co
 import { PublicacioDetallComponent } from './publicacio-detall/publicacio-detall.component';
 import { EditarAnimalComponent } from './editar-animal/editar-animal.component';
 import { EliminarAnimalComponent } from './eliminar-animal/eliminar-animal.component';
+import { SignupComponent } from './signup/signup.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [ 
   { path: '', component: IniciComponent },
@@ -31,6 +34,10 @@ const routes: Routes = [
   { path: 'editar-animal/:id', component: EditarAnimalComponent },
   { path: 'eliminar-animal/:id', component: EliminarAnimalComponent },
 
+  { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
+  { path: 'dashboard', component: DashboardComponent },
+ 
 
 
 
