@@ -6,6 +6,8 @@ import { Protectora } from '../interfaces/protectora';
 import { ProtectoraService } from '../services/protectora.service';
 import { Publicacio } from '../interfaces/publicacio';
 import { PublicacioService } from '../services/publicacio.service';
+import { Interaccio } from '../interfaces/interaccio';
+import { InteraccionsService } from '../services/interaccions.service';
 
 @Component({
   selector: 'app-registrar-animal',
@@ -36,6 +38,7 @@ export class RegistrarAnimalComponent {
     private animalPerdutService: AnimalPerdutService,
     private publicacioService: PublicacioService,
     private protectoraService: ProtectoraService,
+    private interaccionsService: InteraccionsService,
     private router: Router
   ) {}
 
@@ -107,35 +110,43 @@ export class RegistrarAnimalComponent {
       return;
     }
   
-    console.log('Creando publicación para el animal con ID:', animal.id);
-  
     const publicacio: Publicacio = {
       id: 0,
-      tipus: this.publicacioTitulo || 'Sin título', 
-      data: new Date().toISOString().split('T')[0],
+      tipus: this.publicacioTitulo || 'Sin título',
+      data: new Date().toISOString(),
       detalls: this.publicacioDetalls || `Buscamos hogar para ${animal.nom}.`,
       usuari_id: animal.protectora_id,
-      animal_id: animal.id, 
+      animal_id: animal.id,
       created_at: '',
       updated_at: '',
       username: this.getProtectoraName(animal.protectora_id),
-      interaccions: [
-        {
-          accio: 'crear publicacion',
-          data: new Date(),
-          detalls: 'Se ha creado la publicación para este animal.'
-        }
-      ]
+      interaccions: []
     };
   
     this.publicacioService.addPublicacio(publicacio).subscribe({
-      next: () => {
+      next: (nuevaPublicacion) => {
         alert('Publicación creada con éxito');
-        this.router.navigate(['/animal-llista']);
+  
+        const interaccioInicial: Interaccio = {
+          accio: 'creación',
+          data: new Date().toISOString(),
+          detalls: 'Se ha creado esta publicación.',
+          publicacio_id: nuevaPublicacion.id,
+          usuari_id: nuevaPublicacion.usuari_id,
+          tipus_interaccio_id: 1
+        };
+  
+        this.interaccionsService.createInteraccio(interaccioInicial).subscribe({
+          next: () => {
+            console.log('Interacción inicial creada con éxito.');
+          },
+          error: (err) => {
+            console.error('Error al crear la interacción inicial:', err);
+          }
+        });
       },
       error: (err) => {
         console.error('Error al crear la publicación:', err);
-        alert('Hubo un error al crear la publicación. Por favor, inténtelo de nuevo.');
       }
     });
   }

@@ -9,17 +9,33 @@
       <p><strong>Descripción:</strong> {{ animal?.descripcio || 'No disponible' }}</p>
     </div>
   
-    <div class="interactions">
-      <h3>Interacciones</h3>
-      <div *ngIf="interaccions.length > 0; else noInteractions">
-        <div class="interaction-card" *ngFor="let interaccio of interaccions">
-          <p><strong>Acción:</strong> {{ interaccio.accio || 'No disponible' }}</p>
-          <p><strong>Fecha:</strong> {{ interaccio.data || 'No disponible' }}</p>
-          <p><strong>Detalles:</strong> {{ interaccio.detalls || 'No disponible' }}</p>
-        </div>
-      </div>
-      <ng-template #noInteractions>
-        <p>No hay interacciones para esta publicación.</p>
-      </ng-template>
+   <div class="interactions">
+  <h3>Interacciones</h3>
+  <div *ngIf="interaccions.length > 0; else noInteractions">
+    <div class="interaction-card" *ngFor="let interaccio of interaccions">
+      <p><strong>Acción:</strong> {{ interaccio.accio || 'No disponible' }}</p>
+      <p><strong>Fecha:</strong> {{ interaccio.data || 'No disponible' }}</p>
+      <p><strong>Detalles:</strong> {{ interaccio.detalls || 'No disponible' }}</p>
     </div>
   </div>
+  <ng-template #noInteractions>
+    <p>No hay interacciones para esta publicación.</p>
+  </ng-template>
+
+  <button class="action-button" (click)="toggleFormulario()">Agregar Interacción</button>
+
+  <div *ngIf="mostrarFormulario" class="add-interaction-form">
+    <h3>Agregar Interacción</h3>
+    <form (ngSubmit)="agregarInteraccio()">
+      <div class="form-group">
+        <label for="accio">Acción</label>
+        <input id="accio" [(ngModel)]="novaInteraccio.accio" name="accio" required />
+      </div>
+      <div class="form-group">
+        <label for="detalls">Detalles</label>
+        <textarea id="detalls" [(ngModel)]="novaInteraccio.detalls" name="detalls" required></textarea>
+      </div>
+      <button type="submit" class="action-button">Guardar Interacción</button>
+    </form>
+  </div>
+</div>
