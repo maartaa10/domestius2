@@ -110,10 +110,22 @@ export class RegistrarAnimalComponent {
       return;
     }
   
+    // Convertir la fecha al formato esperado por MySQL
+    const now = new Date();
+    const formattedDate = `${now.getFullYear()}-${(now.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')} ${now
+      .getHours()
+      .toString()
+      .padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now
+      .getSeconds()
+      .toString()
+      .padStart(2, '0')}`;
+  
     const publicacio: Publicacio = {
       id: 0,
       tipus: this.publicacioTitulo || 'Sin título',
-      data: new Date().toISOString(),
+      data: formattedDate, // Fecha en formato MySQL
       detalls: this.publicacioDetalls || `Buscamos hogar para ${animal.nom}.`,
       usuari_id: animal.protectora_id,
       animal_id: animal.id,
@@ -129,7 +141,7 @@ export class RegistrarAnimalComponent {
   
         const interaccioInicial: Interaccio = {
           accio: 'creación',
-          data: new Date().toISOString(),
+          data: formattedDate, // Fecha en formato MySQL
           detalls: 'Se ha creado esta publicación.',
           publicacio_id: nuevaPublicacion.id,
           usuari_id: nuevaPublicacion.usuari_id,
@@ -150,7 +162,6 @@ export class RegistrarAnimalComponent {
       }
     });
   }
-
   getProtectoraName(protectoraId: number): string {
     const protectora = this.protectorList.find(p => p.id === protectoraId);
     return protectora?.usuari?.nom || 'Desconocido';
