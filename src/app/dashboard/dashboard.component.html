@@ -14,6 +14,10 @@
 
       <div *ngIf="!loading && !error" class="user-info mb-4">
         <h3>Información del usuario</h3>
+        <img [src]="imatge" alt="Imagen de la protectora" class="img-fluid">
+<br>
+<br>
+     
         <p><strong>Nombre:</strong> {{ userName }}</p>
         <p><strong>Email:</strong> {{ userEmail }}</p>
         <p><strong>Dirección:</strong> {{ direccion }}</p>
