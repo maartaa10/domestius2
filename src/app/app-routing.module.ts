@@ -20,7 +20,7 @@ import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [ 
   { path: '', component: IniciComponent },
-  
+  { path: 'inici', component: IniciComponent },
   { path: 'navbar', component: NavbarComponent },
   { path: 'protectora', component: ProtectoraComponent },
   { path: 'animal-perdut', component: AnimalPerdutComponent },

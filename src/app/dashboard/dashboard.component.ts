@@ -20,6 +20,8 @@ export class DashboardComponent implements OnInit {
   imatge: string = '';
   loading: boolean = true;
   error: string = '';
+  protectoraId: number = 0; // ID de la protectora logueada
+
 
   constructor(
     private authService: AuthService,
@@ -66,11 +68,19 @@ export class DashboardComponent implements OnInit {
   logout(): void {
     this.authService.logout().subscribe({
       next: () => {
-        this.router.navigateByUrl('/login');
+        console.log('Sesión cerrada en el servidor');
+        this.tokenService.revokeToken(); // Elimina el token del almacenamiento local
+        this.router.navigate(['/login']); // Redirige al login
       },
       error: (err) => {
         console.error('Error al cerrar sesión:', err);
+        this.tokenService.revokeToken(); // Asegúrate de eliminar el token incluso si hay un error
+        this.router.navigate(['/login']); // Redirige al login
       }
     });
+  }
+  navigateToRegistrarAnimal(): void {
+    
+    this.router.navigate(['/registrar-animal'], { queryParams: { protectoraId: this.protectoraId } });
   }
 }

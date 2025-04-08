@@ -8,15 +8,15 @@ export class TokenService {
   constructor() { }
 
   handleToken(token: string): void {
-    localStorage.setItem('access_token', token);
+    localStorage.setItem('access_token', token); // Guarda el token en localStorage
   }
-
+  
   getToken(): string | null {
-    return localStorage.getItem('access_token');
+    return localStorage.getItem('access_token'); // Obtiene el token de localStorage
   }
-
+  
   revokeToken(): void {
-    localStorage.removeItem('access_token');
+    localStorage.removeItem('access_token'); // Elimina el token de localStorage
   }
 
   isAuthenticated(): boolean {
@@ -40,5 +40,8 @@ export class TokenService {
       }
     }
     return null;
+  }
+  isLoggedIn(): boolean {
+    return !!this.getToken(); // Verifica si el token existe
   }
 }

@@ -22,17 +22,42 @@ export class AuthService {
     return this.http.post(`${this.API_URL}/register`, user);
   }
 
-  logout(): Observable<any> {
+/*   logout(): Observable<any> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.tokenService.getToken()}`
     });
     return this.http.delete(`${this.API_URL}/logout`, { headers });
-  }
+  } */
 
   getUserProfile(): Observable<any> {
+    const token = this.tokenService.getToken();
+    if (!token) {
+      console.error('No se encontró un token en el almacenamiento local.');
+      return new Observable(observer => {
+        observer.error({ message: 'No se encontró un token.' });
+      });
+    }
+  
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.tokenService.getToken()}`
+      Authorization: `Bearer ${token}`
     });
+  
     return this.http.get(`${this.API_URL}/user-profile`, { headers });
+  }
+  
+  logout(): Observable<any> {
+    const token = this.tokenService.getToken();
+    if (!token) {
+      console.error('No se encontró un token en el almacenamiento local.');
+      return new Observable(observer => {
+        observer.error({ message: 'No se encontró un token.' });
+      });
+    }
+  
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+  
+    return this.http.delete(`${this.API_URL}/logout`, { headers });
   }
 }

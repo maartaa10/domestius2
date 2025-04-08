@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-custom">
     <div class="container-fluid">
      
-        <a class="navbar-brand nav-link" href="#">
+        <a class="navbar-brand nav-link" [routerLink]="['/inici']">
             <img src="assets/logo.png" alt="Domestius" class="navbar-logo">
         </a>
 
@@ -22,10 +22,10 @@
                     <a class="nav-link" [routerLink]="['/registrar-animal']">Registra un animla</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/signup']">
-                        <i class="fa-solid fa-user"></i>
+                    <a class="nav-link" (click)="navigateToDashboardOrLogin()">
+                      <i class="fa-solid fa-user"></i>
                     </a>
-                </li>
+                  </li>
             </ul>
         </div>
     </div>

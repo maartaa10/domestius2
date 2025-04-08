@@ -6,6 +6,7 @@ import { Protectora } from '../interfaces/protectora';
 import { ProtectoraService } from '../services/protectora.service';
 import { Publicacio } from '../interfaces/publicacio';
 import { PublicacioService } from '../services/publicacio.service';
+import { AuthService } from '../services/auth.service'; // Importar AuthService
 
 @Component({
   selector: 'app-registrar-animal',
@@ -35,14 +36,18 @@ export class RegistrarAnimalComponent {
     private animalPerdutService: AnimalPerdutService,
     private publicacioService: PublicacioService,
     private protectoraService: ProtectoraService,
+    private authService: AuthService, // Servicio para obtener el usuario logueado
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.loadProtectoras();
+    this.setProtectoraId(); // Asignar automáticamente la protectora logueada
   }
-  
 
+  /**
+   * Carga la lista de protectoras disponibles.
+   */
   loadProtectoras(): void {
     this.protectoraService.getProtectoras().subscribe({
       next: (data) => {
@@ -50,6 +55,34 @@ export class RegistrarAnimalComponent {
       },
       error: (err) => {
         console.error('Error al cargar las protectoras:', err);
+      }
+    });
+  }
+
+  /**
+   * Asigna automáticamente el ID de la protectora logueada al campo `protectora_id`.
+   */
+  setProtectoraId(): void {
+    this.authService.getUserProfile().subscribe({
+      next: (userData) => {
+        console.log('Datos del usuario logueado:', userData);
+  
+        // Busca la protectora asociada al usuario logueado usando el email
+        const protectora = this.protectorList.find(p => p.usuari?.email === userData.email);
+  
+        if (protectora) {
+          this.animal.protectora_id = protectora.id; // Asigna el ID de la protectora
+          console.log('ID de la protectora asignado automáticamente:', this.animal.protectora_id);
+        } else {
+          console.error('El usuario logueado no tiene una protectora asociada.');
+          alert('No se puede registrar un animal porque no hay una protectora asociada.');
+          this.router.navigate(['/dashboard']); // Redirige al dashboard si no hay protectora
+        }
+      },
+      error: (err) => {
+        console.error('Error al obtener el perfil del usuario:', err);
+        alert('Hubo un error al obtener la información del usuario. Por favor, inténtelo de nuevo.');
+        this.router.navigate(['/dashboard']); // Redirige al dashboard en caso de error
       }
     });
   }

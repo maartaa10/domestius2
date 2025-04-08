@@ -69,17 +69,15 @@
         />
       </div>
       <div class="form-group">
-        <label for="protectora_id">Protectora</label>
-        <select
-          id="protectora_id"
-          name="protectora_id"
-          [(ngModel)]="animal.protectora_id"
-          required
-        >
-          <option *ngFor="let protectora of protectorList" [value]="protectora.id">
-            {{ protectora.usuari?.nom || 'Protectora desconocida' }}
-          </option>
-        </select>
+        <label for="protectora">Protectora</label>
+        <input
+          type="text"
+          id="protectora"
+          name="protectora"
+          [value]="getProtectoraName(animal.protectora_id)"
+          readonly
+          class="form-control"
+        />
       </div>
       <div class="form-group">
         <label>
