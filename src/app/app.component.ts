@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { TokenService } from './services/token.service';
 
 @Component({
   selector: 'app-root',
@@ -12,21 +13,26 @@ export class AppComponent {
   showFooter: boolean = false;
   showNavbar: boolean = true; 
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private tokenService: TokenService) {
+    this.checkAuthentication(); // Verifica la autenticación al cargar la aplicación
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        
-       /*  const footerRoutes = ['/navbar', '/protectora','/registrar-animal','/perfil','/animal-llista','/animal-detall','/animal-publicacio','/protectora-detall','/publicacio-detall','/publicacio-llista','/publicacio-publicacio'];
-        this.showFooter = footerRoutes.includes(event.url);
- */
-        
+        console.log('Navegación a:', event.url);
+
         const noFooterRoutes = ['/'];
         this.showFooter = !noFooterRoutes.includes(event.url);
 
         const noNavbarRoutes = ['/'];
         this.showNavbar = !noNavbarRoutes.includes(event.url);
       }
-      
     });
+  }
+
+  private checkAuthentication(): void {
+    if (this.tokenService.isLoggedIn()) {
+      this.router.navigate(['/dashboard']); // Redirige al dashboard si está autenticado
+    } else {
+      this.router.navigate(['/login']); // Redirige al login si no está autenticado
+    }
   }
 }

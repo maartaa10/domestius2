@@ -110,7 +110,7 @@ export class RegistrarAnimalComponent {
       return;
     }
   
-    // Convertir la fecha al formato esperado por MySQL
+    
     const now = new Date();
     const formattedDate = `${now.getFullYear()}-${(now.getMonth() + 1)
       .toString()
@@ -125,7 +125,7 @@ export class RegistrarAnimalComponent {
     const publicacio: Publicacio = {
       id: 0,
       tipus: this.publicacioTitulo || 'Sin título',
-      data: formattedDate, // Fecha en formato MySQL
+      data: formattedDate, 
       detalls: this.publicacioDetalls || `Buscamos hogar para ${animal.nom}.`,
       usuari_id: animal.protectora_id,
       animal_id: animal.id,
@@ -141,7 +141,7 @@ export class RegistrarAnimalComponent {
   
         const interaccioInicial: Interaccio = {
           accio: 'creación',
-          data: formattedDate, // Fecha en formato MySQL
+          data: formattedDate,
           detalls: 'Se ha creado esta publicación.',
           publicacio_id: nuevaPublicacion.id,
           usuari_id: nuevaPublicacion.usuari_id,
