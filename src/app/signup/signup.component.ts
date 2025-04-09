@@ -12,6 +12,7 @@ import { AuthService } from '../services/auth.service';
 export class SignupComponent {
   registerForm: FormGroup;
   errors: any;
+  captchaToken: string = ''; // Variable para almacenar el token de reCAPTCHA
 
   constructor(
     private authService: AuthService,
@@ -26,10 +27,26 @@ export class SignupComponent {
     });
   }
 
+  // Método llamado cuando se resuelve el reCAPTCHA
+  onCaptchaResolved(token: string): void {
+    this.captchaToken = token;
+    console.log('Token CAPTCHA:', token);
+  }
+
   onSubmit(): void {
     this.cleanErrors();
-    console.log('Datos enviados:', this.registerForm.value); 
-    this.authService.register(this.registerForm.value).subscribe(
+
+    if (!this.captchaToken) {
+      alert('Completa el captcha antes de enviar');
+      return;
+    }
+
+    const registerData = {
+      ...this.registerForm.value,
+      captcha: this.captchaToken
+    };
+
+    this.authService.register(registerData).subscribe(
       response => this.handleResponse(response),
       errors => this.handleErrors(errors)
     );
