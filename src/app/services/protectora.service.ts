@@ -17,4 +17,8 @@ export class ProtectoraService {
   getProtectora(id: number): Observable<Protectora> {
     return this.http.get<Protectora>(`${this.apiUrl}/protectora/get/${id}`);
   }
+  getProtectoraByUsuario(usuarioId: number): Observable<Protectora> {
+    console.log('Solicitando información de la protectora para el usuario con ID:', usuarioId);
+    return this.http.get<Protectora>(`${this.apiUrl}/protectora/usuario/${usuarioId}`);
+  }
 }
