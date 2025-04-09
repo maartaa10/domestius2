@@ -4,7 +4,7 @@
     gap: 20px;
     padding: 20px;
     max-width: 800px;
-    margin: 20px auto;
+    margin: calc(var(--navbar-height) + 20px) auto calc(var(--footer-height) + 20px);
   }
   
   .animal-details {
@@ -38,3 +38,59 @@
     margin-bottom: 10px;
     border-radius: 50%;
   }
+  .add-interaction-form {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.add-interaction-form h3 {
+    margin-bottom: 15px;
+    color: #333;
+    text-align: center;
+}
+
+.add-interaction-form .form-group {
+    margin-bottom: 15px;
+}
+
+.add-interaction-form .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.add-interaction-form .form-group input,
+.add-interaction-form .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.add-interaction-form button.action-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    color: white;
+    background-color: #4caf50;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.add-interaction-form button.action-button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+.add-interaction-form button.action-button:active {
+    transform: scale(1);
+}

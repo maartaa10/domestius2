@@ -38,7 +38,12 @@ export class ProtectoraDetallComponent implements OnInit {
       
         if (!this.protectora.usuari) {
           console.warn('El campo `usuari` no está presente en la respuesta del backend.');
-          this.protectora.usuari = { nom: 'Usuario desconocido', email: '', password: '' };
+          this.protectora.usuari = { 
+            id: 0, // Valor predeterminado para usuarios desconocidos
+            nom: 'Usuario desconocido', 
+            email: 'desconocido@example.com', 
+            password: '' 
+        };
         }
       },
       error: (err) => {

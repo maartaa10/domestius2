@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'; // Import Router
+import { Router } from '@angular/router';
 import { PublicacioService } from '../services/publicacio.service';
 import { Publicacio } from '../interfaces/publicacio';
 
@@ -10,12 +10,12 @@ import { Publicacio } from '../interfaces/publicacio';
   styleUrls: ['./animal-publicacio.component.css']
 })
 export class AnimalPublicacioComponent implements OnInit {
-  publicacions: Publicacio[] = []; // Lista de publicaciones
-  selectedPublicacio: Publicacio | null = null; // Publicación seleccionada
+  publicacions: Publicacio[] = []; 
+  selectedPublicacio: Publicacio | null = null;
 
   constructor(
     private publicacioService: PublicacioService,
-    private router: Router // Inject Router here
+    private router: Router 
   ) {}
 
   ngOnInit(): void {
@@ -34,6 +34,6 @@ export class AnimalPublicacioComponent implements OnInit {
   }
 
   navigateToPublicacio(id: number): void {
-    this.router.navigate(['/publicacio', id]); // Use the injected Router instance
+    this.router.navigate(['/publicacio', id]); 
   }
 }

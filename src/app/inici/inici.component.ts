@@ -10,7 +10,7 @@ import { ProtectoraService } from '../services/protectora.service';
   styleUrls: ['./inici.component.css']
 })
 export class IniciComponent {
-  protectoras: Protectora[] = []; // Lista de protectoras
+  protectoras: Protectora[] = []; 
 
   constructor(private router: Router, private protectoraService: ProtectoraService) {}
 
@@ -59,4 +59,5 @@ export class IniciComponent {
   hideAnimalMessage() {
     this.showAnimalInfo = false;
   }
+  
 }

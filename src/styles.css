@@ -3,7 +3,7 @@ html, body {
     margin: 0;
     display: flex;
     flex-direction: column;
-  
+  background-color: #bfe3c0;
   }
   
   app-root {
@@ -15,4 +15,7 @@ html, body {
   main {
     flex-grow: 1;
   }
-  
+  :root {
+    --navbar-height: 70px;
+    --footer-height: 50px;
+  }
