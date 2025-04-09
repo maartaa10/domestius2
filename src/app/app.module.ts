@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { IniciComponent } from './inici/inici.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ProtectoraComponent } from './protectora/protectora.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FooterComponent } from './footer/footer.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { PerfilComponent } from './perfil/perfil.component';
@@ -19,6 +19,9 @@ import { RegistrarAnimalComponent } from './registrar-animal/registrar-animal.co
 import { PublicacioDetallComponent } from './publicacio-detall/publicacio-detall.component';
 import { EditarAnimalComponent } from './editar-animal/editar-animal.component';
 import { EliminarAnimalComponent } from './eliminar-animal/eliminar-animal.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoginComponent } from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -36,12 +39,16 @@ import { EliminarAnimalComponent } from './eliminar-animal/eliminar-animal.compo
     RegistrarAnimalComponent,
     PublicacioDetallComponent,
     EditarAnimalComponent,
-    EliminarAnimalComponent
+    EliminarAnimalComponent,
+    DashboardComponent,
+    LoginComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule
   ],
   providers: [],
