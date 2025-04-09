@@ -12,6 +12,7 @@ import { AuthService } from '../services/auth.service';
 export class SignupComponent {
   registerForm: FormGroup;
   errors: any;
+  captchaToken: string = ''; // Variable para almacenar el token de reCAPTCHA
 
   constructor(
     private authService: AuthService,
@@ -19,17 +20,50 @@ export class SignupComponent {
     private fb: FormBuilder
   ) {
     this.registerForm = this.fb.group({
-      name: [''],
-      email: [''],
-      password: [''],
-      password_confirmation: ['']
+      name: [''], // Valor inicial vacío
+      email: [''], // Valor inicial vacío
+      password: [''], // Valor inicial vacío
+      password_confirmation: [''] // Valor inicial vacío
     });
+  }
+
+  onCaptchaResolved(token: string | null): void {
+    if (token) {
+      this.captchaToken = token; // Asigna el token si no es null
+      console.log('Token CAPTCHA:', token);
+    } else {
+      console.warn('No se generó un token de reCAPTCHA.');
+      this.captchaToken = ''; // Resetea el token si es null
+    }
   }
 
   onSubmit(): void {
     this.cleanErrors();
-    console.log('Datos enviados:', this.registerForm.value); 
-    this.authService.register(this.registerForm.value).subscribe(
+  
+    if (!this.captchaToken) {
+      alert('Completa el captcha antes de enviar');
+      return;
+    }
+  
+    const name = this.registerForm.get('name')?.value ?? '';
+    const email = this.registerForm.get('email')?.value ?? '';
+    const password = this.registerForm.get('password')?.value ?? '';
+    const password_confirmation = this.registerForm.get('password_confirmation')?.value ?? '';
+  
+    if (!name || !email || !password || !password_confirmation) {
+      alert('Todos los campos son obligatorios');
+      return;
+    }
+  
+    const registerData = {
+      name,
+      email,
+      password,
+      password_confirmation,
+      captcha: this.captchaToken
+    };
+  
+    this.authService.register(registerData).subscribe(
       response => this.handleResponse(response),
       errors => this.handleErrors(errors)
     );
