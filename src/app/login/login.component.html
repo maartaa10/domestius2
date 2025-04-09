@@ -26,9 +26,10 @@
             <label for="inputPassword" class="form-label">Password</label>
             <input type="password" class="form-control" id="inputPassword" formControlName="password">
           </div>
-          <!-- reCAPTCHA -->
-          <div class="g-recaptcha" data-sitekey="6LdrvhArAAAAAPMjgXWkx0N8zXciG5o4NYy69YsV" data-callback="onCaptchaResolved"></div>
-          <button type="submit" class="btn btn-lg btn-primary w-100 mt-1 mb-4">Login</button>
+          <re-captcha
+          siteKey="6LegCRErAAAAAHHHciXcBfnmaww-V0iS3yEW1Urx"
+          (resolved)="onCaptchaResolved($event)">
+        </re-captcha>
           <a routerLink="/signup" class="d-block text-center mb-4">Create an account</a>
         </form>
       </div>

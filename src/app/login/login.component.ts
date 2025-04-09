@@ -26,11 +26,14 @@ export class LoginComponent {
       password: ['']
     });
   }
-
-  // Método llamado cuando se resuelve el reCAPTCHA
-  onCaptchaResolved(token: string): void {
-    this.captchaToken = token;
-    console.log('Token CAPTCHA:', token);
+  onCaptchaResolved(token: string | null): void {
+    if (token) {
+      this.captchaToken = token; // Asigna el token si no es null
+      console.log('Token CAPTCHA:', token);
+    } else {
+      console.warn('No se generó un token de reCAPTCHA.');
+      this.captchaToken = ''; // Resetea el token si es null
+    }
   }
 
   onSubmit(): void {
