@@ -1,116 +1,114 @@
 <div class="add-animal-container">
-    <h2>Añadir Nuevo Animal</h2>
-    <form (ngSubmit)="onSubmit()" #animalForm="ngForm">
-      <div class="form-group">
-        <label for="nom">Nombre</label>
-        <input
-          type="text"
-          id="nom"
-          name="nom"
-          [(ngModel)]="animal.nom"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="edat">Edad</label>
-        <input
-          type="number"
-          id="edat"
-          name="edat"
-          [(ngModel)]="animal.edat"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="especie">Especie</label>
-        <input
-          type="text"
-          id="especie"
-          name="especie"
-          [(ngModel)]="animal.especie"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="raça">Raza</label>
-        <input
-          type="text"
-          id="raça"
-          name="raça"
-          [(ngModel)]="animal['raça']"
-        />
-      </div>
-      <div class="form-group">
-        <label for="descripcio">Descripción</label>
-        <textarea
-          id="descripcio"
-          name="descripcio"
-          [(ngModel)]="animal.descripcio"
-        ></textarea>
-      </div>
-      <div class="form-group">
-        <label for="estat">Estado</label>
-        <select id="estat" name="estat" [(ngModel)]="animal.estat" required>
-          <option value="Disponible">Disponible</option>
-          <option value="Adoptado">Adoptado</option>
-          <option value="En Adopción">En Adopción</option>
-          <option value="Reservado">Reservado</option>
-          <option value="En Tratamiento">En Tratamiento</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="imatge">Imagen</label>
-        <input
-          type="file"
-          id="imatge"
-          name="imatge"
-          (change)="onFileSelected($event)"
-          accept="image/*"
-        />
-      </div>
-      <div class="form-group">
-        <label for="protectora_id">Protectora</label>
-        <select
-          id="protectora_id"
-          name="protectora_id"
-          [(ngModel)]="animal.protectora_id"
-          required
-        >
-          <option *ngFor="let protectora of protectorList" [value]="protectora.id">
-            {{ protectora.usuari?.nom || 'Protectora desconocida' }}
-          </option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>
-          <input type="checkbox" [(ngModel)]="crearPublicacio" name="crearPublicacio" />
-          Crear publicación asociada
-        </label>
-      </div>
-  
-   
-      <div *ngIf="crearPublicacio" class="form-group">
-        <label for="titulo">Título de la publicación</label>
-        <input
-          type="text"
-          id="titulo"
-          name="titulo"
-          [(ngModel)]="publicacioTitulo"
-          placeholder="Escribe el título de la publicación (ej. Adopción, Perdido, etc.)"
-          required
-        />
-      </div>
-      
-      <div *ngIf="crearPublicacio" class="form-group">
-        <label for="detalls">Detalles de la publicación</label>
-        <textarea
-          id="detalls"
-          name="detalls"
-          [(ngModel)]="publicacioDetalls"
-          placeholder="Escribe los detalles de la publicación..."
-        ></textarea>
-      </div>
-  
-      <button type="submit" class="action-button">Añadir Animal</button>
-    </form>
-  </div>
+  <h2>Añadir Nuevo Animal</h2>
+  <form (ngSubmit)="onSubmit()" #animalForm="ngForm">
+    <div class="form-group">
+      <label for="nom">Nombre</label>
+      <input
+        type="text"
+        id="nom"
+        name="nom"
+        [(ngModel)]="animal.nom"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="edat">Edad</label>
+      <input
+        type="number"
+        id="edat"
+        name="edat"
+        [(ngModel)]="animal.edat"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="especie">Especie</label>
+      <input
+        type="text"
+        id="especie"
+        name="especie"
+        [(ngModel)]="animal.especie"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="raça">Raza</label>
+      <input
+        type="text"
+        id="raça"
+        name="raça"
+        [(ngModel)]="animal['raça']"
+      />
+    </div>
+    <div class="form-group">
+      <label for="descripcio">Descripción</label>
+      <textarea
+        id="descripcio"
+        name="descripcio"
+        [(ngModel)]="animal.descripcio"
+      ></textarea>
+    </div>
+    <div class="form-group">
+      <label for="estat">Estado</label>
+      <select id="estat" name="estat" [(ngModel)]="animal.estat" required>
+        <option value="Disponible">Disponible</option>
+        <option value="Adoptado">Adoptado</option>
+        <option value="En Adopción">En Adopción</option>
+        <option value="Reservado">Reservado</option>
+        <option value="En Tratamiento">En Tratamiento</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="imatge">Imagen</label>
+      <input
+        type="file"
+        id="imatge"
+        name="imatge"
+        (change)="onFileSelected($event)"
+        accept="image/*"
+      />
+    </div>
+    <div class="form-group" hidden>
+      <label for="protectora">Protectora</label>
+      <input
+        type="text"
+        id="protectora"
+        name="protectora"
+        [value]="getProtectoraName(animal.protectora_id)"
+        readonly
+        class="form-control"
+      />
+    </div>
+    <div class="form-group">
+      <label>
+        <input type="checkbox" [(ngModel)]="crearPublicacio" name="crearPublicacio" />
+        Crear publicación asociada
+      </label>
+    </div>
+
+ 
+    <div *ngIf="crearPublicacio" class="form-group">
+      <label for="titulo">Título de la publicación</label>
+      <input
+        type="text"
+        id="titulo"
+        name="titulo"
+        [(ngModel)]="publicacioTitulo"
+        placeholder="Escribe el título de la publicación (ej. Adopción, Perdido, etc.)"
+        required
+      />
+    </div>
+    
+    <div *ngIf="crearPublicacio" class="form-group">
+      <label for="detalls">Detalles de la publicación</label>
+      <textarea
+        id="detalls"
+        name="detalls"
+        [(ngModel)]="publicacioDetalls"
+        placeholder="Escribe los detalles de la publicación..."
+      ></textarea>
+    </div>
+
+    <button type="submit" class="action-button">Añadir Animal</button>
+  </form>
+</div>

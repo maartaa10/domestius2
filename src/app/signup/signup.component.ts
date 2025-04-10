@@ -12,7 +12,9 @@ import { AuthService } from '../services/auth.service';
 export class SignupComponent {
   registerForm: FormGroup;
   errors: any;
-  captchaToken: string = ''; // Variable para almacenar el token de reCAPTCHA
+  captchaToken: string = '';
+  showPassword: boolean = false; 
+  showPasswordConfirmation: boolean = false; 
 
   constructor(
     private authService: AuthService,
@@ -20,20 +22,20 @@ export class SignupComponent {
     private fb: FormBuilder
   ) {
     this.registerForm = this.fb.group({
-      name: [''], // Valor inicial vacío
-      email: [''], // Valor inicial vacío
-      password: [''], // Valor inicial vacío
-      password_confirmation: [''] // Valor inicial vacío
+      name: [''],
+      email: [''],
+      password: [''],
+      password_confirmation: ['']
     });
   }
 
   onCaptchaResolved(token: string | null): void {
     if (token) {
-      this.captchaToken = token; // Asigna el token si no es null
+      this.captchaToken = token;
       console.log('Token CAPTCHA:', token);
     } else {
       console.warn('No se generó un token de reCAPTCHA.');
-      this.captchaToken = ''; // Resetea el token si es null
+      this.captchaToken = '';
     }
   }
 
@@ -81,5 +83,12 @@ export class SignupComponent {
 
   private cleanErrors(): void {
     this.errors = null;
+  }
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  togglePasswordConfirmationVisibility(): void {
+    this.showPasswordConfirmation = !this.showPasswordConfirmation;
   }
 }

@@ -38,7 +38,8 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'dashboard', component: DashboardComponent },
  
-
+  { path: 'animal-llista', component: AnimalLlistaComponent },
+  { path: 'inici', component: IniciComponent },
 
 
 

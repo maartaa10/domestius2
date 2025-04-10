@@ -21,10 +21,12 @@
             <label for="inputEmail" class="form-label">Email address</label>
             <input type="email" class="form-control" id="inputEmail" formControlName="email">
           </div>
-          <!-- Input Password -->
-          <div class="mb-3">
+          <div class="mb-3 position-relative">
             <label for="inputPassword" class="form-label">Password</label>
-            <input type="password" class="form-control" id="inputPassword" formControlName="password">
+            <div class="password-wrapper">
+              <input [type]="showPassword ? 'text' : 'password'" class="form-control" id="inputPassword" formControlName="password" placeholder="Enter your password">
+              <i class="toggle-password bi" [class.bi-eye-slash]="showPassword" [class.bi-eye]="!showPassword" (click)="togglePasswordVisibility()"></i>
+            </div>
           </div>
           <re-captcha
           siteKey="6LegCRErAAAAAHHHciXcBfnmaww-V0iS3yEW1Urx"
