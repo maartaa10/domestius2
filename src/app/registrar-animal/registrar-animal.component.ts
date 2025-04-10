@@ -6,7 +6,9 @@ import { Protectora } from '../interfaces/protectora';
 import { ProtectoraService } from '../services/protectora.service';
 import { Publicacio } from '../interfaces/publicacio';
 import { PublicacioService } from '../services/publicacio.service';
-import { AuthService } from '../services/auth.service'; // Importar AuthService
+import { Interaccio } from '../interfaces/interaccio';
+import { InteraccionsService } from '../services/interaccions.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-registrar-animal',
@@ -27,27 +29,26 @@ export class RegistrarAnimalComponent {
     protectora_id: 0
   };
 
-  selectedFile: File | null = null; // Archivo seleccionado
+  selectedFile: File | null = null;
   protectorList: Protectora[] = [];
-  crearPublicacio: boolean = false; // Estado del checkbox
-  publicacioDetalls: string = ''; // Detalles de la publicación
+  crearPublicacio: boolean = false; 
+  publicacioTitulo: string = ''; 
+  publicacioDetalls: string = '';
 
   constructor(
     private animalPerdutService: AnimalPerdutService,
     private publicacioService: PublicacioService,
     private protectoraService: ProtectoraService,
-    private authService: AuthService, // Servicio para obtener el usuario logueado
+    private interaccionsService: InteraccionsService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.loadProtectoras();
-    this.setProtectoraId(); // Asignar automáticamente la protectora logueada
+    this.setProtectoraId();
   }
 
-  /**
-   * Carga la lista de protectoras disponibles.
-   */
   loadProtectoras(): void {
     this.protectoraService.getProtectoras().subscribe({
       next: (data) => {
@@ -55,34 +56,6 @@ export class RegistrarAnimalComponent {
       },
       error: (err) => {
         console.error('Error al cargar las protectoras:', err);
-      }
-    });
-  }
-
-  /**
-   * Asigna automáticamente el ID de la protectora logueada al campo `protectora_id`.
-   */
-  setProtectoraId(): void {
-    this.authService.getUserProfile().subscribe({
-      next: (userData) => {
-        console.log('Datos del usuario logueado:', userData);
-  
-        // Busca la protectora asociada al usuario logueado usando el email
-        const protectora = this.protectorList.find(p => p.usuari?.email === userData.email);
-  
-        if (protectora) {
-          this.animal.protectora_id = protectora.id; // Asigna el ID de la protectora
-          console.log('ID de la protectora asignado automáticamente:', this.animal.protectora_id);
-        } else {
-          console.error('El usuario logueado no tiene una protectora asociada.');
-          alert('No se puede registrar un animal porque no hay una protectora asociada.');
-          this.router.navigate(['/dashboard']); // Redirige al dashboard si no hay protectora
-        }
-      },
-      error: (err) => {
-        console.error('Error al obtener el perfil del usuario:', err);
-        alert('Hubo un error al obtener la información del usuario. Por favor, inténtelo de nuevo.');
-        this.router.navigate(['/dashboard']); // Redirige al dashboard en caso de error
       }
     });
   }
@@ -95,11 +68,17 @@ export class RegistrarAnimalComponent {
   }
 
   onSubmit(): void {
+    console.log('Método onSubmit ejecutado');
     if (!this.selectedFile) {
       alert('Por favor, selecciona una imagen.');
       return;
     }
-
+  
+    if (!this.animal.protectora_id) {
+      alert('No se ha asignado una protectora válida. Por favor, inténtelo de nuevo.');
+      return;
+    }
+  
     const formData = new FormData();
     formData.append('nom', this.animal.nom);
     formData.append('edat', this.animal.edat?.toString() || '');
@@ -109,22 +88,24 @@ export class RegistrarAnimalComponent {
     formData.append('estat', this.animal.estat);
     formData.append('protectora_id', this.animal.protectora_id.toString());
     formData.append('imatge', this.selectedFile);
-
+  
     this.animalPerdutService.addAnimal(formData).subscribe({
       next: (animal) => {
         console.log('Animal creado:', animal); 
         alert('Animal añadido con éxito');
     
         if (this.crearPublicacio) {
+          console.log('A');
           if (animal.id) {
+            console.log('B');
             this.crearPublicacion(animal); 
+            this.router.navigate(['/animal-llista']);
           } else {
+            console.log('C');
             console.error('El animal no tiene un ID válido:', animal);
             alert('No se pudo crear la publicación porque el animal no tiene un ID válido.');
           }
-        } else {
-          this.router.navigate(['/animal-llista']);
-        }
+        } 
       },
       error: (err) => {
         console.error('Error al añadir el animal:', err);
@@ -140,44 +121,84 @@ export class RegistrarAnimalComponent {
       return;
     }
   
-    console.log('Creando publicación para el animal con ID:', animal.id);
+    
+    const now = new Date();
+    const formattedDate = `${now.getFullYear()}-${(now.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')} ${now
+      .getHours()
+      .toString()
+      .padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now
+      .getSeconds()
+      .toString()
+      .padStart(2, '0')}`;
   
     const publicacio: Publicacio = {
       id: 0,
-      tipus: 'Adopción',
-      data: new Date().toISOString().split('T')[0],
+      tipus: this.publicacioTitulo || 'Sin título',
+      data: formattedDate, 
       detalls: this.publicacioDetalls || `Buscamos hogar para ${animal.nom}.`,
       usuari_id: animal.protectora_id,
       animal_id: animal.id,
       created_at: '',
       updated_at: '',
       username: this.getProtectoraName(animal.protectora_id),
-      interaccions: [
-        {
-          accio: 'crear publicacion',
-          data: new Date(),
-          detalls: 'Se ha creado la publicación para este animal.',
-          publicacio_id: 0, // Este valor será actualizado por el backend
-          usuari_id: animal.protectora_id, // ID del usuario asociado a la protectora
-          tipus_interaccio_id: 1 // Tipo de interacción (por ejemplo, 1 para "crear publicación")
-        }
-      ]
+      interaccions: []
     };
   
     this.publicacioService.addPublicacio(publicacio).subscribe({
-      next: () => {
+      next: (nuevaPublicacion) => {
         alert('Publicación creada con éxito');
-        this.router.navigate(['/animal-llista']);
+  
+        const interaccioInicial: Interaccio = {
+          accio: 'creación',
+          data: formattedDate,
+          detalls: 'Se ha creado esta publicación.',
+          publicacio_id: nuevaPublicacion.id,
+          usuari_id: nuevaPublicacion.usuari_id,
+          tipus_interaccio_id: 1
+        };
+  
+        this.interaccionsService.createInteraccio(interaccioInicial).subscribe({
+          next: () => {
+            console.log('Interacción inicial creada con éxito.');
+          },
+          error: (err) => {
+            console.error('Error al crear la interacción inicial:', err);
+          }
+        });
       },
       error: (err) => {
         console.error('Error al crear la publicación:', err);
-        alert('Hubo un error al crear la publicación. Por favor, inténtelo de nuevo.');
       }
     });
   }
-
   getProtectoraName(protectoraId: number): string {
     const protectora = this.protectorList.find(p => p.id === protectoraId);
     return protectora?.usuari?.nom || 'Desconocido';
+  }
+  setProtectoraId(): void {
+    this.authService.getUserProfile().subscribe({
+      next: (userData) => {
+        console.log('Datos del usuario logueado:', userData);
+  
+     
+        const protectora = this.protectorList.find(p => p.usuari?.email === userData.email);
+  
+        if (protectora) {
+          this.animal.protectora_id = protectora.id;
+          console.log('ID de la protectora asignado automáticamente:', this.animal.protectora_id);
+        } else {
+          console.error('El usuario logueado no tiene una protectora asociada.');
+          alert('No se puede registrar un animal porque no hay una protectora asociada.');
+          this.router.navigate(['/dashboard']);
+        }
+      },
+      error: (err) => {
+        console.error('Error al obtener el perfil del usuario:', err);
+        alert('Hubo un error al obtener la información del usuario. Por favor, inténtelo de nuevo.');
+        this.router.navigate(['/dashboard']); 
+      }
+    });
   }
 }

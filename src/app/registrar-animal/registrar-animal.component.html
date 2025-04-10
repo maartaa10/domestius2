@@ -86,7 +86,19 @@
       </label>
     </div>
 
-    <!-- Campo para los detalles de la publicación -->
+ 
+    <div *ngIf="crearPublicacio" class="form-group">
+      <label for="titulo">Título de la publicación</label>
+      <input
+        type="text"
+        id="titulo"
+        name="titulo"
+        [(ngModel)]="publicacioTitulo"
+        placeholder="Escribe el título de la publicación (ej. Adopción, Perdido, etc.)"
+        required
+      />
+    </div>
+    
     <div *ngIf="crearPublicacio" class="form-group">
       <label for="detalls">Detalles de la publicación</label>
       <textarea
