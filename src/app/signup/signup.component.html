@@ -15,37 +15,59 @@
           {{ errors.password }}
         </div>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-          <!-- Input Name -->
+          <!-- Campo Nombre -->
           <div class="mb-3">
-            <label for="inputName" class="form-label">Name</label>
-            <input type="text" class="form-control" id="inputName" formControlName="name">
+            <label for="name" class="form-label">Nom</label>
+            <input type="text" id="name" class="form-control" formControlName="name">
+            <div *ngIf="registerForm.get('name')?.invalid && (registerForm.get('name')?.touched || registerForm.get('name')?.dirty)" class="text-danger">
+              <small *ngIf="registerForm.get('name')?.hasError('required')">El camp nom és obligatori.</small>
+              <small *ngIf="registerForm.get('name')?.hasError('minlength')">El nom ha de tenir almenys 3 caràcters.</small>
+            </div>
           </div>
-          <!-- Input Email -->
+        
+          <!-- Campo Email -->
           <div class="mb-3">
-            <label for="inputEmail" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="inputEmail" formControlName="email">
+            <label for="email" class="form-label">Correu electrònic</label>
+            <input type="email" id="email" class="form-control" formControlName="email">
+            <div *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.touched || registerForm.get('email')?.dirty)" class="text-danger">
+              <small *ngIf="registerForm.get('email')?.hasError('required')">El camp correu electrònic és obligatori.</small>
+              <small *ngIf="registerForm.get('email')?.hasError('email')">El camp correu electrònic ha de ser vàlid.</small>
+            </div>
           </div>
-          <div class="mb-3 position-relative">
-            <label for="inputPassword" class="form-label">Password</label>
+        
+          <div class="mb-3">
+            <label for="password" class="form-label">Contrasenya</label>
             <div class="password-wrapper">
-              <input [type]="showPassword ? 'text' : 'password'" class="form-control" id="inputPassword" formControlName="password" placeholder="Enter your password">
+              <input [type]="showPassword ? 'text' : 'password'" id="password" class="form-control" formControlName="password">
               <i class="toggle-password bi" [class.bi-eye-slash]="showPassword" [class.bi-eye]="!showPassword" (click)="togglePasswordVisibility()"></i>
             </div>
-          </div>
-          
-          <div class="mb-3 position-relative">
-            <label for="inputPasswordConfirmation" class="form-label">Confirm Password</label>
-            <div class="password-wrapper">
-              <input [type]="showPasswordConfirmation ? 'text' : 'password'" class="form-control" id="inputPasswordConfirmation" formControlName="password_confirmation" placeholder="Confirm your password">
-              <i class="toggle-password bi" [class.bi-eye-slash]="showPasswordConfirmation" [class.bi-eye]="!showPasswordConfirmation" (click)="togglePasswordConfirmationVisibility()"></i>
+            <div *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.touched || registerForm.get('password')?.dirty)" class="text-danger">
+              <small *ngIf="registerForm.get('password')?.hasError('required')">El camp contrasenya és obligatori.</small>
+              <small *ngIf="registerForm.get('password')?.hasError('minlength')">La contrasenya ha de tenir almenys 6 caràcters.</small>
             </div>
           </div>
+        
+          <div class="mb-3">
+            <label for="password_confirmation" class="form-label">Confirmació de contrasenya</label>
+            <div class="password-wrapper">
+              <input [type]="showPasswordConfirmation ? 'text' : 'password'" id="password_confirmation" class="form-control" formControlName="password_confirmation">
+              <i class="toggle-password bi" [class.bi-eye-slash]="showPasswordConfirmation" [class.bi-eye]="!showPasswordConfirmation" (click)="togglePasswordConfirmationVisibility()"></i>
+            </div>
+            <div *ngIf="registerForm.get('password_confirmation')?.invalid && (registerForm.get('password_confirmation')?.touched || registerForm.get('password_confirmation')?.dirty)" class="text-danger">
+              <small *ngIf="registerForm.get('password_confirmation')?.hasError('required')">El camp confirmació de contrasenya és obligatori.</small>
+            </div>
+            <div *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('password_confirmation')?.touched" class="text-danger">
+              <small>Les contrasenyes no coincideixen.</small>
+            </div>
+          </div>
+        
+  
           <re-captcha
           siteKey="6LegCRErAAAAAHHHciXcBfnmaww-V0iS3yEW1Urx"
           (resolved)="onCaptchaResolved($event)">
         </re-captcha>
           <button type="submit" class="btn btn-lg w-100 btn-primary mt-1 mb-4">Sign Up</button>
-          <a routerLink="/login" class="d-block text-center mb-4">I already have an account</a>
+          <a routerLink="/login" class="d-block text-center mb-4">Ja tinc un compte</a>
         </form>
       </div>
     </div>

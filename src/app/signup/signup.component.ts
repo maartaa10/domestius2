@@ -1,7 +1,19 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
+
+// Validador personalizado
+export function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+  const password = control.get('password')?.value;
+  const confirmPassword = control.get('password_confirmation')?.value;
+
+  if (password !== confirmPassword) {
+    return { passwordMismatch: true };
+  }
+  return null;
+}
 
 @Component({
   selector: 'app-signup',
@@ -22,11 +34,11 @@ export class SignupComponent {
     private fb: FormBuilder
   ) {
     this.registerForm = this.fb.group({
-      name: [''],
-      email: [''],
-      password: [''],
-      password_confirmation: ['']
-    });
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      password_confirmation: ['', [Validators.required]]
+    }, { validators: passwordMatchValidator }); // Agregar el validador personalizado aquí
   }
 
   onCaptchaResolved(token: string | null): void {
@@ -84,6 +96,7 @@ export class SignupComponent {
   private cleanErrors(): void {
     this.errors = null;
   }
+
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }

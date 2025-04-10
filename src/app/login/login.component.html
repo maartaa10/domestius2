@@ -18,11 +18,11 @@
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <!-- Input Email -->
           <div class="mb-3">
-            <label for="inputEmail" class="form-label">Email address</label>
+            <label for="inputEmail" class="form-label">Email</label>
             <input type="email" class="form-control" id="inputEmail" formControlName="email">
           </div>
           <div class="mb-3 position-relative">
-            <label for="inputPassword" class="form-label">Password</label>
+            <label for="inputPassword" class="form-label">Contrasenya</label>
             <div class="password-wrapper">
               <input [type]="showPassword ? 'text' : 'password'" class="form-control" id="inputPassword" formControlName="password" placeholder="Enter your password">
               <i class="toggle-password bi" [class.bi-eye-slash]="showPassword" [class.bi-eye]="!showPassword" (click)="togglePasswordVisibility()"></i>
@@ -33,7 +33,7 @@
           (resolved)="onCaptchaResolved($event)">
         </re-captcha>
         <button type="submit" class="btn btn-lg btn-primary w-100 mt-1 mb-4">Login</button>
-          <a routerLink="/signup" class="d-block text-center mb-4">Create an account</a>
+          <a routerLink="/signup" class="d-block text-center mb-4">Crea un compte</a>
         </form>
       </div>
     </div>
