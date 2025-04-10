@@ -39,7 +39,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
  
   { path: 'animal-llista', component: AnimalLlistaComponent },
-
+  { path: 'inici', component: IniciComponent },
 
 
 

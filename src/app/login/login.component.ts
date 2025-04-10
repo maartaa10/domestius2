@@ -14,6 +14,7 @@ export class LoginComponent {
   loginForm: FormGroup;
   errors: any;
   captchaToken: string = ''; 
+  showPassword: boolean = false; 
 
   constructor(
     private authService: AuthService,
@@ -69,5 +70,8 @@ export class LoginComponent {
 
   private cleanErrors(): void {
     this.errors = null;
+  }
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 }

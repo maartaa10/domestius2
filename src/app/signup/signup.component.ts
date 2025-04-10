@@ -13,6 +13,8 @@ export class SignupComponent {
   registerForm: FormGroup;
   errors: any;
   captchaToken: string = '';
+  showPassword: boolean = false; 
+  showPasswordConfirmation: boolean = false; 
 
   constructor(
     private authService: AuthService,
@@ -81,5 +83,12 @@ export class SignupComponent {
 
   private cleanErrors(): void {
     this.errors = null;
+  }
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  togglePasswordConfirmationVisibility(): void {
+    this.showPasswordConfirmation = !this.showPasswordConfirmation;
   }
 }

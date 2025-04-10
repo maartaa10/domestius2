@@ -14,15 +14,15 @@ export class AppComponent {
   showNavbar: boolean = true; 
 
   constructor(private router: Router, private tokenService: TokenService) {
-    this.checkAuthentication(); // Verifica la autenticación al cargar la aplicación
+    this.checkAuthentication(); 
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         console.log('Navegación a:', event.url);
 
-        const noFooterRoutes = ['/'];
+        const noFooterRoutes = ['/','/inici'];
         this.showFooter = !noFooterRoutes.includes(event.url);
 
-        const noNavbarRoutes = ['/'];
+        const noNavbarRoutes = ['/','/inici'];
         this.showNavbar = !noNavbarRoutes.includes(event.url);
       }
     });
@@ -30,9 +30,9 @@ export class AppComponent {
 
   private checkAuthentication(): void {
     if (this.tokenService.isLoggedIn()) {
-      this.router.navigate(['/dashboard']); // Redirige al dashboard si está autenticado
+      this.router.navigate(['/dashboard']);
     } else {
-      this.router.navigate(['/login']); // Redirige al login si no está autenticado
+      this.router.navigate(['/login']); 
     }
   }
 }
