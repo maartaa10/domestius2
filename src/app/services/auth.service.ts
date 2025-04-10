@@ -88,4 +88,5 @@ export class AuthService {
   getUsuarioActualId(): number {
     return this.usuarioActual?.id || 1;
   }
+  
 }
