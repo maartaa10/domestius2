@@ -25,6 +25,7 @@ import { SignupComponent } from './signup/signup.component';
 import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { MisAnimalesComponent } from './mis-animales/mis-animales.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCyePW5xWgzy4RHS7p6TmPJHlCgRSr8vWE",
@@ -55,7 +56,8 @@ const firebaseConfig = {
     EliminarAnimalComponent,
     DashboardComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    MisAnimalesComponent
   ],
   imports: [
     BrowserModule,

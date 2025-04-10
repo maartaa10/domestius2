@@ -40,4 +40,8 @@ export class AnimalPerdutService {
   getAnimalImatge(id: number): Observable<string> {
     return this.http.get<string>(`${this.apiUrl}/animal/imatge/${id}`);
   }
+  getAnimalesByUsuario(userId: number): Observable<Animal[]> {
+    return this.http.get<Animal[]>(`${this.apiUrl}/usuario/${userId}/animales`);
+   
+  }
 }
