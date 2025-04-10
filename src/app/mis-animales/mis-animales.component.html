@@ -1,0 +1,32 @@
+<div class="container">
+    <div class="animals-list">
+      <div class="animal-card" *ngFor="let animal of animals">
+        <img [src]="animal.imatge" alt="Mascota" class="logo">
+        <div class="info">
+          <p><strong>Nombre:</strong> {{ animal.nom }}</p>
+          <p><strong>Edad:</strong> {{ animal.edat }}</p>
+          <p><strong>Especie:</strong> {{ animal.especie }}</p>
+          <p><strong>Raza:</strong> {{ animal['raça'] }}</p>
+          <p><strong>Descripción:</strong> {{ animal.descripcio }}</p>
+          <p><strong>Estado:</strong> {{ animal.estat }}</p>
+        </div>
+        <div class="actions">
+          <!-- Botón para editar -->
+          <button 
+            class="action-button edit" 
+            [routerLink]="['/editar-animal', animal.id]">
+            Editar
+          </button>
+          <!-- Botón para eliminar -->
+        <!--   <button 
+            class="action-button delete" 
+            (click)="eliminarAnimal(animal.id)">
+            Eliminar
+          </button> -->
+        </div>
+      </div>
+      <div class="footer-message">
+        <p>Si ho veus, no ho ignoris, podries ser qui el faci tornar a casa.</p>
+      </div>
+    </div>
+  </div>

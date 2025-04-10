@@ -83,4 +83,7 @@ export class DashboardComponent implements OnInit {
     
     this.router.navigate(['/registrar-animal'], { queryParams: { protectoraId: this.protectoraId } });
   }
+  verMisAnimales(): void {
+    this.router.navigate(['/mis-animales']);
+  }
 }

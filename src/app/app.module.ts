@@ -23,6 +23,19 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { MisAnimalesComponent } from './mis-animales/mis-animales.component';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCyePW5xWgzy4RHS7p6TmPJHlCgRSr8vWE",
+  authDomain: "domestius2.firebaseapp.com",
+  projectId: "domestius2",
+  storageBucket: "domestius2.firebasestorage.app",
+  messagingSenderId: "817588680014",
+  appId: "1:817588680014:web:11ea1773bd2792b5adda1f",
+  measurementId: "G-LXZQ0WLQRZ"
+};
 
 @NgModule({
   declarations: [
@@ -43,7 +56,8 @@ import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
     EliminarAnimalComponent,
     DashboardComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    MisAnimalesComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +66,9 @@ import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
     ReactiveFormsModule,
     HttpClientModule,
     RecaptchaModule,
-    RecaptchaFormsModule 
+    RecaptchaFormsModule,
+    AngularFireModule.initializeApp(firebaseConfig), // Inicializar Firebase
+    AngularFireAuthModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -17,6 +17,7 @@ import { EliminarAnimalComponent } from './eliminar-animal/eliminar-animal.compo
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
+import { MisAnimalesComponent } from './mis-animales/mis-animales.component';
 
 const routes: Routes = [ 
   { path: '', component: IniciComponent },
@@ -33,6 +34,7 @@ const routes: Routes = [
   { path: 'publicacio/:id', component: PublicacioDetallComponent }, 
   { path: 'editar-animal/:id', component: EditarAnimalComponent },
   { path: 'eliminar-animal/:id', component: EliminarAnimalComponent },
+  { path: 'mis-animales', component: MisAnimalesComponent },
 
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },

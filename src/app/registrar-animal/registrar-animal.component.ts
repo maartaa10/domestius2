@@ -91,27 +91,16 @@ export class RegistrarAnimalComponent {
   
     this.animalPerdutService.addAnimal(formData).subscribe({
       next: (animal) => {
-        console.log('Animal creado:', animal); 
+        console.log('Animal creado:', animal);
         alert('Animal añadido con éxito');
-    
-        if (this.crearPublicacio) {
-          console.log('A');
-          if (animal.id) {
-            console.log('B');
-            this.crearPublicacion(animal); 
-            this.router.navigate(['/animal-llista']);
-          } else {
-            console.log('C');
-            console.error('El animal no tiene un ID válido:', animal);
-            alert('No se pudo crear la publicación porque el animal no tiene un ID válido.');
-          }
-        } 
+        this.router.navigate(['/mis-animales']); // Redirige a la página de "Mis Animales"
       },
       error: (err) => {
         console.error('Error al añadir el animal:', err);
         alert('Hubo un error al añadir el animal. Por favor, inténtelo de nuevo.');
       }
     });
+  
   }
 
   crearPublicacion(animal: Animal): void {
