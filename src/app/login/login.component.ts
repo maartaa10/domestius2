@@ -13,7 +13,7 @@ import { TokenService } from '../services/token.service';
 export class LoginComponent {
   loginForm: FormGroup;
   errors: any;
-  /* captchaToken: string = '';  */
+/*   captchaToken: string = '';  */
   showPassword: boolean = false; 
 
   constructor(
@@ -41,14 +41,14 @@ export class LoginComponent {
     this.cleanErrors();
   
     
- /*    if (!this.captchaToken) {
+/*     if (!this.captchaToken) {
       alert('Completa el captcha antes de enviar');
       return;
     } */
   
     const loginData = {
       ...this.loginForm.value,
-    /*   captcha: this.captchaToken */
+      /* captcha: this.captchaToken */
     };
   
     this.authService.login(loginData).subscribe(

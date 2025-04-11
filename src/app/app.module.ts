@@ -26,7 +26,6 @@ import { SignupComponent } from './signup/signup.component';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { MisAnimalesComponent } from './mis-animales/mis-animales.component';
-import { RouterModule } from '@angular/router';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCyePW5xWgzy4RHS7p6TmPJHlCgRSr8vWE",
@@ -66,7 +65,7 @@ const firebaseConfig = {
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -40,8 +40,8 @@ export class SignupComponent {
       password_confirmation: ['', [Validators.required]]
     }, { validators: passwordMatchValidator }); // Agregar el validador personalizado aquí
   }
-
-/*   onCaptchaResolved(token: string | null): void {
+/* 
+  onCaptchaResolved(token: string | null): void {
     if (token) {
       this.captchaToken = token;
       console.log('Token CAPTCHA:', token);
@@ -54,7 +54,7 @@ export class SignupComponent {
   onSubmit(): void {
     this.cleanErrors();
   
-   /*  if (!this.captchaToken) {
+  /*   if (!this.captchaToken) {
       alert('Completa el captcha antes de enviar');
       return;
     } */
@@ -74,7 +74,7 @@ export class SignupComponent {
       email,
       password,
       password_confirmation,
-    /*   captcha: this.captchaToken */
+     /*  captcha: this.captchaToken */
     };
   
     this.authService.register(registerData).subscribe(
