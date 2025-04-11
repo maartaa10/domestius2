@@ -24,7 +24,7 @@ export function passwordMatchValidator(control: AbstractControl): ValidationErro
 export class SignupComponent {
   registerForm: FormGroup;
   errors: any;
-  captchaToken: string = '';
+/*   captchaToken: string = ''; */
   showPassword: boolean = false; 
   showPasswordConfirmation: boolean = false; 
 
@@ -41,7 +41,7 @@ export class SignupComponent {
     }, { validators: passwordMatchValidator }); // Agregar el validador personalizado aquí
   }
 
-  onCaptchaResolved(token: string | null): void {
+/*   onCaptchaResolved(token: string | null): void {
     if (token) {
       this.captchaToken = token;
       console.log('Token CAPTCHA:', token);
@@ -49,15 +49,15 @@ export class SignupComponent {
       console.warn('No se generó un token de reCAPTCHA.');
       this.captchaToken = '';
     }
-  }
+  } */
 
   onSubmit(): void {
     this.cleanErrors();
   
-    if (!this.captchaToken) {
+   /*  if (!this.captchaToken) {
       alert('Completa el captcha antes de enviar');
       return;
-    }
+    } */
   
     const name = this.registerForm.get('name')?.value ?? '';
     const email = this.registerForm.get('email')?.value ?? '';
@@ -74,7 +74,7 @@ export class SignupComponent {
       email,
       password,
       password_confirmation,
-      captcha: this.captchaToken
+    /*   captcha: this.captchaToken */
     };
   
     this.authService.register(registerData).subscribe(

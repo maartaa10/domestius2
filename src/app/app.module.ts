@@ -22,10 +22,11 @@ import { EliminarAnimalComponent } from './eliminar-animal/eliminar-animal.compo
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
-import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
+
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { MisAnimalesComponent } from './mis-animales/mis-animales.component';
+import { RouterModule } from '@angular/router';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCyePW5xWgzy4RHS7p6TmPJHlCgRSr8vWE",
@@ -65,10 +66,7 @@ const firebaseConfig = {
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RecaptchaModule,
-    RecaptchaFormsModule,
-    AngularFireModule.initializeApp(firebaseConfig), // Inicializar Firebase
-    AngularFireAuthModule
+    RouterModule
   ],
   providers: [],
   bootstrap: [AppComponent]
