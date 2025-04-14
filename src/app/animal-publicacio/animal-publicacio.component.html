@@ -5,6 +5,10 @@
     <p><strong>Detalles:</strong> {{ publicacio.detalls }}</p>
     <p><strong>Publicado por:</strong> {{ publicacio.usuari?.nom }}</p>
     <p><strong>Animal:</strong> {{ publicacio.animal?.nom }}</p>
+    <p><strong>Ubicación:</strong> {{ publicacio.animal?.geolocalitzacio?.nombre || 'No disponible' }}</p>
+    <p><strong>Latitud:</strong> {{ publicacio.animal?.geolocalitzacio?.latitud || 'No disponible' }}</p>
+    <p><strong>Longitud:</strong> {{ publicacio.animal?.geolocalitzacio?.longitud || 'No disponible' }}</p>
+ 
   </div>
 </div>
 
