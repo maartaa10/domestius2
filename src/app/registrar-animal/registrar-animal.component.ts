@@ -93,14 +93,20 @@ export class RegistrarAnimalComponent {
       next: (animal) => {
         console.log('Animal creado:', animal);
         alert('Animal añadido con éxito');
-        this.router.navigate(['/mis-animales']); // Redirige a la página de "Mis Animales"
+  
+       
+        if (this.crearPublicacio) {
+          this.crearPublicacion(animal);
+          this.router.navigate(['/mis-animales']);
+        } else {
+          this.router.navigate(['/mis-animales']); 
+        }
       },
       error: (err) => {
         console.error('Error al añadir el animal:', err);
         alert('Hubo un error al añadir el animal. Por favor, inténtelo de nuevo.');
       }
     });
-  
   }
 
   crearPublicacion(animal: Animal): void {
