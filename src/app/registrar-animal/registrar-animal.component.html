@@ -80,6 +80,41 @@
       />
     </div>
     <div class="form-group">
+      <label for="ubicacionNombre">Nombre de la ubicación</label>
+      <input
+        type="text"
+        id="ubicacionNombre"
+        name="ubicacionNombre"
+        [(ngModel)]="ubicacion.nombre"
+        placeholder="Ejemplo: Barcelona"
+        required
+      />
+    </div>
+    
+    <div class="form-group">
+      <label for="latitud">Latitud</label>
+      <input
+        type="text"
+        id="latitud"
+        name="latitud"
+        [(ngModel)]="ubicacion.latitud"
+        placeholder="Ejemplo: 41.3754960"
+        required
+      />
+    </div>
+    
+    <div class="form-group">
+      <label for="longitud">Longitud</label>
+      <input
+        type="text"
+        id="longitud"
+        name="longitud"
+        [(ngModel)]="ubicacion.longitud"
+        placeholder="Ejemplo: 2.1768060"
+        required
+      />
+    </div>
+    <div class="form-group">
       <label>
         <input type="checkbox" [(ngModel)]="crearPublicacio" name="crearPublicacio" />
         Crear publicación asociada

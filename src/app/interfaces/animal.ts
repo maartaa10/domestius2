@@ -1,3 +1,4 @@
+import { Geolocalitzacio } from "./geolocalitzacio";
 import { Protectora } from "./protectora";
 
 export interface Animal {
@@ -10,5 +11,6 @@ descripcio: string | null;
 estat : string;
 imatge: string | null;
 protectora_id: number;
-
+geolocalitzacio_id: number | null;
+  geolocalitzacio?: Geolocalitzacio;
 }

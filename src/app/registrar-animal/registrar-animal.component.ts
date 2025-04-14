@@ -26,9 +26,14 @@ export class RegistrarAnimalComponent {
     descripcio: null,
     estat: 'Disponible',
     imatge: null,
-    protectora_id: 0
+    protectora_id: 0,
+    geolocalitzacio_id: null
   };
-
+  ubicacion = {
+    nombre: '',
+    latitud: '',
+    longitud: ''
+  };
   selectedFile: File | null = null;
   protectorList: Protectora[] = [];
   crearPublicacio: boolean = false; 
@@ -79,6 +84,11 @@ export class RegistrarAnimalComponent {
       return;
     }
   
+    if (!this.ubicacion.nombre || !this.ubicacion.latitud || !this.ubicacion.longitud) {
+      alert('Por favor, completa todos los campos de la ubicación.');
+      return;
+    }
+  
     const formData = new FormData();
     formData.append('nom', this.animal.nom);
     formData.append('edat', this.animal.edat?.toString() || '');
@@ -89,18 +99,28 @@ export class RegistrarAnimalComponent {
     formData.append('protectora_id', this.animal.protectora_id.toString());
     formData.append('imatge', this.selectedFile);
   
+    // Cambiar los nombres de los campos de ubicación
+    formData.append('nombre', this.ubicacion.nombre);
+    formData.append('latitud', this.ubicacion.latitud);
+    formData.append('longitud', this.ubicacion.longitud);
+  
     this.animalPerdutService.addAnimal(formData).subscribe({
       next: (animal) => {
         console.log('Animal creado:', animal);
         alert('Animal añadido con éxito');
-        this.router.navigate(['/mis-animales']); // Redirige a la página de "Mis Animales"
+  
+        if (this.crearPublicacio) {
+          this.crearPublicacion(animal);
+          this.router.navigate(['/mis-animales']);
+        } else {
+          this.router.navigate(['/mis-animales']);
+        }
       },
       error: (err) => {
         console.error('Error al añadir el animal:', err);
         alert('Hubo un error al añadir el animal. Por favor, inténtelo de nuevo.');
       }
     });
-  
   }
 
   crearPublicacion(animal: Animal): void {
