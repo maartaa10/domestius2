@@ -28,11 +28,15 @@ export class AppComponent {
     });
   }
 
-  private checkAuthentication(): void {
+  /* private checkAuthentication(): void {
     if (this.tokenService.isLoggedIn()) {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/inici']);
     } else {
       this.router.navigate(['/login']); 
     }
-  }
+  } */
+    private checkAuthentication(): void {
+      console.log('Verificación de autenticación realizada.');
+      // No redirigir automáticamente al login o dashboard
+    }
 }

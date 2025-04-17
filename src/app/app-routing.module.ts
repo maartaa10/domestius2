@@ -45,6 +45,7 @@ const routes: Routes = [
 
 
 
+
 { path: 'footer', component: FooterComponent },
 { path: 'perfil', component: PerfilComponent },
 ];
