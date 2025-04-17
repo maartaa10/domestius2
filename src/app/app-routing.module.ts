@@ -18,6 +18,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { MisAnimalesComponent } from './mis-animales/mis-animales.component';
+import { RegistrarProtectoraComponent } from './registrar-protectora/registrar-protectora.component';
 
 const routes: Routes = [ 
   { path: '', component: IniciComponent },
@@ -43,6 +44,7 @@ const routes: Routes = [
   { path: 'animal-llista', component: AnimalLlistaComponent },
   { path: 'inici', component: IniciComponent },
 
+  { path: 'registrar-protectora', component: RegistrarProtectoraComponent },
 
 
 

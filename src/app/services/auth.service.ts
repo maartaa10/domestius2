@@ -31,21 +31,22 @@ export class AuthService {
     return this.http.delete(`${this.API_URL}/logout`, { headers });
   } */
 
-  getUserProfile(): Observable<any> {
-    const token = this.tokenService.getToken();
-    if (!token) {
-      console.error('No se encontró un token en el almacenamiento local.');
-      return new Observable(observer => {
-        observer.error({ message: 'No se encontró un token.' });
+    getUserProfile(): Observable<any> {
+      const token = this.tokenService.getToken();
+      console.log('Token obtenido del localStorage:', token);
+      if (!token) {
+        console.error('No se encontró un token en el almacenamiento local.');
+        return new Observable(observer => {
+          observer.error({ message: 'No se encontró un token.' });
+        });
+      }
+    
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`
       });
+    
+      return this.http.get(`${this.API_URL}/user-profile`, { headers });
     }
-  
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
-  
-    return this.http.get(`${this.API_URL}/user-profile`, { headers });
-  }
   
   logout(): Observable<any> {
     const token = this.tokenService.getToken();

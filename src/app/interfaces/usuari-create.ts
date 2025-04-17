@@ -1,5 +1,4 @@
-export interface Usuari {
-    id: number;
+export interface UsuariCreate {
     nom: string;
     email: string;
     password: string;

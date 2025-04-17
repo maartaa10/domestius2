@@ -1,0 +1,109 @@
+<div class="registrar-protectora-container">
+    <h2>Registrar Protectora</h2>
+    <div *ngIf="loading" class="loading-spinner">
+        Registrant protectora, si us plau espera...
+      </div>
+    <form (ngSubmit)="onSubmit()" #protectoraForm="ngForm">
+    
+      <h3>Dades de l'Usuari</h3>
+      <div class="form-group">
+        <label for="nom">Nom</label>
+        <input
+          type="text"
+          id="nom"
+          name="nom"
+          [(ngModel)]="usuari.nom"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="email">Correu electrònic</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="usuari.email"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Contrasenya</label>
+        <input
+          type="password"
+          id="password"
+          [(ngModel)]="usuari.password"
+          name="password"
+          class="form-control"
+          placeholder="Introdueix la teva contrasenya"
+          required
+        />
+      </div>
+      
+      <div class="form-group">
+        <label for="password_confirmation">Confirmar Contrasenya</label>
+        <input
+          type="password"
+          id="password_confirmation"
+          [(ngModel)]="usuari.password_confirmation"
+          name="password_confirmation"
+          class="form-control"
+          placeholder="Confirma la teva contrasenya"
+          required
+        />
+      </div>
+
+      <h3>Dades de la Protectora</h3>
+      <div class="form-group">
+        <label for="direccion">Adreça</label>
+        <input
+          type="text"
+          id="direccion"
+          name="direccion"
+          [(ngModel)]="protectora.direccion"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="telefono">Telèfon</label>
+        <input
+          type="text"
+          id="telefono"
+          name="telefono"
+          [(ngModel)]="protectora.telefono"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="horario_apertura">Horari d'Obertura</label>
+        <input
+          type="time"
+          id="horario_apertura"
+          name="horario_apertura"
+          [(ngModel)]="protectora.horario_apertura"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="horario_cierre">Horari de Tancament</label>
+        <input
+          type="time"
+          id="horario_cierre"
+          name="horario_cierre"
+          [(ngModel)]="protectora.horario_cierre"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="imatge">Imatge</label>
+        <input
+          type="file"
+          id="imatge"
+          name="imatge"
+          (change)="onFileSelected($event)"
+          accept="image/*"
+        />
+      </div>
+  
+      <button type="submit" class="action-button">Registrar Protectora</button>
+    </form>
+  </div>
