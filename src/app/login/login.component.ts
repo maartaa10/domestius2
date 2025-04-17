@@ -58,8 +58,9 @@ export class LoginComponent {
   }
 
   private handleResponse(response: any): void {
-    console.log(response.message);
+    console.log('Respuesta del login:', response);
     this.tokenService.handleToken(response.token);
+    console.log('Token guardado en localStorage:', this.tokenService.getToken());
     this.router.navigateByUrl('/dashboard');
   }
 
