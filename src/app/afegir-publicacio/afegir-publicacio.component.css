@@ -55,4 +55,6 @@
   button.action-button:active {
     transform: scale(1);
   }
-  
+  .action-button {
+  border-radius: 50%;
+  }

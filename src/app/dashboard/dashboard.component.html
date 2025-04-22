@@ -5,7 +5,7 @@
     </div>
     <div class="card-body">
       <div *ngIf="loading" class="text-center">
-        <p>Cargando información del usuario...</p>
+        <p>Carregant informació del usuari...</p>
       </div>
 
       <div *ngIf="error" class="alert alert-danger">
@@ -13,19 +13,19 @@
       </div>
 
       <div *ngIf="!loading && !error" class="user-info mb-4">
-        <h3>Información del usuario</h3>
+        <h3>Informació del usuari</h3>
         <img [src]="imatge" alt="Imagen de la protectora" class="img-fluid">
         <br><br>
-        <p><strong>Nombre:</strong> {{ userName }}</p>
+        <p><strong>Nom:</strong> {{ userName }}</p>
         <p><strong>Email:</strong> {{ userEmail }}</p>
-        <p><strong>Dirección:</strong> {{ direccion }}</p>
-        <p><strong>Teléfono:</strong> {{ telefono }}</p>
-        <p><strong>Horario:</strong> {{ horarioApertura }} - {{ horarioCierre }}</p>
+        <p><strong>Direcció:</strong> {{ direccion }}</p>
+        <p><strong>Teléfon:</strong> {{ telefono }}</p>
+        <p><strong>Horari:</strong> {{ horarioApertura }} - {{ horarioCierre }}</p>
       </div>
 
       <button class="btn btn-primary" (click)="navigateToRegistrarAnimal()">Registrar Animal</button>
       <button class="btn btn-danger" (click)="logout()">Cerrar sesión</button>
-      <button class="btn btn-primary color" (click)="verMisAnimales()">Ver mis animales</button>
+      <button class="btn btn-primary color" (click)="verMisAnimales()">Veure els meus animals</button>
 
     </div>
   </div>

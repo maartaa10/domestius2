@@ -157,7 +157,7 @@ export class RegistrarAnimalComponent {
   
     this.publicacioService.addPublicacio(publicacio).subscribe({
       next: (nuevaPublicacion) => {
-        alert('Publicación creada con éxito');
+        alert('Publicació creada amb exit');
   
         const interaccioInicial: Interaccio = {
           accio: 'creación',
@@ -170,42 +170,41 @@ export class RegistrarAnimalComponent {
   
         this.interaccionsService.createInteraccio(interaccioInicial).subscribe({
           next: () => {
-            console.log('Interacción inicial creada con éxito.');
+            console.log('Interacció inicial creada amb exit.');
           },
           error: (err) => {
-            console.error('Error al crear la interacción inicial:', err);
+            console.error('Error al crear la interacció inicial:', err);
           }
         });
       },
       error: (err) => {
-        console.error('Error al crear la publicación:', err);
+        console.error('Error al crear la publicació:', err);
       }
     });
   }
   getProtectoraName(protectoraId: number): string {
     const protectora = this.protectorList.find(p => p.id === protectoraId);
-    return protectora?.usuari?.nom || 'Desconocido';
+    return protectora?.usuari?.nom || 'Desconegut';
   }
   setProtectoraId(): void {
     this.authService.getUserProfile().subscribe({
       next: (userData) => {
-        console.log('Datos del usuario logueado:', userData);
+        console.log('Dades de l\'usuari loguejat:', userData);
   
-     
         const protectora = this.protectorList.find(p => p.usuari?.email === userData.email);
   
         if (protectora) {
           this.animal.protectora_id = protectora.id;
-          console.log('ID de la protectora asignado automáticamente:', this.animal.protectora_id);
+          console.log('ID de la protectora assignat automàticament:', this.animal.protectora_id);
         } else {
-          console.error('El usuario logueado no tiene una protectora asociada.');
-          alert('No se puede registrar un animal porque no hay una protectora asociada.');
+          console.error('L\'usuari loguejat no té una protectora associada.');
+          alert('No es pot registrar un animal perquè no hi ha una protectora associada.');
           this.router.navigate(['/dashboard']);
         }
       },
       error: (err) => {
-        console.error('Error al obtener el perfil del usuario:', err);
-        alert('Hubo un error al obtener la información del usuario. Por favor, inténtelo de nuevo.');
+        console.error('Error en obtenir el perfil de l\'usuari:', err);
+        alert('Hi ha hagut un error en obtenir la informació de l\'usuari. Si us plau, intenta-ho de nou.');
         this.router.navigate(['/dashboard']); 
       }
     });

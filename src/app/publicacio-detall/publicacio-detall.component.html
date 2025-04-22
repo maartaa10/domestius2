@@ -1,41 +1,41 @@
 <div class="details-container" *ngIf="publicacio">
-    <div class="animal-details">
-      <h3>Datos del Animal</h3>
-      <img [src]="animal?.imatge || 'assets/default-animal.png'" alt="Mascota" class="logo">
-      <p><strong>Nombre:</strong> {{ animal?.nom || 'No disponible' }}</p>
-      <p><strong>Edad:</strong> {{ animal?.edat || 'No disponible' }}</p>
-      <p><strong>Especie:</strong> {{ animal?.especie || 'No disponible' }}</p>
-      <p><strong>Raza:</strong> {{ animal?.['raça'] || 'No disponible' }}</p>
-      <p><strong>Descripción:</strong> {{ animal?.descripcio || 'No disponible' }}</p>
-    </div>
-  
-   <div class="interactions">
-  <h3>Interacciones</h3>
-  <div *ngIf="interaccions.length > 0; else noInteractions">
-    <div class="interaction-card" *ngFor="let interaccio of interaccions">
-      <p><strong>Acción:</strong> {{ interaccio.accio || 'No disponible' }}</p>
-      <p><strong>Fecha:</strong> {{ interaccio.data || 'No disponible' }}</p>
-      <p><strong>Detalles:</strong> {{ interaccio.detalls || 'No disponible' }}</p>
-    </div>
+  <div class="animal-details">
+    <h3>Dades de l'Animal</h3>
+    <img [src]="animal?.imatge || 'assets/default-animal.png'" alt="Mascota" class="logo">
+    <p><strong>Nom:</strong> {{ animal?.nom || 'No disponible' }}</p>
+    <p><strong>Edat:</strong> {{ animal?.edat || 'No disponible' }}</p>
+    <p><strong>Espècie:</strong> {{ animal?.especie || 'No disponible' }}</p>
+    <p><strong>Raça:</strong> {{ animal?.['raça'] || 'No disponible' }}</p>
+    <p><strong>Descripció:</strong> {{ animal?.descripcio || 'No disponible' }}</p>
   </div>
-  <ng-template #noInteractions>
-    <p>No hay interacciones para esta publicación.</p>
-  </ng-template>
 
-  <button class="action-button" (click)="toggleFormulario()">Agregar Interacción</button>
-
-  <div *ngIf="mostrarFormulario" class="add-interaction-form">
-    <h3>Agregar Interacción</h3>
-    <form (ngSubmit)="agregarInteraccio()">
-      <div class="form-group">
-        <label for="accio">Acción</label>
-        <input id="accio" [(ngModel)]="novaInteraccio.accio" name="accio" required />
-      </div>
-      <div class="form-group">
-        <label for="detalls">Detalles</label>
-        <textarea id="detalls" [(ngModel)]="novaInteraccio.detalls" name="detalls" required></textarea>
-      </div>
-      <button type="submit" class="action-button">Guardar Interacción</button>
-    </form>
+ <div class="interactions">
+<h3>Interaccions</h3>
+<div *ngIf="interaccions.length > 0; else noInteractions">
+  <div class="interaction-card" *ngFor="let interaccio of interaccions">
+    <p><strong>Acció:</strong> {{ interaccio.accio || 'No disponible' }}</p>
+    <p><strong>Data:</strong> {{ interaccio.data || 'No disponible' }}</p>
+    <p><strong>Detalls:</strong> {{ interaccio.detalls || 'No disponible' }}</p>
   </div>
+</div>
+<ng-template #noInteractions>
+  <p>No hi ha interaccions per a aquesta publicació.</p>
+</ng-template>
+
+<button class="action-button" (click)="toggleFormulario()">Afegir Interacció</button>
+
+<div *ngIf="mostrarFormulario" class="add-interaction-form">
+  <h3>Afegir Interacció</h3>
+  <form (ngSubmit)="agregarInteraccio()">
+    <div class="form-group">
+      <label for="accio">Acció</label>
+      <input id="accio" [(ngModel)]="novaInteraccio.accio" name="accio" required />
+    </div>
+    <div class="form-group">
+      <label for="detalls">Detalls</label>
+      <textarea id="detalls" [(ngModel)]="novaInteraccio.detalls" name="detalls" required></textarea>
+    </div>
+    <button type="submit" class="action-button">Desar Interacció</button>
+  </form>
+</div>
 </div>

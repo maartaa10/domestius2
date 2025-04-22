@@ -36,13 +36,13 @@ export class DashboardComponent implements OnInit {
  loadUserInfo(): void {
   this.authService.getUserProfile().subscribe({
     next: (userData) => {
-      console.log('Datos del usuario:', userData);
+      console.log('Dades de l\'usuari:', userData);
       this.userName = userData.nom;
       this.userEmail = userData.email;
 
       this.protectoraService.getProtectoraByUsuario(userData.id).subscribe({
         next: (protectoraData) => {
-          console.log('Datos de la protectora:', protectoraData);
+          console.log('Dades de la protectora:', protectoraData);
           this.direccion = protectoraData.direccion || 'No disponible';
           this.telefono = protectoraData.telefono || 'No disponible';
           this.horarioApertura = protectoraData.horario_apertura || 'No disponible';
@@ -51,19 +51,19 @@ export class DashboardComponent implements OnInit {
           this.loading = false;
         },
         error: (err) => {
-          console.error('Error al cargar los datos de la protectora:', err);
-          this.error = 'No se pudo cargar la información de la protectora.';
+          console.error('Error en carregar les dades de la protectora:', err);
+          this.error = 'No sha pogut carregar la informació de la protectora.';
           this.loading = false;
         }
       });
     },
     error: (err) => {
-      console.error('Error al cargar los datos del usuario:', err);
-      if (err.message === 'No se encontró un token.') {
-        this.error = 'No estás autenticado. Por favor, inicia sesión.';
+      console.error('Error al carregar les dades del usuari:', err);
+      if (err.message === 'No sha trobat un token.') {
+        this.error = 'No estás autenticat. SI us plau, inicia sesiós.';
         this.router.navigate(['/login']); 
       } else {
-        this.error = 'No se pudo cargar la información del usuario.';
+        this.error = 'No sha pogut carregar la informació del usuari.';
       }
       this.loading = false;
     }
@@ -73,12 +73,12 @@ export class DashboardComponent implements OnInit {
   logout(): void {
     this.authService.logout().subscribe({
       next: () => {
-        console.log('Sesión cerrada en el servidor');
+        console.log('Sesió tancada en el servidor');
         this.tokenService.revokeToken(); 
         this.router.navigate(['/login']);
       },
       error: (err) => {
-        console.error('Error al cerrar sesión:', err);
+        console.error('Error al tancar sesió:', err);
         this.tokenService.revokeToken();
         this.router.navigate(['/login']); 
       }

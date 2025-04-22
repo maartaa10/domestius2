@@ -17,14 +17,14 @@ import { AuthService } from '../services/auth.service';
 export class PublicacioDetallComponent implements OnInit {
   publicacio: Publicacio | null = null;
   animal: Animal | null = null;
-  interaccions: Interaccio[] = []; // Inicializar como un arreglo vacío
+  interaccions: Interaccio[] = [];
   novaInteraccio: Interaccio = {
     accio: '',
     data: new Date(),
     detalls: '',
     publicacio_id: 0,
-    usuari_id: 0, // Valor predeterminado
-    tipus_interaccio_id: 1 // Valor predeterminado para el tipo de interacción
+    usuari_id: 0,
+    tipus_interaccio_id: 1
   };
   mostrarFormulario: boolean = false;
 
@@ -41,26 +41,22 @@ export class PublicacioDetallComponent implements OnInit {
     this.publicacioService.getPublicacioById(id).subscribe({
         next: (data) => {
             this.publicacio = data;
-
             if (data.animal_id) {
                 this.loadAnimalDetails(data.animal_id);
             }
-
-            // Cargar las interacciones de la publicación
             this.loadInteraccions(data.id);
         },
         error: (err) => {
-            console.error('Error al cargar la publicación:', err);
+            console.error('Error en carregar la publicació:', err);
         }
     });
 
-    // Cargar el usuario actual al inicializar el componente
     this.authService.cargarUsuarioActual().subscribe({
-        next: (usuario) => {
-            console.log('Usuario autenticado cargado:', usuario);
+        next: (usuari) => {
+            console.log('Usuari autenticat carregat:', usuari);
         },
         error: (err) => {
-            console.error('Error al cargar el usuario autenticado:', err);
+            console.error('Error en carregar l\'usuari autenticat:', err);
         }
     });
   }
@@ -69,13 +65,12 @@ export class PublicacioDetallComponent implements OnInit {
     this.animalPerdutService.getAnimalById(animalId).subscribe({
       next: (animal) => {
         this.animal = animal;
-
         if (this.animal.imatge && !this.animal.imatge.startsWith('http')) {
           this.animal.imatge = `http://127.0.0.1:8000/uploads/${this.animal.imatge}`;
         }
       },
       error: (err) => {
-        console.error('Error al cargar los detalles del animal:', err);
+        console.error('Error en carregar els detalls de l\'animal:', err);
       }
     });
   }
@@ -86,7 +81,7 @@ export class PublicacioDetallComponent implements OnInit {
         this.interaccions = interaccions;
       },
       error: (err) => {
-        console.error('Error al cargar las interacciones:', err);
+        console.error('Error en carregar les interaccions:', err);
       }
     });
   }
@@ -97,18 +92,16 @@ export class PublicacioDetallComponent implements OnInit {
 
   agregarInteraccio(): void {
     if (!this.novaInteraccio.accio || !this.novaInteraccio.detalls) {
-      alert('Por favor, completa todos los campos de la interacción.');
+      alert('Si us plau, completa tots els camps de la interacció.');
       return;
     }
-  
-    // Validar usuari_id
-    const usuarioId = this.authService.getUsuarioActualId();
-    if (!usuarioId) {
-      alert('No se puede añadir la interacción porque no hay un usuario válido.');
+
+    const usuariId = this.authService.getUsuarioActualId();
+    if (!usuariId) {
+      alert('No es pot afegir la interacció perquè no hi ha un usuari vàlid.');
       return;
     }
-  
-    // Convertir la fecha al formato esperado por MySQL
+
     const now = new Date();
     const formattedDate = `${now.getFullYear()}-${(now.getMonth() + 1)
       .toString()
@@ -119,34 +112,31 @@ export class PublicacioDetallComponent implements OnInit {
       .getSeconds()
       .toString()
       .padStart(2, '0')}`;
-  
-    // Asignar valores a novaInteraccio
+
     this.novaInteraccio.publicacio_id = this.publicacio?.id || 0;
-    this.novaInteraccio.usuari_id = usuarioId;
-    this.novaInteraccio.tipus_interaccio_id = 1; // Valor predeterminado para el tipo de interacción
-    this.novaInteraccio.data = formattedDate; // Fecha en formato MySQL
-  
-    // Verificar los datos antes de enviarlos
-    console.log('Datos enviados al backend:', JSON.stringify(this.novaInteraccio, null, 2));
-  
-    // Enviar la solicitud al backend
+    this.novaInteraccio.usuari_id = usuariId;
+    this.novaInteraccio.tipus_interaccio_id = 1;
+    this.novaInteraccio.data = formattedDate;
+
+    console.log('Dades enviades al backend:', JSON.stringify(this.novaInteraccio, null, 2));
+
     this.interaccioService.createInteraccio(this.novaInteraccio).subscribe({
       next: (interaccio) => {
-        alert('Interacción añadida con éxito.');
+        alert('Interacció afegida amb èxit.');
         this.interaccions.push(interaccio);
         this.novaInteraccio = {
           accio: '',
           data: new Date(),
           detalls: '',
           publicacio_id: this.publicacio?.id || 0,
-          usuari_id: usuarioId,
-          tipus_interaccio_id: 1 // Restablecer el valor predeterminado
+          usuari_id: usuariId,
+          tipus_interaccio_id: 1
         };
         this.mostrarFormulario = false;
       },
       error: (err) => {
-        console.error('Error al añadir la interacción:', err);
-        alert('Hubo un error al añadir la interacción. Por favor, inténtelo de nuevo.');
+        console.error('Error en afegir la interacció:', err);
+        alert('Hi ha hagut un error en afegir la interacció. Si us plau, intenta-ho de nou.');
       }
     });
   }

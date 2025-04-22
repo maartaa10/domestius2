@@ -1,24 +1,27 @@
 <div class="publicacions-container">
   <div *ngFor="let publicacio of publicacions" class="publicacio-card" (click)="navigateToPublicacio(publicacio.id)">
     <h3>{{ publicacio.tipus }}</h3>
-    <p><strong>Fecha:</strong> {{ publicacio.data }}</p>
-    <p><strong>Detalles:</strong> {{ publicacio.detalls }}</p>
-    <p><strong>Publicado por:</strong> {{ publicacio.usuari?.nom }}</p>
+ 
+    
+    
+    <p><strong>Data:</strong> {{ publicacio.data }}</p>
+    <p><strong>Detalls:</strong> {{ publicacio.detalls }}</p>
+    <p><strong>Publicat per:</strong> {{ publicacio.usuari?.nom }}</p>
     <p><strong>Animal:</strong> {{ publicacio.animal?.nom }}</p>
-    <p><strong>Ubicación:</strong> {{ publicacio.animal?.geolocalitzacio?.nombre || 'No disponible' }}</p>
-    <p><strong>Latitud:</strong> {{ publicacio.animal?.geolocalitzacio?.latitud || 'No disponible' }}</p>
-    <p><strong>Longitud:</strong> {{ publicacio.animal?.geolocalitzacio?.longitud || 'No disponible' }}</p>
+    <p><strong>Ubicació:</strong> {{ publicacio.animal?.geolocalitzacio?.nombre || 'No disponible' }}</p>
+    <p><strong>Latitut:</strong> {{ publicacio.animal?.geolocalitzacio?.latitud || 'No disponible' }}</p>
+    <p><strong>Longitut:</strong> {{ publicacio.animal?.geolocalitzacio?.longitud || 'No disponible' }}</p>
     <div class="actions">
-      <!-- Botón para editar -->
+
       <button 
-        class="action-button edit" 
+        class="action-button edit rounded-circle " 
         [routerLink]="['/editar-publicacio', publicacio.id]"
         (click)="$event.stopPropagation()">
         E
       </button>
-      <!-- Botón para eliminar -->
+
       <button 
-        class="action-button delete" 
+        class="action-button delete rounded-circle " 
         (click)="eliminarPublicacio(publicacio.id); $event.stopPropagation()">
         D
       </button>

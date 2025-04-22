@@ -35,9 +35,9 @@ export class AnimalPublicacioComponent implements OnInit {
     this.publicacioService.deletePublicacio(publicacioId).subscribe({
       next: () => {
         alert('Publicació eliminada amb èxit.');
-        // Actualizar la lista de publicaciones eliminando solo la publicación específica
+     
         this.publicacions = this.publicacions.filter(publicacio => publicacio.id !== publicacioId);
-        // Redirigir automáticamente a la vista actualizada
+    
         this.router.navigate(['/animal-publicacio']);
       },
       error: (err) => {

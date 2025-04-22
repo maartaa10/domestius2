@@ -34,27 +34,23 @@ export class ProtectoraDetallComponent implements OnInit {
     this.protectoraService.getProtectora(id).subscribe({
       next: (data) => {
         this.protectora = data;
-  
-      
         if (!this.protectora.usuari) {
-          console.warn('El campo `usuari` no está presente en la respuesta del backend.');
+          console.warn('El camp `usuari` no està present en la resposta del backend.');
           this.protectora.usuari = { 
-            id: 0, // Valor predeterminado para usuarios desconocidos
-            nom: 'Usuario desconocido', 
-            email: 'desconocido@example.com', 
+            id: 0,
+            nom: 'Usuari desconegut', 
+            email: 'desconegut@example.com', 
             password: '' 
-        };
+          };
         }
       },
       error: (err) => {
-        console.error('Error al cargar los detalles de la protectora:', err);
-        console.error('Detalles del error:', err.error);
-  
-        
+        console.error('Error en carregar els detalls de la protectora:', err);
+        console.error('Detalls de l\'error:', err.error);
         if (err.error?.message) {
           this.errorMessage = `Error del servidor: ${err.error.message}`;
         } else {
-          this.errorMessage = 'No se pudieron cargar los detalles de la protectora. Por favor, inténtelo más tarde.';
+          this.errorMessage = 'No s\'han pogut carregar els detalls de la protectora. Si us plau, intenti-ho més tard.';
         }
       }
     });
@@ -63,12 +59,11 @@ export class ProtectoraDetallComponent implements OnInit {
   loadAnimals(protectoraId: number): void {
     this.animalPerdutService.getAnimals().subscribe({
       next: (data) => {
-        // Filtrar los animales que pertenecen a la protectora seleccionada
         this.animals = data.filter(animal => animal.protectora_id === protectoraId);
       },
       error: (err) => {
-        console.error('Error al cargar los animales:', err);
-        this.errorMessage = `Error ${err.status}: ${err.error?.message || 'No se pudieron cargar los animales.'}`;
+        console.error('Error en carregar els animals:', err);
+        this.errorMessage = `Error ${err.status}: ${err.error?.message || 'No s\'han pogut carregar els animals.'}`;
       }
     });
   }

@@ -29,7 +29,7 @@ export class ProtectoraComponent implements OnInit {
         this.filteredProtectoras = data;
       },
       error: (err) => {
-        console.error('Error al cargar las protectoras:', err);
+        console.error('Error al carregar les protectores:', err);
       }
     });
   }
@@ -45,7 +45,7 @@ export class ProtectoraComponent implements OnInit {
   }
 
   applyFilter(filtro: string) {
-    console.log(`Filtro aplicado: ${filtro}`);
+    console.log(`Filtre aplicat: ${filtro}`);
   }
 
   goToProtectoraDetails(protectoraId: number): void {

@@ -25,7 +25,7 @@ export class MisAnimalesComponent {
   loadUserAnimals(): void {
     const userId = this.authService.getUsuarioActualId();
     if (!userId) {
-      this.errorMessage = 'No se pudo obtener el ID del usuario.';
+      this.errorMessage = 'No s\'ha pogut obtenir l\'ID de l\'usuari.';
       return;
     }
   
@@ -34,8 +34,8 @@ export class MisAnimalesComponent {
         this.animals = data;
       },
       error: (err) => {
-        console.error('Error al cargar los animales del usuario:', err);
-        this.errorMessage = 'No se pudieron cargar tus animales. Por favor, inténtalo más tarde.';
+        console.error('Error en carregar els animals de l\'usuari:', err);
+        this.errorMessage = 'No s\'han pogut carregar els teus animals. Si us plau, intenta-ho més tard.';
       }
     });
   }

@@ -11,7 +11,7 @@ import { AnimalPerdutService } from '../services/animal-perdut.service';
 })
 export class EditarAnimalComponent implements OnInit {
   animal: Animal | null = null;
-  selectedFile: File | null = null; // Add this property to store the selected file
+  selectedFile: File | null = null; 
 
   constructor(
     private route: ActivatedRoute,
@@ -30,8 +30,8 @@ export class EditarAnimalComponent implements OnInit {
         this.animal = data;
       },
       error: (err) => {
-        console.error('Error al cargar el animal:', err);
-        alert('Hubo un error al cargar el animal.');
+        console.error('Error al carregar el animal:', err);
+        alert('Hubo un error al carregar el animal.');
       }
     });
   }
@@ -45,7 +45,7 @@ export class EditarAnimalComponent implements OnInit {
 
   onSubmit(): void {
     if (!this.animal) {
-      alert('No hay datos del animal para actualizar.');
+      alert('No hi ha dades del animal per a actualitzar.');
       return;
     }
 
@@ -58,19 +58,18 @@ export class EditarAnimalComponent implements OnInit {
     formData.append('estat', this.animal.estat);
     formData.append('protectora_id', this.animal.protectora_id.toString());
 
-    // Only append 'imatge' if a new file is selected
     if (this.selectedFile instanceof File) {
       formData.append('imatge', this.selectedFile);
     }
 
     this.animalPerdutService.updateAnimal(this.animal.id, formData).subscribe({
       next: () => {
-        alert('Animal actualizado con éxito.');
+        alert('Animal actualitzat amb éxit.');
         this.router.navigate(['/animal-llista']);
       },
       error: (err) => {
-        console.error('Error al actualizar el animal:', err);
-        alert('Hubo un error al actualizar el animal. Por favor, inténtelo de nuevo.');
+        console.error('Error al actualitzar l\'animal:', err);
+        alert('Error en actualizar l\'animal. Si us plau, torna a provar.');
       }
     });
   }
