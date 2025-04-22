@@ -78,6 +78,33 @@
   background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+button.action-button.edit {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button.action-button.edit:hover {
+  background-color: #1976d2;
+  transform: scale(1.1);
+}
+
+button.action-button.delete {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button.action-button.delete:hover {
+  background-color: #d32f2f;
+  transform: scale(1.1);
+}
 @media (max-width: 575px) {
   .container {
       max-width: 100%; /* Ajusta el max-width per a pantalles molt petites */

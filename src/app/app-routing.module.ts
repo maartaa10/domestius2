@@ -19,6 +19,8 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { MisAnimalesComponent } from './mis-animales/mis-animales.component';
 import { RegistrarProtectoraComponent } from './registrar-protectora/registrar-protectora.component';
+import { AfegirPublicacioComponent } from './afegir-publicacio/afegir-publicacio.component';
+import { EditarPublicacioComponent } from './editar-publicacio/editar-publicacio.component';
 
 const routes: Routes = [ 
   { path: '', component: IniciComponent },
@@ -46,7 +48,11 @@ const routes: Routes = [
 
   { path: 'registrar-protectora', component: RegistrarProtectoraComponent },
 
-
+  { path: 'afegir-publicacio', component: AfegirPublicacioComponent },
+  { path: 'editar-publicacio/:id', component: EditarPublicacioComponent },
+ 
+ 
+ 
 
 { path: 'footer', component: FooterComponent },
 { path: 'perfil', component: PerfilComponent },

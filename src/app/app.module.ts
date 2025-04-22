@@ -27,6 +27,8 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { MisAnimalesComponent } from './mis-animales/mis-animales.component';
 import { RegistrarProtectoraComponent } from './registrar-protectora/registrar-protectora.component';
+import { AfegirPublicacioComponent } from './afegir-publicacio/afegir-publicacio.component';
+import { EditarPublicacioComponent } from './editar-publicacio/editar-publicacio.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCyePW5xWgzy4RHS7p6TmPJHlCgRSr8vWE",
@@ -59,7 +61,9 @@ const firebaseConfig = {
     LoginComponent,
     SignupComponent,
     MisAnimalesComponent,
-    RegistrarProtectoraComponent
+    RegistrarProtectoraComponent,
+    AfegirPublicacioComponent,
+    EditarPublicacioComponent
   ],
   imports: [
     BrowserModule,
