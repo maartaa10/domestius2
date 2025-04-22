@@ -8,9 +8,21 @@
     <p><strong>Ubicación:</strong> {{ publicacio.animal?.geolocalitzacio?.nombre || 'No disponible' }}</p>
     <p><strong>Latitud:</strong> {{ publicacio.animal?.geolocalitzacio?.latitud || 'No disponible' }}</p>
     <p><strong>Longitud:</strong> {{ publicacio.animal?.geolocalitzacio?.longitud || 'No disponible' }}</p>
- 
-  </div>
-</div>
+    <div class="actions">
+      <!-- Botón para editar -->
+      <button 
+        class="action-button edit" 
+        [routerLink]="['/editar-publicacio', publicacio.id]"
+        (click)="$event.stopPropagation()">
+        E
+      </button>
+      <!-- Botón para eliminar -->
+      <button 
+        class="action-button delete" 
+        (click)="eliminarPublicacio(publicacio.id); $event.stopPropagation()">
+        D
+      </button>
+    </div>
 
 <!-- <div class="details-container" *ngIf="selectedPublicacio">
   <div class="animal-details">

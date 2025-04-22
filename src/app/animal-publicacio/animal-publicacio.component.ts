@@ -21,14 +21,38 @@ export class AnimalPublicacioComponent implements OnInit {
   ngOnInit(): void {
     this.loadPublicacions();
   }
-
+  eliminarPublicacio(publicacioId: number): void {
+    if (!publicacioId) {
+      alert('No es pot eliminar una publicació sense un ID vàlid.');
+      return;
+    }
+  
+    const confirmDelete = confirm('Estàs segur que vols eliminar aquesta publicació?');
+    if (!confirmDelete) {
+      return;
+    }
+  
+    this.publicacioService.deletePublicacio(publicacioId).subscribe({
+      next: () => {
+        alert('Publicació eliminada amb èxit.');
+        // Actualizar la lista de publicaciones eliminando solo la publicación específica
+        this.publicacions = this.publicacions.filter(publicacio => publicacio.id !== publicacioId);
+        // Redirigir automáticamente a la vista actualizada
+        this.router.navigate(['/animal-publicacio']);
+      },
+      error: (err) => {
+        console.error('Error al eliminar la publicació:', err);
+        alert('Hi ha hagut un error al eliminar la publicació.');
+      }
+    });
+  }
   loadPublicacions(): void {
     this.publicacioService.getPublicacions().subscribe({
       next: (data) => {
         this.publicacions = data;
       },
       error: (err) => {
-        console.error('Error al cargar las publicaciones:', err);
+        console.error('Error al carregar les publicacions:', err);
       }
     });
   }

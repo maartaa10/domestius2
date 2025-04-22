@@ -1,0 +1,58 @@
+.añadir-publicacio-container {
+    max-width: 600px;
+    margin: calc(var(--navbar-height) + 20px) auto calc(var(--footer-height) + 20px);
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .añadir-publicacio-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  button.action-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    color: white;
+    background-color: #4caf50;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  button.action-button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+  }
+  
+  button.action-button:active {
+    transform: scale(1);
+  }
+  

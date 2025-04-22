@@ -1,0 +1,39 @@
+<div class="añadir-publicacio-container">
+    <h2>Añadir Publicación</h2>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="tipus">Titol</label>
+        <input
+          type="text"
+          id="tipus"
+          [(ngModel)]="publicacio.tipus"
+          name="tipus"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="detalls">Detalls</label>
+        <textarea
+          id="detalls"
+          [(ngModel)]="publicacio.detalls"
+          name="detalls"
+          required
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <label for="animal">Animal</label>
+        <select
+          id="animal"
+          [(ngModel)]="publicacio.animal_id"
+          name="animal"
+          required
+        >
+          <option *ngFor="let animal of animals" [value]="animal.id">
+            {{ animal.nom }}
+          </option>
+        </select>
+      </div>
+      <button type="submit" class="action-button">Afegir Publicació</button>
+      
+    </form>
+  </div>

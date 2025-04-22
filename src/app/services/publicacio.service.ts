@@ -28,10 +28,8 @@ export class PublicacioService {
 
  
   updatePublicacio(id: number, publicacio: any): Observable<any> {
-    return this.http.post<Publicacio>(`${this.apiUrl}/publicacio/${id}`, publicacio);
+    return this.http.put<Publicacio>(`${this.apiUrl}/publicacio/update/${id}`, publicacio);
   }
-
-
   deletePublicacio(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/publicacio/delete/${id}`);
   }
