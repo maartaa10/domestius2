@@ -85,11 +85,13 @@ button.action-button.edit {
   padding: 5px 10px;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
+ margin-right: 10px;
 }
 
 button.action-button.edit:hover {
   background-color: #1976d2;
   transform: scale(1.1);
+ 
 }
 
 button.action-button.delete {
@@ -99,11 +101,13 @@ button.action-button.delete {
   padding: 5px 10px;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
+ 
 }
 
 button.action-button.delete:hover {
   background-color: #d32f2f;
   transform: scale(1.1);
+
 }
 @media (max-width: 575px) {
   .container {

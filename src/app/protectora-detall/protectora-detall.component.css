@@ -21,6 +21,12 @@
 }
 
 
+  .button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
 .protectora-info {
   background-color: #add8e6;
   border-radius: 10px;

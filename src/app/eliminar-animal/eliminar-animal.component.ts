@@ -13,7 +13,7 @@ export class EliminarAnimalComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    public router: Router, // Cambiado a public
+    public router: Router, 
     private animalPerdutService: AnimalPerdutService
   ) {}
 
@@ -23,23 +23,23 @@ export class EliminarAnimalComponent implements OnInit {
 
   eliminarAnimal(): void {
     if (!this.animalId) {
-      alert('No hay un ID válido para eliminar.');
+      alert('No hi ha un ID vàlid per eliminar.');
       return;
     }
 
-    const confirmDelete = confirm('¿Estás seguro de que deseas eliminar este animal?');
+    const confirmDelete = confirm('Estàs segur que vols eliminar aquest animal?');
     if (!confirmDelete) {
       return;
     }
 
     this.animalPerdutService.deleteAnimal(this.animalId).subscribe({
       next: () => {
-        alert('Animal eliminado con éxito.');
+        alert('Animal eliminat amb èxit.');
         this.router.navigate(['/animal-llista']);
       },
       error: (err) => {
-        console.error('Error al eliminar el animal:', err);
-        alert('Hubo un error al eliminar el animal.');
+        console.error('Error en eliminar l\'animal:', err);
+        alert('Hi ha hagut un error en eliminar l\'animal.');
       }
     });
   }

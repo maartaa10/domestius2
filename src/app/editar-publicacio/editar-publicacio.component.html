@@ -2,7 +2,7 @@
     <h2>Editar Publicación</h2>
     <form (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <label for="tipus">Título</label>
+        <label for="tipus">Titol</label>
         <input
           type="text"
           id="tipus"
@@ -12,7 +12,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="detalls">Detalles</label>
+        <label for="detalls">Detalls</label>
         <textarea
           id="detalls"
           [(ngModel)]="publicacio.detalls"
@@ -33,6 +33,6 @@
           </option>
         </select>
       </div>
-      <button type="submit" class="action-button">Actualizar Publicación</button>
+      <button type="submit" class="action-button">Actualitzar Publicació</button>
     </form>
   </div>

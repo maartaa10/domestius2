@@ -13,9 +13,9 @@ export class NavbarComponent {
 
   navigateToDashboardOrLogin(): void {
     if (this.tokenService.isLoggedIn()) {
-      this.router.navigate(['/dashboard']); // Redirige al dashboard si está autenticado
+      this.router.navigate(['/dashboard']); 
     } else {
-      this.router.navigate(['/login']); // Redirige al login si no está autenticado
+      this.router.navigate(['/login']); 
     }
   }
 }
