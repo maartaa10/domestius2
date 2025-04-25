@@ -1,9 +1,15 @@
 <div class="publicacions-container">
   <div *ngFor="let publicacio of publicacions" class="publicacio-card" (click)="navigateToPublicacio(publicacio.id)">
     <h3>{{ publicacio.tipus }}</h3>
- 
-    
-    
+
+   
+    <div *ngIf="publicacio.animal?.imatge" class="animal-image-container">
+      <img 
+        [src]="publicacio.animal?.imatge" 
+        alt="Imatge de {{ publicacio.animal?.nom }}" 
+        class="animal-image"
+      />
+    </div>
     <p><strong>Data:</strong> {{ publicacio.data }}</p>
     <p><strong>Detalls:</strong> {{ publicacio.detalls }}</p>
     <p><strong>Publicat per:</strong> {{ publicacio.usuari?.nom }}</p>
@@ -12,21 +18,21 @@
     <p><strong>Latitut:</strong> {{ publicacio.animal?.geolocalitzacio?.latitud || 'No disponible' }}</p>
     <p><strong>Longitut:</strong> {{ publicacio.animal?.geolocalitzacio?.longitud || 'No disponible' }}</p>
     <div class="actions">
-
       <button 
-        class="action-button edit rounded-circle " 
+        class="action-button edit rounded-circle" 
         [routerLink]="['/editar-publicacio', publicacio.id]"
         (click)="$event.stopPropagation()">
         E
       </button>
 
       <button 
-        class="action-button delete rounded-circle " 
+        class="action-button delete rounded-circle" 
         (click)="eliminarPublicacio(publicacio.id); $event.stopPropagation()">
         D
       </button>
     </div>
-
+  </div>
+</div>
 <!-- <div class="details-container" *ngIf="selectedPublicacio">
   <div class="animal-details">
     <h3>Datos del Animal</h3>

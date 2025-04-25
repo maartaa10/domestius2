@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicacioService } from '../services/publicacio.service';
 import { Publicacio } from '../interfaces/publicacio';
+import { AnimalPerdutService } from '../services/animal-perdut.service';
 
 @Component({
   selector: 'app-animal-publicacio',
@@ -15,12 +16,33 @@ export class AnimalPublicacioComponent implements OnInit {
 
   constructor(
     private publicacioService: PublicacioService,
-    private router: Router 
+    private router: Router,
+    private animalPerdutService: AnimalPerdutService 
   ) {}
 
   ngOnInit(): void {
     this.loadPublicacions();
   }
+/*   getAnimalImageUrl(imagePath: string | null | undefined): string {
+    if (!imagePath) {
+      return 'assets/default-animal.jpg'; // Imagen predeterminada si no hay imagen
+    }
+    if (!imagePath.startsWith('http')) {
+      return `http://127.0.0.1:8000/uploads/${imagePath}`;
+    }
+    return imagePath;
+  } */
+    getAnimalImageUrl(imagePath: string | null | undefined): string {
+      if (!imagePath) {
+        return 'assets/default-animal.jpg'; 
+      }
+      if (!imagePath.startsWith('http')) {
+       
+        return encodeURI(`http://127.0.0.1:8000/uploads/${imagePath}`);
+      }
+      return encodeURI(imagePath); 
+    }
+    
   eliminarPublicacio(publicacioId: number): void {
     if (!publicacioId) {
       alert('No es pot eliminar una publicació sense un ID vàlid.');
@@ -46,13 +68,39 @@ export class AnimalPublicacioComponent implements OnInit {
       }
     });
   }
+  loadAnimalImages(): void {
+    this.publicacions.forEach((publicacio) => {
+      if (publicacio.animal?.id) {
+        this.animalPerdutService.getAnimalImatge(publicacio.animal.id).subscribe({
+          next: (imageBlob: Blob) => {
+            if (publicacio.animal) {
+         
+              const objectURL = URL.createObjectURL(imageBlob);
+              publicacio.animal.imatge = objectURL;
+            }
+          },
+          error: (err) => {
+            console.error(`Error al cargar la imagen del animal con ID ${publicacio.animal?.id}:`, err);
+          }
+        });
+      }
+    });
+  }
+  ngOnDestroy(): void {
+    this.publicacions.forEach((publicacio) => {
+      if (publicacio.animal?.imatge) {
+        URL.revokeObjectURL(publicacio.animal.imatge);
+      }
+    });
+  }
   loadPublicacions(): void {
     this.publicacioService.getPublicacions().subscribe({
       next: (data) => {
         this.publicacions = data;
+        this.loadAnimalImages(); 
       },
       error: (err) => {
-        console.error('Error al carregar les publicacions:', err);
+        console.error('Error al cargar las publicaciones:', err);
       }
     });
   }
