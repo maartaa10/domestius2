@@ -23,16 +23,17 @@
     </div>
 
     <div class="animals-list">
-      <div class="animal-card" *ngFor="let animal of animals">
+      <div class="animal-card" *ngFor="let animal of animals" (click)="navigateToDetallAnimalPublicacio(animal.id)">
         <img [src]="animal.imatge" alt="Mascota" class="logo">
         <div class="info">
-          <p><strong>Nombre:</strong> {{ animal.nom }}</p>
-          <p><strong>Edad:</strong> {{ animal.edat }}</p>
+          <p><strong>Nom:</strong> {{ animal.nom }}</p>
+          <p><strong>Edat:</strong> {{ animal.edat }}</p>
           <p><strong>Especie:</strong> {{ animal.especie }}</p>
-          <p><strong>Raza:</strong> {{ animal['raça'] }}</p>
-          <p><strong>Descripción:</strong> {{ animal.descripcio }}</p>
-          <p><strong>Estado:</strong> {{ animal.estat }}</p>
+          <p><strong>Raça:</strong> {{ animal['raça'] }}</p>
+          <p><strong>Descripció:</strong> {{ animal.descripcio }}</p>
+          <p><strong>Estat:</strong> {{ animal.estat }}</p>
         </div>
+      
         <div class="actions">
           <!-- Botón para editar -->
           <button 

@@ -1,0 +1,56 @@
+<div class="detall-animal-publicacio-container" *ngIf="animal">
+
+    <div class="back-link-container">
+      <a class="back-link" [routerLink]="['/animal-llista']">← Tornar a la llista</a>
+    </div>
+  
+   
+    <h2 class="animal-name">{{ animal.nom }}</h2>
+  
+    <div class="carousel-container">
+        <div class="carousel">
+          <div
+            class="carousel-item"
+            *ngFor="let image of animal.imatges; let i = index"
+            [class.active]="i === currentImageIndex"
+          >
+            <img [src]="image" alt="Foto de {{ animal.nom }}" />
+          </div>
+        </div>
+        <button class="carousel-control prev" (click)="prevImage()">&#10094;</button>
+        <button class="carousel-control next" (click)="nextImage()">&#10095;</button>
+      </div>
+ 
+    <div class="animal-info">
+      <p><strong>Edat:</strong> {{ animal.edat || 'No disponible' }}</p>
+      <p><strong>Espècie:</strong> {{ animal.especie || 'No disponible' }}</p>
+      <p><strong>Raça:</strong> {{ animal['raça'] || 'No disponible' }}</p>
+      <p><strong>Descripció:</strong> {{ animal.descripcio || 'No disponible' }}</p>
+      <p><strong>Estat:</strong> {{ animal.estat || 'No disponible' }}</p>
+      <p><strong>Es porta bé amb gats:</strong> {{ animal.compatibleGats ? 'Sí' : 'No' }}</p>
+      <p><strong>Es porta bé amb gossos:</strong> {{ animal.compatibleGossos ? 'Sí' : 'No' }}</p>
+    </div>
+  
+    
+    <p class="funny-phrase">"{{ animal.fraseDivertida }}"</p>
+  
+
+    <button class="interested-button" (click)="toggleContactForm()">Estic interessat</button>
+  
+   
+    <div class="contact-form" *ngIf="showContactForm">
+        <h3>Contacta amb nosaltres</h3>
+        <form (ngSubmit)="onSubmit()">
+          <label for="name">Nom:</label>
+          <input type="text" id="name" name="name" [(ngModel)]="contactForm.name" required />
+      
+          <label for="email">Correu electrònic:</label>
+          <input type="email" id="email" name="email" [(ngModel)]="contactForm.email" required />
+      
+          <label for="message">Missatge:</label>
+          <textarea id="message" name="message" [(ngModel)]="contactForm.message" rows="4" required></textarea>
+      
+          <button type="submit" class="submit-button">Enviar</button>
+        </form>
+      </div>
+  </div>

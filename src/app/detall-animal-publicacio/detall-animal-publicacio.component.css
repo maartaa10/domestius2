@@ -1,0 +1,174 @@
+.detall-animal-publicacio-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    max-width: 900px;
+    margin: calc(var(--navbar-height) + 20px) auto calc(var(--footer-height) + 20px);
+  }
+  
+  .animal-name {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 20px;
+  }
+  
+  .carousel {
+    display: flex;
+    overflow: hidden;
+    border-radius: 15px;
+  }
+  
+  .carousel-item {
+    min-width: 100%;
+    transition: transform 0.5s ease-in-out;
+    display: none;
+  }
+  
+  .carousel-item.active {
+    display: block;
+  }
+  
+  .carousel img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+  }
+  
+  .carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    font-size: 1.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .carousel-control.prev {
+    left: 10px;
+  }
+  
+  .carousel-control.next {
+    right: 10px;
+  }
+  
+  .animal-info {
+    text-align: left;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 20px;
+  }
+  
+  .animal-info p {
+    font-size: 1.2rem;
+    color: #555;
+    margin: 8px 0;
+  }
+  
+  .funny-phrase {
+    font-style: italic;
+    color: #777;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1.4rem;
+  }
+  
+  .back-link-container {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  
+  .back-link {
+    font-size: 1.2rem;
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .back-link:hover {
+    color: #0056b3;
+  }
+  
+  .interested-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+  }
+  
+  .interested-button:hover {
+    background-color: #218838;
+  }
+  
+  .contact-form {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 600px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .contact-form h3 {
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .contact-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  .contact-form .submit-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .contact-form .submit-button:hover {
+    background-color: #0056b3;
+  }

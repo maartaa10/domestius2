@@ -1,141 +1,150 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    background-color: #bfe3c0;
-    min-height: calc(100vh - 70px); 
-    padding: 20px;
-    margin-top: 70px;
+  display: flex;
+  flex-direction: column;
+  background-color: #bfe3c0;
+  min-height: calc(100vh - 70px); 
+  padding: 30px; /* Incrementar el padding */
+  margin-top: 70px;
 }
-    
+  
 .search-bar {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px; /* Incrementar el margen */
 }
-    
+  
 .search-bar input {
-    width: 300px;
-    padding: 10px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
+  width: 400px; /* Incrementar el ancho */
+  padding: 15px; /* Incrementar el padding */
+  font-size: 1.2rem; /* Incrementar el tamaño de fuente */
+  border-radius: 25px; /* Incrementar el radio de borde */
+  border: 1px solid #ccc;
 }
-    
+  
 .search-bar button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    margin-left: -40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: -50px; /* Ajustar el margen */
+  font-size: 1.5rem; /* Incrementar el tamaño del ícono */
 }
-    
+  
 .content {
-    display: flex;
+  display: flex;
 }
-    
+  
 .filters {
-    width: 200px;
+  width: 250px; /* Incrementar el ancho */
 }
-    
+  
 .filters h3 {
-    cursor: pointer;
+  cursor: pointer;
+  font-size: 1.2rem; /* Incrementar el tamaño de fuente */
 }
-    
+  
 .filter {
-    background: #ddd;
-    margin: 5px;
-    padding: 10px;
-    border-radius: 10px;
+  background: #ddd;
+  margin: 10px; /* Incrementar el margen */
+  padding: 15px; /* Incrementar el padding */
+  border-radius: 15px; /* Incrementar el radio de borde */
+  font-size: 1.1rem; /* Incrementar el tamaño de fuente */
 }
-    
+  
 .animals-list {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Incrementar el espacio entre elementos */
+  align-items: center;
 }
-  
+
 .animal-card {
-    display: flex;
-    align-items: center;
-    background: #add8e6;
-    border-radius: 20px;
-    padding: 10px;
-    position: relative;
-    width: 80%;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  background: #add8e6;
+  border-radius: 25px; /* Incrementar el radio de borde */
+  padding: 20px; /* Incrementar el padding */
+  position: relative;
+  width: 90%; /* Incrementar el ancho */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1); /* Incrementar la sombra */
 }
-  
+
 .logo {
-    width: 50px;
-    height: 50px;
-    margin-right: 10px;
-    border-radius: 30px;
+  width: 100px; /* Incrementar el ancho */
+  height: 100px; /* Incrementar la altura */
+  margin-right: 15px; /* Mantener el margen */
+  border-radius: 50%; /* Mantener el borde redondeado */
 }
-  
+
+
 .info {
-    flex-grow: 1;
-    font-size: 0.9rem;
+  flex-grow: 1;
+  font-size: 1.1rem; /* Incrementar el tamaño de fuente */
 }
-  
+
 .arrow {
-    font-size: 1.5rem;
-    margin-right: 40px;
+  font-size: 2rem; /* Incrementar el tamaño de fuente */
+  margin-right: 50px; /* Incrementar el margen */
 }
 
 .lost {
-    color: #ff6b6b;
-    font-weight: bold;
-  }
-  
-  .last-seen {
-    color: #fdfd96;
-    font-weight: bold;
-  }
-  
-  .found {
-    color: #9ff89f;
-    font-weight: bold;
-  }
+  color: #ff6b6b;
+  font-weight: bold;
+  font-size: 1.2rem; /* Incrementar el tamaño de fuente */
+}
 
-  .footer-message {
-    text-align: center;
-    margin-top: auto; /* Empuja el contenido hacia abajo */
-    padding: 20px;
-    font-size: 2rem;
-    color: #333;
-    background-color: #bfe3c0; /* Fondo similar al resto de la página */
-    border-top: 1px solid #ccc; /* Línea superior para separar */
-  }
-  .actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  
-  .action-button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    color: white;
-  }
-  
-  .action-button.edit {
-    background-color: #4caf50; /* Verde para editar */
-  }
-  
-  .action-button.edit:hover {
-    background-color: #45a049;
-  }
-  
-  .action-button.delete {
-    background-color: #f44336; /* Rojo para eliminar */
-  }
-  
-  .action-button.delete:hover {
-    background-color: #e53935;
-  }
+.last-seen {
+  color: #fdfd96;
+  font-weight: bold;
+  font-size: 1.2rem; /* Incrementar el tamaño de fuente */
+}
+
+.found {
+  color: #9ff89f;
+  font-weight: bold;
+  font-size: 1.2rem; /* Incrementar el tamaño de fuente */
+}
+
+.footer-message {
+  text-align: center;
+  margin-top: auto; /* Empuja el contenido hacia abajo */
+  padding: 30px; /* Incrementar el padding */
+  font-size: 2.2rem; /* Incrementar el tamaño de fuente */
+  color: #333;
+  background-color: #bfe3c0; /* Fondo similar al resto de la página */
+  border-top: 1px solid #ccc; /* Línea superior para separar */
+}
+
+.actions {
+  display: flex;
+  gap: 15px; /* Incrementar el espacio entre botones */
+  margin-top: 15px; /* Incrementar el margen superior */
+}
+
+.action-button {
+  padding: 15px 20px; /* Incrementar el padding */
+  border: none;
+  border-radius: 8px; /* Incrementar el radio de borde */
+  cursor: pointer;
+  font-size: 1rem; /* Incrementar el tamaño de fuente */
+  color: white;
+}
+
+.action-button.edit {
+  background-color: #4caf50; /* Verde para editar */
+}
+
+.action-button.edit:hover {
+  background-color: #45a049;
+}
+
+.action-button.delete {
+  background-color: #f44336; /* Rojo para eliminar */
+}
+
+.action-button.delete:hover {
+  background-color: #e53935;
+}
 
    /* fitxer styles.css o fitxer CSS del component */
  
