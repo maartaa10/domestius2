@@ -1,14 +1,12 @@
-/* Contenedor principal del grid */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Ajusta el número de columnas automáticamente */
-  gap: 20px; /* Espaciado entre las tarjetas */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
   padding: 20px;
   background-color: #bfe3c0;
   margin-top: 70px;
 }
 
-/* Estilo para cada tarjeta de animal */
 .animal-card {
   background-color: #fff;
   border: 1px solid #ddd;
@@ -21,7 +19,6 @@
   padding: 15px;
 }
 
-/* Imagen del animal */
 .animal-image {
   width: 100%;
   height: auto;
@@ -29,14 +26,12 @@
   margin-bottom: 15px;
 }
 
-/* Información del animal */
 .info p {
   margin: 5px 0;
   font-size: 14px;
   color: #333;
 }
 
-/* Botones de estado */
 .status-buttons {
   display: flex;
   justify-content: space-between;
@@ -63,12 +58,23 @@
 .status-buttons .btn.found {
   background-color: #2ed573;
 }
+
 .publicacions-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
   padding: 20px;
-  margin-top: var(--navbar-height); /* Ajusta el margen superior según la altura del navbar */
+  margin-top: var(--navbar-height);
+}
+
+.animal-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 10px auto;
+  object-fit: cover;
 }
 
 .publicacio-card {
@@ -78,6 +84,7 @@
   background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 button.action-button.edit {
   background-color: #2196f3;
   color: white;
@@ -85,13 +92,12 @@ button.action-button.edit {
   padding: 5px 10px;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
- margin-right: 10px;
+  margin-right: 10px;
 }
 
 button.action-button.edit:hover {
   background-color: #1976d2;
   transform: scale(1.1);
- 
 }
 
 button.action-button.delete {
@@ -101,51 +107,45 @@ button.action-button.delete {
   padding: 5px 10px;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
- 
 }
 
 button.action-button.delete:hover {
   background-color: #d32f2f;
   transform: scale(1.1);
-
 }
+
 @media (max-width: 575px) {
   .container {
-      max-width: 100%; /* Ajusta el max-width per a pantalles molt petites */
+    max-width: 100%;
   }
 }
 
-/* Estils per a pantalles mitjanes (576px a 768px) */
 @media (min-width: 576px) and (max-width: 767px) {
   .container {
-      max-width: 100%; /* Ajusta el max-width per a pantalles petites */
+    max-width: 100%;
   }
 }
 
-/* Estils per a pantalles mitjanes-altes (768px a 992px) */
 @media (min-width: 768px) and (max-width: 991px) {
   .container {
-      max-width: 100%; /* Ajusta el max-width per a pantalles mitjanes */
+    max-width: 100%;
   }
 }
 
-/* Estils per a pantalles grans (992px a 1200px) */
 @media (min-width: 992px) and (max-width: 1199px) {
   .container {
-      max-width: 100%; /* Ajusta el max-width per a pantalles grans */
+    max-width: 100%;
   }
 }
 
-/* Estils per a pantalles molt grans (1200px a 1400px) */
 @media (min-width: 1200px) and (max-width: 1399px) {
   .container {
-      max-width: 100%; /* Ajusta el max-width per a pantalles molt grans */
+    max-width: 100%;
   }
 }
 
-/* Estils per a pantalles extra grans (1400px i més) */
 @media (min-width: 1400px) {
   .container {
-      max-width: 100%; /* Ajusta el max-width per a pantalles extra grans */
+    max-width: 100%;
   }
 }
