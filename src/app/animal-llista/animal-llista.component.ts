@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Animal } from '../interfaces/animal';
 import { AnimalPerdutService } from '../services/animal-perdut.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-animal-llista',
@@ -15,14 +16,16 @@ export class AnimalLlistaComponent {
   selectedFilters: string[] = [];
   animals: Animal[] = [];
   filteredAnimals: Animal[] = [];
-  router: any;
+ 
 
-  constructor(private animalPerdutService: AnimalPerdutService) {}
+  constructor(    private router: Router, private animalPerdutService: AnimalPerdutService) {}
 
   ngOnInit(): void {
     this.loadAnimals();
   }
-
+  navigateToDetallAnimalPublicacio(animalId: number): void {
+    this.router.navigate(['/detall-animal-publicacio', animalId]);
+  }
   loadAnimals(): void {
     this.animalPerdutService.getAnimals().subscribe({
       next: (data) => {

@@ -21,6 +21,7 @@ import { MisAnimalesComponent } from './mis-animales/mis-animales.component';
 import { RegistrarProtectoraComponent } from './registrar-protectora/registrar-protectora.component';
 import { AfegirPublicacioComponent } from './afegir-publicacio/afegir-publicacio.component';
 import { EditarPublicacioComponent } from './editar-publicacio/editar-publicacio.component';
+import { DetallAnimalPublicacioComponent } from './detall-animal-publicacio/detall-animal-publicacio.component';
 
 const routes: Routes = [ 
   { path: '', component: IniciComponent },
@@ -42,7 +43,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'dashboard', component: DashboardComponent },
- 
+  { path: 'detall-animal-publicacio/:id', component: DetallAnimalPublicacioComponent },
+
   { path: 'animal-llista', component: AnimalLlistaComponent },
   { path: 'inici', component: IniciComponent },
 
