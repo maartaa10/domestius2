@@ -1,38 +1,46 @@
 <div class="protectora-detail-container">
-  <div *ngIf="!errorMessage; else errorTemplate">
-    <div class="protectora-info">
-      <h2>{{ protectora?.usuari?.nom || 'Usuari desconegut' }}</h2>
-      <p><strong>Adreça:</strong> {{ protectora?.direccion || 'No disponible' }}</p>
-      <p><strong>Telèfon:</strong> {{ protectora?.telefono || 'No disponible' }}</p>
-      <p><strong>Horari:</strong> {{ protectora?.horario_apertura || 'No disponible' }} - {{ protectora?.horario_cierre || 'No disponible' }}</p>
-    </div>
-
-    <div class="animal-list">
-      <h3>Animals de la protectora</h3>
-      <div *ngIf="animals.length > 0; else noAnimalsTemplate">
-        <div class="animal-card" *ngFor="let animal of animals">
-          <img [src]="animal.imatge" alt="{{ animal.nom }}" class="animal-image">
-          <div class="animal-info">
-            <p><strong>Nom:</strong> {{ animal.nom }}</p>
-            <p><strong>Edat:</strong> {{ animal.edat || 'No disponible' }}</p>
-            <p><strong>Espècie:</strong> {{ animal.especie }}</p>
-            <p><strong>Estat:</strong> {{ animal.estat }}</p>
+  <div *ngIf="!selectedAnimalId; else animalDetailTemplate">
+    <div *ngIf="!errorMessage; else errorTemplate">
+      <button class="action-button back-button" routerLink="/protectora">← Tornar a Protectoras</button>
+      <div class="protectora-info">
+        
+        <img [src]="protectora?.imatge" alt="Logo" class="logo">
+        <h2>{{ protectora?.usuari?.nom || 'Usuari desconegut' }}</h2>
+        <p><strong>Adreça:</strong> {{ protectora?.direccion || 'No disponible' }}</p>
+        <p><strong>Telèfon:</strong> {{ protectora?.telefono || 'No disponible' }}</p>
+        <p><strong>Horari:</strong> {{ protectora?.horario_apertura || 'No disponible' }} - {{ protectora?.horario_cierre || 'No disponible' }}</p>
+      </div>
+      <div class="animal-list">
+        <h3>Animals de la protectora</h3>
+        <div *ngIf="animals.length > 0; else noAnimalsTemplate">
+          <div class="animal-card" *ngFor="let animal of animals" (click)="navigateToAnimalDetail(animal.id)">
+            <img [src]="animal.imatge" alt="{{ animal.nom }}" class="animal-image">
+            <div class="animal-info">
+              <p><strong>Nom:</strong> {{ animal.nom }}</p>
+              <p><strong>Edat:</strong> {{ animal.edat || 'No disponible' }}</p>
+              <p><strong>Espècie:</strong> {{ animal.especie }}</p>
+              <p><strong>Estat:</strong> {{ animal.estat }}</p>
+            </div>
           </div>
         </div>
+        <ng-template #noAnimalsTemplate>
+          <p class="no-animals-message">No hi ha animals associats a aquesta protectora.</p>
+          <div class="button-container">
+            <button class="action-button" routerLink="/registrar-animal">Vols registrar-ne un?</button>
+          </div>
+        </ng-template>
       </div>
-      <ng-template #noAnimalsTemplate>
-        <p class="no-animals-message">No hi ha animals associats a aquesta protectora.</p>
-        <div class="button-container">
-          <button class="action-button" routerLink="/registrar-animal">Vols registrar-ne un?</button>
-        </div>
-      </ng-template>
     </div>
+    <ng-template #errorTemplate>
+      <div class="error-message">
+        <p>{{ errorMessage }}</p>
+      </div>
+    </ng-template>
   </div>
-
-  <ng-template #errorTemplate>
-    <div class="error-message">
-      <p>{{ errorMessage }}</p>
-    </div>
+  <ng-template #animalDetailTemplate>
+    <app-detall-animal-publicacio 
+      [animalId]="selectedAnimalId" 
+      (back)="backToAnimalList()">
+    </app-detall-animal-publicacio>
   </ng-template>
 </div>
-
