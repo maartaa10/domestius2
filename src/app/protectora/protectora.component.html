@@ -1,36 +1,89 @@
-<div class="container">
-  <div class="search-bar">
-    <input 
-      type="text" 
-      placeholder="Buscar protectora..." 
-      [(ngModel)]="searchQuery" 
-      (input)="filterProtectoras()" />
-    <button><i class="fas fa-search"></i></button>
-  </div>
-
-  <div class="content">
-    <div class="filters">
-      <h3 (click)="toggleFilters()">FILTRES</h3>
-      <div *ngIf="showFilters">
-        <div *ngFor="let filtro of filtros" class="filter">
-          <input type="checkbox" (change)="applyFilter(filtro)" /> {{ filtro }}
+<div class="dashboard-container">
+  <!-- Sidebar para filtros -->
+  <div class="sidebar" [ngClass]="{'sidebar-collapsed': sidebarCollapsed}">
+    <div class="sidebar-header">
+      <h3 *ngIf="!sidebarCollapsed">Filtres</h3>
+      <button class="toggle-sidebar" (click)="toggleSidebar()">
+        <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
+      </button>
+    </div>
+    <div class="sidebar-content">
+      <!-- Filtros de ubicación y servicios -->
+      <div class="filters-section">
+        <h4 *ngIf="!sidebarCollapsed" class="filter-category">Ubicació i serveis</h4>
+        <div class="filter-group" *ngFor="let filtro of filtros">
+          <div class="filter-option">
+            <input type="checkbox" [id]="filtro" (change)="applyFilter(filtro)" /> 
+            <label [for]="filtro" *ngIf="!sidebarCollapsed">{{ filtro }}</label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Filtros por código postal -->
+      <div class="filters-section">
+        <h4 *ngIf="!sidebarCollapsed" class="filter-category">Codi postal</h4>
+        <div class="filter-group" *ngFor="let cp of codigosPostales">
+          <div class="filter-option">
+            <input type="checkbox" [id]="cp" (change)="applyFilter(cp)" /> 
+            <label [for]="cp" *ngIf="!sidebarCollapsed">{{ cp }}</label>
+          </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="protectoras-list">
-      <div 
-        *ngFor="let protectora of filteredProtectoras" 
-        class="protectora-card" 
-        (click)="goToProtectoraDetails(protectora.id)">
-        <img [src]="protectora.imatge" alt="Logo" class="logo">
-        <div class="info">
-          <p><strong>Nom:</strong> {{ protectora.usuari?.nom }}</p>
-          <p><strong>Direcció:</strong> {{ protectora.direccion }}</p>
-          <p><strong>Teléfon:</strong> {{ protectora.telefono }}</p>
-        </div>
-        <div class="arrow">&gt;</div>
+  <!-- Contenido principal -->
+  <div class="main-content" [ngClass]="{'content-expanded': sidebarCollapsed}">
+    <!-- Barra de búsqueda -->
+    <div class="search-container">
+      <div class="search-bar">
+        <input 
+          type="text" 
+          placeholder="Buscar protectora..." 
+          [(ngModel)]="searchQuery" 
+          (input)="filterProtectoras()" />
+        <button class="search-button">
+          <i class="fas fa-search"></i>
+        </button>
       </div>
+    </div>
+
+    <!-- Lista de protectoras -->
+    <div class="protectoras-container animate__animated animate__fadeIn">
+      <h2 class="section-title">Llistat de Protectores</h2>
+      
+      <!-- Tarjetas de protectoras -->
+      <div class="protectoras-grid">
+        <div 
+          *ngFor="let protectora of filteredProtectoras" 
+          class="protectora-card animate__animated animate__fadeIn" 
+          (click)="goToProtectoraDetails(protectora.id)">
+          <div class="protectora-image-container">
+            <img [src]="protectora.imatge || 'assets/default-profile.jpg'" alt="{{ protectora.usuari?.nom }}" class="protectora-image">
+          </div>
+          <div class="protectora-content">
+            <h3 class="protectora-name">{{ protectora.usuari?.nom }}</h3>
+            <div class="protectora-info">
+              <p><i class="fas fa-map-marker-alt info-icon"></i> {{ protectora.direccion || 'Direcció no disponible' }}</p>
+              <p><i class="fas fa-phone info-icon"></i> {{ protectora.telefono || 'Telèfon no disponible' }}</p>
+              <p *ngIf="protectora.horario_apertura"><i class="fas fa-clock info-icon"></i> {{ protectora.horario_apertura }} - {{ protectora.horario_cierre }}</p>
+            </div>
+            <div class="protectora-action">
+              <button class="view-more-btn">
+                Veure detalls <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Mensaje si no hay protectoras -->
+      <div *ngIf="filteredProtectoras.length === 0" class="no-results">
+        <i class="fas fa-search empty-icon"></i>
+        <p>No s'han trobat protectores amb aquests criteris de cerca.</p>
+      </div>
+      
+      <!-- Mensaje de pie de página -->
       <div class="footer-message">
         <p>On cada història compta i cada vida importa.</p>
       </div>
