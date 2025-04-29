@@ -52,7 +52,17 @@ export class LoginComponent {
     };
   
     this.authService.login(loginData).subscribe(
-      response => this.handleResponse(response),
+      response => {
+        this.tokenService.handleToken(response.token);
+        console.log('Token guardado en localStorage:', this.tokenService.getToken());
+        this.authService.getUserType().subscribe(userType => {
+          if (userType === 'protectora') {
+            this.router.navigate(['/dashboard']);
+          } else {
+            this.router.navigate(['/user-dashboard']);
+          }
+        });
+      },
       errors => this.handleErrors(errors)
     );
   }

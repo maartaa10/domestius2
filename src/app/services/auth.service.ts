@@ -2,10 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Usuari } from '../interfaces/usuari';
 import { Observable } from 'rxjs';
+import { map, catchError, mergeMap } from 'rxjs/operators';
 import { environment } from '../environments/environment.development';
 import { AuthCredentials } from '../models/auth-credentials.model';
 import { UserRegister } from '../models/user-register.model';
 import { TokenService } from './token.service';
+import { ProtectoraService } from './protectora.service';
+import { of } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +17,8 @@ export class AuthService {
   private readonly API_URL = environment.apiURL;
   private apiUrl = 'http://127.0.0.1:8000/api/v1/user-profile';
   private usuarioActual: Usuari | null = null;
-  constructor(private http: HttpClient, private tokenService: TokenService) {}
+  
+  constructor(private http: HttpClient, private tokenService: TokenService, private protectoraService: ProtectoraService) {}
 
   login(credentials: AuthCredentials): Observable<any> {
     return this.http.post(`${this.API_URL}/login`, credentials);
@@ -89,5 +93,22 @@ export class AuthService {
   getUsuarioActualId(): number {
     return this.usuarioActual?.id || 1;
   }
-  
+  getUserType(): Observable<string> {
+    return this.getUserProfile().pipe(
+      map(userData => {
+        // Verificar si el usuario está asociado a una protectora
+        return this.protectoraService.getProtectoraByUsuario(userData.id).pipe(
+          map(protectoraData => {
+            return protectoraData ? 'protectora' : 'usuario';
+          }),
+          catchError(err => {
+            console.error('Error al determinar el tipo de usuario:', err);
+            return of('usuario'); // Por defecto, considerar como usuario estándar
+          })
+        );
+      }),
+      mergeMap(result => result) // Aplanar el Observable anidado
+    );
+  }
 }
+
