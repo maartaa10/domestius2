@@ -1,7 +1,7 @@
 <div class="detall-animal-publicacio-container" *ngIf="animal">
 
     <div class="back-link-container">
-      <a class="back-link" [routerLink]="['/animal-llista']">← Tornar a la llista</a>
+      <a class="back-link" (click)="goBack()">← Tornar a la llista</a>
     </div>
   
    
