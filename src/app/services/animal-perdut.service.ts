@@ -44,4 +44,9 @@ export class AnimalPerdutService {
     return this.http.get<Animal[]>(`${this.apiUrl}/usuario/${userId}/animales`);
    
   }
+
+  getAnimalesByProtectora(userId: number): Observable<Animal[]> {
+    return this.http.get<Animal[]>(`${this.apiUrl}/usuario/${userId}/animales`);
+   
+  }
 }

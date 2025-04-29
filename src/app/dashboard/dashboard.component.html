@@ -1,33 +1,228 @@
-<div class="container mt-4">
-  <div class="card">
-    <div class="card-header">
-      <h2>Dashboard</h2>
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <div class="sidebar" [ngClass]="{'sidebar-collapsed': sidebarCollapsed}">
+    <div class="sidebar-header">
+      <img *ngIf="!sidebarCollapsed" src="assets/logo.png" alt="Domestius" class="sidebar-logo">
+      <button class="toggle-sidebar" (click)="toggleSidebar()">
+        <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
+      </button>
     </div>
-    <div class="card-body">
-      <div *ngIf="loading" class="text-center">
-        <p>Carregant informació del usuari...</p>
-      </div>
-
-      <div *ngIf="error" class="alert alert-danger">
-        {{ error }}
-      </div>
-
-      <div *ngIf="!loading && !error" class="user-info mb-4">
-        <h3>Informació del usuari</h3>
-        <img [src]="imatge" alt="Imagen de la protectora" class="img-fluid">
-        <br><br>
-        <p><strong>Nom:</strong> {{ userName }}</p>
-        <p><strong>Email:</strong> {{ userEmail }}</p>
-        <p><strong>Direcció:</strong> {{ direccion }}</p>
-        <p><strong>Teléfon:</strong> {{ telefono }}</p>
-        <p><strong>Horari:</strong> {{ horarioApertura }} - {{ horarioCierre }}</p>
-      </div>
-
-      <button class="btn btn-primary" (click)="navigateToRegistrarAnimal()">Registrar Animal</button>
-      <button class="btn btn-danger" (click)="logout()">Cerrar sesión</button>
-      <button class="btn btn-primary color" (click)="verMisAnimales()">Veure els meus animals</button>
-
+    <div class="sidebar-menu">
+      <a class="menu-item" [ngClass]="{'active': activeSection === 'profile'}" (click)="changeSection('profile')">
+        <i class="fas fa-user"></i>
+        <span *ngIf="!sidebarCollapsed">Perfil</span>
+      </a>
+      <a class="menu-item" (click)="navigateToRegistrarAnimal()">
+        <i class="fas fa-paw"></i>
+        <span *ngIf="!sidebarCollapsed">Registrar Animal</span>
+      </a>
+      <a class="menu-item" [ngClass]="{'active': activeSection === 'mis-animales'}" (click)="verMisAnimales()">
+        <i class="fas fa-list"></i>
+        <span *ngIf="!sidebarCollapsed">Els meus animals</span>
+      </a>
+      <a class="menu-item logout" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+        <span *ngIf="!sidebarCollapsed">Tancar sessió</span>
+      </a>
     </div>
   </div>
-  <div style="height: 40px;"></div> 
+
+  <!-- Main Content -->
+  <div class="main-content" [ngClass]="{'content-expanded': sidebarCollapsed}">
+    <!-- Content Loader -->
+    <div *ngIf="loading" class="loader-container animate__animated animate__fadeIn">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Carregant...</span>
+      </div>
+      <p>Carregant la teva informació...</p>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="error" class="error-container animate__animated animate__fadeIn">
+      <div class="alert alert-danger">
+        <i class="fas fa-exclamation-triangle"></i>
+        {{ error }}
+      </div>
+    </div>
+
+    <!-- SECCIÓN DE PERFIL -->
+    <div *ngIf="!loading && !error && activeSection === 'profile'" class="dashboard-content animate__animated animate__fadeIn">
+      <header class="dashboard-header">
+        <h1 class="animate__animated animate__fadeIn">El teu espai personal</h1>
+        <div class="user-welcome animate__animated animate__fadeIn animate__delay-1s">
+          Benvingut/da, {{ userName || 'Usuari' }}
+        </div>
+      </header>
+      
+      <div class="card profile-card">
+        <div class="card-body">
+          <div class="profile-header">
+            <div class="profile-image-container">
+              <img [src]="imatge || 'assets/default-profile.jpg'" alt="Imagen de la protectora" class="profile-image">
+              <div class="profile-image-overlay">
+                <i class="fas fa-camera"></i>
+              </div>
+            </div>
+            <div class="profile-info">
+              <h2>{{ userName }}</h2>
+              <span class="profile-role">Protectora</span>
+            </div>
+          </div>
+          
+          <div class="profile-details">
+            <div class="info-group">
+              <div class="info-item">
+                <div class="info-icon">
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <div class="info-content">
+                  <span class="info-label">Email</span>
+                  <span class="info-value">{{ userEmail || 'No disponible' }}</span>
+                </div>
+              </div>
+              
+              <div class="info-item">
+                <div class="info-icon">
+                  <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="info-content">
+                  <span class="info-label">Direcció</span>
+                  <span class="info-value">{{ direccion || 'No disponible' }}</span>
+                </div>
+              </div>
+              
+              <div class="info-item">
+                <div class="info-icon">
+                  <i class="fas fa-phone"></i>
+                </div>
+                <div class="info-content">
+                  <span class="info-label">Telèfon</span>
+                  <span class="info-value">{{ telefono || 'No disponible' }}</span>
+                </div>
+              </div>
+              
+              <div class="info-item">
+                <div class="info-icon">
+                  <i class="fas fa-clock"></i>
+                </div>
+                <div class="info-content">
+                  <span class="info-label">Horari</span>
+                  <span class="info-value">{{ horarioApertura || '00:00' }} - {{ horarioCierre || '00:00' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions Section -->
+      <div class="quick-actions">
+        <h3 class="section-title">Accions ràpides</h3>
+        <div class="action-cards">
+          <div class="action-card" (click)="navigateToRegistrarAnimal()">
+            <div class="action-icon">
+              <i class="fas fa-paw"></i>
+            </div>
+            <div class="action-content">
+              <h4>Registrar Animal</h4>
+              <p>Afegeix un nou animal a la teva protectora</p>
+            </div>
+          </div>
+          
+          <div class="action-card" (click)="verMisAnimales()">
+            <div class="action-icon">
+              <i class="fas fa-list"></i>
+            </div>
+            <div class="action-content">
+              <h4>Els meus animals</h4>
+              <p>Gestiona els animals de la teva protectora</p>
+            </div>
+          </div>
+          
+          <div class="action-card" (click)="editProfile()">
+            <div class="action-icon">
+              <i class="fas fa-edit"></i>
+            </div>
+            <div class="action-content">
+              <h4>Editar perfil</h4>
+              <p>Actualitza la informació de la teva protectora</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN DE MIS ANIMALES -->
+    <div *ngIf="!loading && !error && activeSection === 'mis-animales'" class="animals-content animate__animated animate__fadeIn">
+      <header class="dashboard-header">
+        <h1 class="animate__animated animate__fadeIn">Els meus animals</h1>
+        <div class="user-welcome animate__animated animate__fadeIn animate__delay-1s">
+          Administra els animals de la teva protectora
+        </div>
+      </header>
+
+      <!-- Loader específico para los animales -->
+      <div *ngIf="loadingAnimals" class="loader-container animate__animated animate__fadeIn">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Carregant animals...</span>
+        </div>
+        <p>Carregant els teus animals...</p>
+      </div>
+
+      <!-- Mensaje de error específico para los animales -->
+      <div *ngIf="animalsError" class="error-container animate__animated animate__fadeIn">
+        <div class="alert alert-danger">
+          <i class="fas fa-exclamation-triangle"></i>
+          {{ animalsError }}
+        </div>
+      </div>
+
+      <!-- Lista de animales -->
+      <div *ngIf="!loadingAnimals && !animalsError" class="animals-list">
+        <div *ngIf="userAnimals.length === 0" class="no-animals-message">
+          <i class="fas fa-paw empty-icon"></i>
+          <p>No tens cap animal registrat encara.</p>
+          <button class="add-animal-btn" (click)="navigateToRegistrarAnimal()">Registrar nou animal</button>
+        </div>
+
+        <div *ngIf="userAnimals.length > 0" class="animals-grid">
+          <div *ngFor="let animal of userAnimals" class="animal-card">
+            <div class="animal-image-container">
+              <img [src]="animal.imatge || 'assets/default-animal.jpg'" alt="{{ animal.nom }}" class="animal-image">
+            </div>
+            <div class="animal-content">
+              <h3 class="animal-name">{{ animal.nom }}</h3>
+              <div class="animal-tags">
+                <span class="animal-tag especie">{{ animal.especie }}</span>
+                <span class="animal-tag estado" [ngClass]="'estado-' + animal.estat.toLowerCase().replace(' ', '-')">{{ animal.estat }}</span>
+              </div>
+              <div class="animal-info">
+                <p><i class="fas fa-birthday-cake info-icon"></i> {{ animal.edat || 'Edat desconeguda' }}</p>
+                <p><i class="fas fa-dna info-icon"></i> {{ animal['raça'] || 'Raça desconeguda' }}</p>
+                <p class="animal-description"><i class="fas fa-comment-alt info-icon"></i> {{ animal.descripcio || 'Sense descripció' }}</p>
+              </div>
+              <div class="animal-actions">
+                <button class="action-btn edit-btn" [routerLink]="['/editar-animal', animal.id]">
+                  <i class="fas fa-edit"></i> Editar
+                </button>
+                <button class="action-btn delete-btn" (click)="confirmDeleteAnimal(animal.id)">
+                  <i class="fas fa-trash-alt"></i> Eliminar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="userAnimals.length > 0" class="pagination">
+          <button class="pagination-btn" [disabled]="page === 1" (click)="changePage(-1)">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <span class="page-indicator">{{ page }} / {{ totalPages }}</span>
+          <button class="pagination-btn" [disabled]="page === totalPages" (click)="changePage(1)">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
