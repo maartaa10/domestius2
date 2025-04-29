@@ -17,11 +17,11 @@
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
           <!-- Campo Nombre -->
           <div class="mb-3">
-            <label for="name" class="form-label">Nom</label>
-            <input type="text" id="name" class="form-control" formControlName="name">
-            <div *ngIf="registerForm.get('name')?.invalid && (registerForm.get('name')?.touched || registerForm.get('name')?.dirty)" class="text-danger">
-              <small *ngIf="registerForm.get('name')?.hasError('required')">El camp nom és obligatori.</small>
-              <small *ngIf="registerForm.get('name')?.hasError('minlength')">El nom ha de tenir almenys 3 caràcters.</small>
+            <label for="nom" class="form-label">Nom</label>
+            <input type="text" id="nom" class="form-control" formControlName="nom">
+            <div *ngIf="registerForm.get('nom')?.invalid && (registerForm.get('nom')?.touched || registerForm.get('nom')?.dirty)" class="text-danger">
+              <small *ngIf="registerForm.get('nom')?.hasError('required')">El camp nom és obligatori.</small>
+              <small *ngIf="registerForm.get('nom')?.hasError('minlength')">El nom ha de tenir almenys 3 caràcters.</small>
             </div>
           </div>
         
