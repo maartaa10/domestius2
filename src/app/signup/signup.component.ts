@@ -34,11 +34,11 @@ export class SignupComponent {
     private fb: FormBuilder
   ) {
     this.registerForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
+      nom: ['', [Validators.required, Validators.minLength(3)]], // Cambiado de 'name' a 'nom'
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       password_confirmation: ['', [Validators.required]]
-    }, { validators: passwordMatchValidator }); // Agregar el validador personalizado aquí
+    }, { validators: passwordMatchValidator });
   }
 /* 
   onCaptchaResolved(token: string | null): void {
@@ -51,37 +51,31 @@ export class SignupComponent {
     }
   } */
 
-  onSubmit(): void {
-    this.cleanErrors();
-  
-  /*   if (!this.captchaToken) {
-      alert('Completa el captcha antes de enviar');
-      return;
-    } */
-  
-    const name = this.registerForm.get('name')?.value ?? '';
-    const email = this.registerForm.get('email')?.value ?? '';
-    const password = this.registerForm.get('password')?.value ?? '';
-    const password_confirmation = this.registerForm.get('password_confirmation')?.value ?? '';
-  
-    if (!name || !email || !password || !password_confirmation) {
-      alert('Todos los campos son obligatorios');
-      return;
+    onSubmit(): void {
+      this.cleanErrors();
+    
+      const nom = this.registerForm.get('nom')?.value ?? ''; // Cambiado de 'name' a 'nom'
+      const email = this.registerForm.get('email')?.value ?? '';
+      const password = this.registerForm.get('password')?.value ?? '';
+      const password_confirmation = this.registerForm.get('password_confirmation')?.value ?? '';
+    
+      if (!nom || !email || !password || !password_confirmation) {
+        alert('Todos los campos son obligatorios');
+        return;
+      }
+    
+      const registerData = {
+        nom, // Cambiado de 'name' a 'nom'
+        email,
+        password,
+        password_confirmation
+      };
+    
+      this.authService.register(registerData).subscribe(
+        response => this.handleResponse(response),
+        errors => this.handleErrors(errors)
+      );
     }
-  
-    const registerData = {
-      name,
-      email,
-      password,
-      password_confirmation,
-     /*  captcha: this.captchaToken */
-    };
-  
-    this.authService.register(registerData).subscribe(
-      response => this.handleResponse(response),
-      errors => this.handleErrors(errors)
-    );
-  }
 
   private handleResponse(response: any): void {
     console.log(response.message);
