@@ -1,187 +1,234 @@
 html, body {
- /*  margin: 0;
-  padding: 0; */
   width: 100%;
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
   background-color: #bfe3c0;
+  margin: 0;
+  padding: 0;
 }
 
 .container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  background-color: #bfe3c0;
+}
+
+.title {
+  position: absolute;
+  top: 5%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #4b83e5;
+  z-index: 10;
+  transition: opacity 0.5s;
+}
+
+.split-screen {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.side {
+  flex: 1;
+  position: relative;
+  transition: flex 0.7s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.animal-side {
+  background-color: #bfe3c0;
+}
+
+.protector-side {
+  background-color: #bfe3c0;
+}
+
+.side.active {
+  flex: 4;
+  cursor: default;
+}
+
+.side-content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  transition: opacity 0.5s, transform 0.7s ease-in-out;
+}
+
+.initial {
+  opacity: 1;
+}
+
+.details {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.side.active .initial {
+  opacity: 0;
+  transform: translateY(-50px);
+}
+
+.side.active .details {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.side h2 {
+  font-size: 2.5rem;
+  color: #333;
+  text-align: center;
+}
+
+.side p {
+  text-align: justify;
+  margin: 15px 0;
+  max-width: 600px;
+}
+
+.buttons {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  height: 100vh;
-  width: 100%;
-  background-color: #bfe3c0;
-  text-align: center;
-  position: relative;
+  margin-top: 30px;
+  gap: 15px;
 }
 
+.hide {
+  opacity: 0;
+}
+
+/* Bone button styles */
+.bone {
+  position: relative;
+  width: 150px;
+  height: 60px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+}
+  
+.c1, .c2, .c3, .c4 {
+  background: #fff;
+  height: 30px;
+  width: 30px;
+  border: 1px solid #000;
+  border-radius: 50%;
+  position: absolute;
+}
+  
+.c1 { left: 0; top: 0; }
+.c2 { right: 0; top: 0; }
+.c3 { left: 0; bottom: 0; }
+.c4 { bottom: 0; right: 0; }
+  
+.b1 {
+  background: #fff;
+  height: 30px;
+  width: 120px;
+  position: absolute;
+  left: 15px;
+  top: 15px;
+}
+  
+.b2 {
+  position: absolute;
+  left: 15px;
+  top: 0;
+  width: 90px;
+  height: 30px;
+  line-height: 30px;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  text-align: center;
+}
+
+.back-btn {
+  padding: 10px 20px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.back-btn:hover {
+  background-color: #d32f2f;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+  .split-screen {
+    flex-direction: column;
+  }
+  
+  .side.active {
+    flex: 3;
+  }
   
   .title {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #4b83e5;
-    margin-top: 20px;
-    transition: opacity 0.5s;
+    font-size: 2rem;
   }
   
-  .options {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    /* transition: opacity 0.5s; */
-  }
-  
-  .option {
-    flex: 1;
-    text-align: center;
+  .section-title {
     font-size: 1.5rem;
-    cursor: pointer;
-    /* transition: transform 0.5s; */
   }
   
-  .separator {
-    width: 2px;
-    height: 90vh;
-    background-color: black;
-    transition: opacity 0.5s;
-  }
-  
-  .protector-info, .animal-info {
-    position: absolute;
-    top: 60%;
-    width: 80%;
-    background-color: white;
-    padding: 20px;
-    border: 1px solid #ccc;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    transition: opacity 0.5s;
-  }
-  
-  .slide-left {
-    transform: translateX(-100%);
-  }
-  
-  .slide-right {
-    transform: translateX(100%);
-  }
-  
-  .hidden {
-    opacity: 0;
-  }
-  
-  .hide {
-    opacity: 0;
-  }
-  
-  .bone {
-    margin: 20px;
-    position: relative;
-    width: 150px;
-    height: 60px;
-    cursor: pointer;
-    background: transparent;
-    border: none;
-  }
-  
-  .c1, .c2, .c3, .c4 {
-    background: #fff;
-    height: 30px;
-    width: 30px;
-    border: 1px solid #000;
-    border-radius: 50%;
-    position: absolute;
-  }
-  
-  .c1 {
-    left: 0;
-    top: 0;
-  }
-  
-  .c2 {
-    right: 0;
-    top: 0;
-  }
-  
-  .c3 {
-    left: 0;
-    bottom: 0;
-  }
-  
-  .c4 {
-    bottom: 0;
-    right: 0;
-  }
-  
-  .b1 {
-    background: #fff;
-    height: 30px;
-    width: 120px;
-    position: absolute;
-    left: 15px;
-    top: 15px;
-  }
-  
-  .b2 {
-    position: absolute;
-    left: 15px;
-    top: 0;
-    width: 90px;
-    height: 30px;
-    line-height: 30px;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    text-align: center;
-  }
-
-  /* fitxer styles.css o fitxer CSS del component */
- 
-/* Estils per a pantalles petites (menys de 576px) */
-@media (max-width: 575px) {
-  .container {
-      max-width: 100%; /* Ajusta el max-width per a pantalles molt petites */
+  .side h2 {
+    font-size: 1.8rem;
   }
 }
-
-/* Estils per a pantalles mitjanes (576px a 768px) */
-@media (min-width: 576px) and (max-width: 767px) {
-  .container {
-      max-width: 100%; /* Ajusta el max-width per a pantalles petites */
-  }
+/* Estilos para el botón de volver con forma de hueso */
+.back-bone .c1, 
+.back-bone .c2, 
+.back-bone .c3, 
+.back-bone .c4 {
+  background: #ffcccc; /* Rojo muy claro para los círculos */
+  border: 1px solid #ff6666; /* Borde rojizo */
 }
 
-/* Estils per a pantalles mitjanes-altes (768px a 992px) */
-@media (min-width: 768px) and (max-width: 991px) {
-  .container {
-      max-width: 100%; /* Ajusta el max-width per a pantalles mitjanes */
-  }
+.back-bone .b1 {
+  background: #ffcccc; /* Rojo muy claro para el cuerpo */
 }
 
-/* Estils per a pantalles grans (992px a 1200px) */
-@media (min-width: 992px) and (max-width: 1199px) {
-  .container {
-      max-width: 100%; /* Ajusta el max-width per a pantalles grans */
-  }
+.back-bone .b2 {
+  border-top: 1px solid #ff6666; /* Borde rojizo */
+  border-bottom: 1px solid #ff6666; /* Borde rojizo */
+  color: #e53935; /* Texto en rojo más oscuro para contraste */
 }
 
-/* Estils per a pantalles molt grans (1200px a 1400px) */
-@media (min-width: 1200px) and (max-width: 1399px) {
-  .container {
-      max-width: 100%; /* Ajusta el max-width per a pantalles molt grans */
-  }
+/* Añade este estilo de hover para el nuevo botón */
+.back-bone:hover .c1,
+.back-bone:hover .c2,
+.back-bone:hover .c3,
+.back-bone:hover .c4,
+.back-bone:hover .b1 {
+  background: #ffaaaa; /* Un tono más oscuro al hacer hover */
 }
 
-/* Estils per a pantalles extra grans (1400px i més) */
-@media (min-width: 1400px) {
-  .container {
-      max-width: 100%; /* Ajusta el max-width per a pantalles extra grans */
-  }
-}
+/* Puedes eliminar los estilos anteriores del .back-btn si ya no lo utilizas */
