@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProtectoraService } from '../services/protectora.service';
 import { AnimalPerdutService } from '../services/animal-perdut.service';
 import { Protectora } from '../interfaces/protectora';
@@ -15,11 +15,13 @@ export class ProtectoraDetallComponent implements OnInit {
   protectora: Protectora | undefined;
   animals: Animal[] = [];
   errorMessage: string | undefined;
+  selectedAnimalId: number | null = null; // ID del animal seleccionado
 
   constructor(
     private route: ActivatedRoute,
     private protectoraService: ProtectoraService,
-    private animalPerdutService: AnimalPerdutService
+    private animalPerdutService: AnimalPerdutService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -34,24 +36,10 @@ export class ProtectoraDetallComponent implements OnInit {
     this.protectoraService.getProtectora(id).subscribe({
       next: (data) => {
         this.protectora = data;
-        if (!this.protectora.usuari) {
-          console.warn('El camp `usuari` no està present en la resposta del backend.');
-          this.protectora.usuari = { 
-            id: 0,
-            nom: 'Usuari desconegut', 
-            email: 'desconegut@example.com', 
-            password: '' 
-          };
-        }
       },
       error: (err) => {
         console.error('Error en carregar els detalls de la protectora:', err);
-        console.error('Detalls de l\'error:', err.error);
-        if (err.error?.message) {
-          this.errorMessage = `Error del servidor: ${err.error.message}`;
-        } else {
-          this.errorMessage = 'No s\'han pogut carregar els detalls de la protectora. Si us plau, intenti-ho més tard.';
-        }
+        this.errorMessage = 'No s\'han pogut carregar els detalls de la protectora.';
       }
     });
   }
@@ -63,8 +51,16 @@ export class ProtectoraDetallComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error en carregar els animals:', err);
-        this.errorMessage = `Error ${err.status}: ${err.error?.message || 'No s\'han pogut carregar els animals.'}`;
+        this.errorMessage = 'No s\'han pogut carregar els animals.';
       }
     });
+  }
+
+  navigateToAnimalDetail(animalId: number): void {
+    this.selectedAnimalId = animalId; // Actualiza el ID del animal seleccionado
+  }
+
+  backToAnimalList(): void {
+    this.selectedAnimalId = null; // Vuelve a la lista de animales
   }
 }
