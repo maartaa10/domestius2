@@ -58,3 +58,54 @@
   .action-button {
   border-radius: 50%;
   }
+  .bone {
+    position: relative;
+    width: 200px; /* Aumenta el ancho del hueso */
+    height: 80px; /* Aumenta la altura del hueso */
+    cursor: pointer;
+    background: transparent;
+    border: none;
+  }
+  
+  .c1, .c2, .c3, .c4 {
+    background: #b7d608;
+    height: 40px; /* Aumenta el tamaño de los círculos */
+    width: 40px; /* Aumenta el tamaño de los círculos */
+    border: 1px solid #000;
+    border-radius: 50%;
+    position: absolute;
+  }
+  
+  .c1 { left: 0; top: 0; }
+  .c2 { right: 0; top: 0; }
+  .c3 { left: 0; bottom: 0; }
+  .c4 { bottom: 0; right: 0; }
+  
+  .b1 {
+    background: #b7d608;
+    height: 40px; /* Aumenta la altura del cuerpo */
+    width: 160px; /* Aumenta el ancho del cuerpo */
+    position: absolute;
+    left: 20px; /* Ajusta la posición horizontal */
+    top: 20px; /* Ajusta la posición vertical */
+  }
+  
+  .b2 {
+    position: absolute;
+    left: 20px; /* Ajusta la posición horizontal del texto */
+    top: 0;
+    width: 120px; /* Aumenta el ancho del área de texto */
+    height: 40px; /* Aumenta la altura del área de texto */
+    line-height: 40px; /* Centra verticalmente el texto */
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    text-align: center;
+    font-size: 1rem; /* Ajusta el tamaño del texto */
+  }
+  .center-container {
+    display: flex; /* Usa Flexbox */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    margin: 20px 0; /* Añade un margen razonable arriba y abajo */
+    height: auto; /* Ajusta la altura al contenido */
+  }
