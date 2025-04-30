@@ -17,7 +17,7 @@
     <p><strong>Ubicació:</strong> {{ publicacio.animal?.geolocalitzacio?.nombre || 'No disponible' }}</p>
     <p><strong>Latitut:</strong> {{ publicacio.animal?.geolocalitzacio?.latitud || 'No disponible' }}</p>
     <p><strong>Longitut:</strong> {{ publicacio.animal?.geolocalitzacio?.longitud || 'No disponible' }}</p>
-    <div class="actions">
+    <!-- <div class="actions">
       <button 
         class="action-button edit rounded-circle" 
         [routerLink]="['/editar-publicacio', publicacio.id]"
@@ -30,7 +30,7 @@
         (click)="eliminarPublicacio(publicacio.id); $event.stopPropagation()">
         D
       </button>
-    </div>
+    </div> -->
   </div>
 </div>
 <!-- <div class="details-container" *ngIf="selectedPublicacio">

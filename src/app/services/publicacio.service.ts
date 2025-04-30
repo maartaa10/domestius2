@@ -16,7 +16,7 @@ export class PublicacioService {
   }
 
   getPublicacionesByUsuario(userId: number): Observable<Publicacio[]> {
-    return this.http.get<Publicacio[]>(`${this.apiUrl}/usuario/${userId}/publicacions`);
+    return this.http.get<Publicacio[]>(`${this.apiUrl}/usuari/${userId}/publicacions`);
   }
 
  

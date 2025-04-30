@@ -165,6 +165,13 @@ export class UserDashboardComponent implements OnInit {
   }
 
   /**
+ * Navega a la página de registro de un nuevo animal
+ */
+navigateToRegistrarAnimal(): void {
+  this.router.navigate(['/registrar-animal']);
+}
+
+  /**
    * Cambia la página actual en la paginación de publicaciones
    */
   changePublicacionPage(delta: number): void {
