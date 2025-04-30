@@ -132,6 +132,17 @@ export class ProtectoraComponent implements OnInit {
     this.showFilters = !this.showFilters;
   }
 
+  removeFilter(filtro: string): void {
+    this.selectedFilters = this.selectedFilters.filter(f => f !== filtro);
+    this.filterProtectoras();
+  }
+  
+  // Añadir este método para limpiar todos los filtros
+  clearAllFilters(): void {
+    this.selectedFilters = [];
+    this.filterProtectoras();
+  }
+
   applyFilter(filtro: string) {
     // Añadimos o quitamos el filtro del array de seleccionados
     if (this.selectedFilters.includes(filtro)) {

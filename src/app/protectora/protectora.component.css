@@ -10,95 +10,274 @@
 
 /* Sidebar para filtros */
 .sidebar {
-  width: 250px;
-  background-color: #add8e6;
+  width: 280px;
+  background: linear-gradient(135deg, #add8e6 0%, #92c3d3 100%);
   height: calc(100vh - var(--navbar-height));
   position: fixed;
   top: var(--navbar-height);
   left: 0;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   z-index: 900;
-  padding-top: 20px;
+  padding-top: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }
 
 .sidebar-collapsed {
-  width: 60px;
+  width: 70px;
 }
 
 .sidebar-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 15px 20px 15px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 20px 15px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.sidebar-header h3 {
+.sidebar-title {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: #333;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .toggle-sidebar {
-  background: none;
+  background: rgba(255, 255, 255, 0.8);
   border: none;
   color: #333;
   cursor: pointer;
-  font-size: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .toggle-sidebar:hover {
+  background: white;
   color: #4b83e5;
   transform: scale(1.1);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
 
 .sidebar-content {
   padding: 20px 15px;
-  overflow-y: auto;
-  height: calc(100% - 70px);
 }
 
 .filters-section {
+  margin-bottom: 25px;
+}
+
+.filter-category {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.filter-category h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.category-icon {
+  margin-right: 10px;
+  color: #4b83e5;
+  font-size: 1.2rem;
 }
 
 .filter-group {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .filter-option {
+  padding: 6px 0;
+}
+
+/* Estilos para checkbox personalizado */
+.custom-checkbox {
+  position: relative;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkbox-label {
   display: flex;
   align-items: center;
-  padding: 8px 0;
   cursor: pointer;
-}
-
-.filter-option input[type="checkbox"] {
-  margin-right: 10px;
-  cursor: pointer;
-}
-
-.filter-option label {
-  cursor: pointer;
-  color: #333;
   font-size: 0.95rem;
+  color: #333;
+  transition: all 0.2s ease;
+  padding: 5px 0;
 }
 
-/* Contenido principal */
+.checkbox-custom {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 4px;
+  margin-right: 10px;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.check-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  color: white;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  opacity: 0;
+}
+
+.custom-checkbox input[type="checkbox"]:checked ~ .checkbox-label .checkbox-custom {
+  background-color: #4b83e5;
+}
+
+.custom-checkbox input[type="checkbox"]:checked ~ .checkbox-label .check-icon {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.checkbox-label:hover .checkbox-custom {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.checkbox-label:hover .filter-text {
+  color: #4b83e5;
+}
+
+.filter-text {
+  transition: color 0.2s ease;
+}
+
+/* Estilos para los filtros activos */
+.active-filters {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 25px;
+}
+
+.active-filters-title {
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+  color: #333;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.active-filters-title i {
+  margin-right: 8px;
+  color: #4b83e5;
+}
+
+.filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.filter-tag {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-tag i {
+  cursor: pointer;
+  color: #f44336;
+  font-size: 0.7rem;
+  transition: transform 0.2s;
+}
+
+.filter-tag i:hover {
+  transform: scale(1.2);
+}
+
+.clear-filters-btn {
+  background-color: #f8f9fa;
+  border: none;
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  color: #f44336;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.clear-filters-btn:hover {
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Mejoras para cuando está colapsado */
+.sidebar-collapsed .filter-option {
+  display: flex;
+  justify-content: center;
+}
+
+.sidebar-collapsed .checkbox-custom {
+  margin-right: 0;
+}
+
+/* Ajustar main content para el nuevo sidebar */
 .main-content {
   flex: 1;
-  margin-left: 250px;
+  margin-left: 280px;
   padding: 20px;
   transition: all 0.3s ease;
   background-color: #bfe3c0;
 }
 
 .content-expanded {
-  margin-left: 60px;
+  margin-left: 70px;
 }
 
 /* Barra de búsqueda */
@@ -284,15 +463,15 @@
 /* Responsividad */
 @media (max-width: 768px) {
   .sidebar {
-    width: 60px;
+    width: 70px;
   }
   
   .sidebar-collapsed {
-    transform: translateX(-60px);
+    transform: translateX(-70px);
   }
   
   .main-content {
-    margin-left: 60px;
+    margin-left: 70px;
   }
   
   .content-expanded {
