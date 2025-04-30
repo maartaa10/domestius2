@@ -9,6 +9,8 @@ import { InteraccionsService } from '../services/interaccions.service';
 import { AuthService } from '../services/auth.service';
 import { Publicacio } from '../interfaces/publicacio';
 import { Interaccio } from '../interfaces/interaccio';
+import { PhotonService } from '../services/photon.service';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-registrar-animal',
@@ -35,7 +37,7 @@ export class RegistrarAnimalComponent {
     latitud: '',
     longitud: ''
   };
-  
+  sugerencias: any[] = []; 
   selectedFile: File | null = null;
   protectorList: Protectora[] = [];
   crearPublicacio: boolean = false;
@@ -43,6 +45,7 @@ export class RegistrarAnimalComponent {
   publicacioDetalls: string = '';
   isProtectora: boolean = false;
   userId: number = 0;
+  
 
   constructor(
     private animalPerdutService: AnimalPerdutService,
@@ -50,7 +53,8 @@ export class RegistrarAnimalComponent {
     private protectoraService: ProtectoraService,
     private interaccionsService: InteraccionsService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private photonService: PhotonService
   ) {}
 
   ngOnInit(): void {
@@ -59,25 +63,23 @@ export class RegistrarAnimalComponent {
   }
 
   determineUserType(): void {
-    this.authService.getUserProfile().subscribe({
+    this.authService.getUserProfile().pipe(debounceTime(500)).subscribe({
       next: (userData) => {
         console.log('Dades de l\'usuari loguejat:', userData);
         this.userId = userData.id;
-        
+  
         // Comprobar si el usuario es una protectora
-        this.authService.getUserType().subscribe(userType => {
+        this.authService.getUserType().pipe(debounceTime(500)).subscribe(userType => {
           this.isProtectora = userType === 'protectora';
-          
+  
           if (this.isProtectora) {
-            // Si es protectora, buscamos su ID correspondiente
             const protectora = this.protectorList.find(p => p.usuari?.email === userData.email);
             if (protectora) {
               this.animal.protectora_id = protectora.id;
               console.log('ID de la protectora assignat:', this.animal.protectora_id);
             }
           } else {
-            // Si es usuario normal, configuramos un valor para protectora_id que indique que es registro de usuario
-            this.animal.protectora_id = 0; // O el valor que se use para indicar que no hay protectora asociada
+            this.animal.protectora_id = 0;
             console.log('Usuari normal, no té protectora associada');
           }
         });
@@ -226,5 +228,31 @@ export class RegistrarAnimalComponent {
   getProtectoraName(protectoraId: number): string {
     const protectora = this.protectorList.find(p => p.id === protectoraId);
     return protectora?.usuari?.nom || 'Desconegut';
+  }
+  buscarUbicacion(query: string): void {
+    if (query.length > 2) {
+      this.photonService.search(query).subscribe({
+        next: (response) => {
+          this.sugerencias = response.features.map((feature: any) => ({
+            nombre: feature.properties.name,
+            direccion: feature.properties.city || feature.properties.state || '',
+            latitud: feature.geometry.coordinates[1],
+            longitud: feature.geometry.coordinates[0],
+          }));
+        },
+        error: (err) => {
+          console.error('Error al buscar ubicaciones:', err);
+        },
+      });
+    } else {
+      this.sugerencias = [];
+    }
+  }
+
+  seleccionarUbicacion(sugerencia: any): void {
+    this.ubicacion.nombre = `${sugerencia.nombre}, ${sugerencia.direccion}`;
+    this.ubicacion.latitud = sugerencia.latitud;
+    this.ubicacion.longitud = sugerencia.longitud;
+    this.sugerencias = []; // Limpiar las sugerencias después de seleccionar
   }
 }
