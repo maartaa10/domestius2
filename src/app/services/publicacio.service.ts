@@ -15,6 +15,10 @@ export class PublicacioService {
     return this.http.get<Publicacio[]>(`${this.apiUrl}/publicacions`);
   }
 
+  getPublicacionesByUsuario(userId: number): Observable<Publicacio[]> {
+    return this.http.get<Publicacio[]>(`${this.apiUrl}/usuari/${userId}/publicacions`);
+  }
+
  
   getPublicacioById(id: number): Observable<Publicacio> {
     return this.http.get<Publicacio>(`${this.apiUrl}/publicacio/${id}`).pipe(

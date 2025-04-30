@@ -4,11 +4,13 @@ import { Animal } from '../interfaces/animal';
 import { AnimalPerdutService } from '../services/animal-perdut.service';
 import { Protectora } from '../interfaces/protectora';
 import { ProtectoraService } from '../services/protectora.service';
-import { Publicacio } from '../interfaces/publicacio';
 import { PublicacioService } from '../services/publicacio.service';
-import { Interaccio } from '../interfaces/interaccio';
 import { InteraccionsService } from '../services/interaccions.service';
 import { AuthService } from '../services/auth.service';
+import { Publicacio } from '../interfaces/publicacio';
+import { Interaccio } from '../interfaces/interaccio';
+import { PhotonService } from '../services/photon.service';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-registrar-animal',
@@ -29,16 +31,21 @@ export class RegistrarAnimalComponent {
     protectora_id: 0,
     geolocalitzacio_id: null
   };
+  
   ubicacion = {
     nombre: '',
     latitud: '',
     longitud: ''
   };
+  sugerencias: any[] = []; 
   selectedFile: File | null = null;
   protectorList: Protectora[] = [];
-  crearPublicacio: boolean = false; 
-  publicacioTitulo: string = ''; 
+  crearPublicacio: boolean = false;
+  publicacioTitulo: string = '';
   publicacioDetalls: string = '';
+  isProtectora: boolean = false;
+  userId: number = 0;
+  
 
   constructor(
     private animalPerdutService: AnimalPerdutService,
@@ -46,12 +53,42 @@ export class RegistrarAnimalComponent {
     private protectoraService: ProtectoraService,
     private interaccionsService: InteraccionsService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private photonService: PhotonService
   ) {}
 
   ngOnInit(): void {
     this.loadProtectoras();
-    this.setProtectoraId();
+    this.determineUserType();
+  }
+
+  determineUserType(): void {
+    this.authService.getUserProfile().pipe(debounceTime(500)).subscribe({
+      next: (userData) => {
+        console.log('Dades de l\'usuari loguejat:', userData);
+        this.userId = userData.id;
+  
+        // Comprobar si el usuario es una protectora
+        this.authService.getUserType().pipe(debounceTime(500)).subscribe(userType => {
+          this.isProtectora = userType === 'protectora';
+  
+          if (this.isProtectora) {
+            const protectora = this.protectorList.find(p => p.usuari?.email === userData.email);
+            if (protectora) {
+              this.animal.protectora_id = protectora.id;
+              console.log('ID de la protectora assignat:', this.animal.protectora_id);
+            }
+          } else {
+            this.animal.protectora_id = 0;
+            console.log('Usuari normal, no té protectora associada');
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Error en obtenir el perfil de l\'usuari:', err);
+        alert('Hi ha hagut un error en obtenir la informació de l\'usuari.');
+      }
+    });
   }
 
   loadProtectoras(): void {
@@ -79,11 +116,6 @@ export class RegistrarAnimalComponent {
       return;
     }
   
-    if (!this.animal.protectora_id) {
-      alert('No se ha asignado una protectora válida. Por favor, inténtelo de nuevo.');
-      return;
-    }
-  
     if (!this.ubicacion.nombre || !this.ubicacion.latitud || !this.ubicacion.longitud) {
       alert('Por favor, completa todos los campos de la ubicación.');
       return;
@@ -96,10 +128,16 @@ export class RegistrarAnimalComponent {
     formData.append('raça', this.animal.raça || '');
     formData.append('descripcio', this.animal.descripcio || '');
     formData.append('estat', this.animal.estat);
-    formData.append('protectora_id', this.animal.protectora_id.toString());
+    
+    // Usamos protectora_id si es una protectora, o el id de usuario si es usuario normal
+    if (this.isProtectora) {
+      formData.append('protectora_id', this.animal.protectora_id.toString());
+    } else {
+      formData.append('usuari_id', this.userId.toString());
+    }
+    
     formData.append('imatge', this.selectedFile);
   
-    // Cambiar los nombres de los campos de ubicación
     formData.append('nombre', this.ubicacion.nombre);
     formData.append('latitud', this.ubicacion.latitud);
     formData.append('longitud', this.ubicacion.longitud);
@@ -111,9 +149,13 @@ export class RegistrarAnimalComponent {
   
         if (this.crearPublicacio) {
           this.crearPublicacion(animal);
-          this.router.navigate(['/mis-animales']);
+        }
+        
+        // Redirección según el tipo de usuario
+        if (this.isProtectora) {
+          this.router.navigate(['/dashboard']);
         } else {
-          this.router.navigate(['/mis-animales']);
+          this.router.navigate(['/user-dashboard']);
         }
       },
       error: (err) => {
@@ -130,7 +172,6 @@ export class RegistrarAnimalComponent {
       return;
     }
   
-    
     const now = new Date();
     const formattedDate = `${now.getFullYear()}-${(now.getMonth() + 1)
       .toString()
@@ -147,11 +188,11 @@ export class RegistrarAnimalComponent {
       tipus: this.publicacioTitulo || 'Sin título',
       data: formattedDate, 
       detalls: this.publicacioDetalls || `Buscamos hogar para ${animal.nom}.`,
-      usuari_id: animal.protectora_id,
+      usuari_id: this.userId,
       animal_id: animal.id,
       created_at: '',
       updated_at: '',
-      username: this.getProtectoraName(animal.protectora_id),
+      username: '',
       interaccions: []
     };
   
@@ -179,34 +220,39 @@ export class RegistrarAnimalComponent {
       },
       error: (err) => {
         console.error('Error al crear la publicació:', err);
+        alert('Error al crear la publicació');
       }
     });
   }
+
   getProtectoraName(protectoraId: number): string {
     const protectora = this.protectorList.find(p => p.id === protectoraId);
     return protectora?.usuari?.nom || 'Desconegut';
   }
-  setProtectoraId(): void {
-    this.authService.getUserProfile().subscribe({
-      next: (userData) => {
-        console.log('Dades de l\'usuari loguejat:', userData);
-  
-        const protectora = this.protectorList.find(p => p.usuari?.email === userData.email);
-  
-        if (protectora) {
-          this.animal.protectora_id = protectora.id;
-          console.log('ID de la protectora assignat automàticament:', this.animal.protectora_id);
-        } else {
-          console.error('L\'usuari loguejat no té una protectora associada.');
-          alert('No es pot registrar un animal perquè no hi ha una protectora associada.');
-          this.router.navigate(['/dashboard']);
-        }
-      },
-      error: (err) => {
-        console.error('Error en obtenir el perfil de l\'usuari:', err);
-        alert('Hi ha hagut un error en obtenir la informació de l\'usuari. Si us plau, intenta-ho de nou.');
-        this.router.navigate(['/dashboard']); 
-      }
-    });
+  buscarUbicacion(query: string): void {
+    if (query.length > 2) {
+      this.photonService.search(query).subscribe({
+        next: (response) => {
+          this.sugerencias = response.features.map((feature: any) => ({
+            nombre: feature.properties.name,
+            direccion: feature.properties.city || feature.properties.state || '',
+            latitud: feature.geometry.coordinates[1],
+            longitud: feature.geometry.coordinates[0],
+          }));
+        },
+        error: (err) => {
+          console.error('Error al buscar ubicaciones:', err);
+        },
+      });
+    } else {
+      this.sugerencias = [];
+    }
+  }
+
+  seleccionarUbicacion(sugerencia: any): void {
+    this.ubicacion.nombre = `${sugerencia.nombre}, ${sugerencia.direccion}`;
+    this.ubicacion.latitud = sugerencia.latitud;
+    this.ubicacion.longitud = sugerencia.longitud;
+    this.sugerencias = []; // Limpiar las sugerencias después de seleccionar
   }
 }

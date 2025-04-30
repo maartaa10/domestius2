@@ -1,135 +1,488 @@
-.container {
+@import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
+
+.dashboard-container {
   display: flex;
-  flex-direction: column;
-  background-color: #bfe3c0;
-  min-height: calc(100vh - 70px); 
-  padding: 30px; 
-  margin-top: 70px;
+  width: 100%;
+  margin-top: var(--navbar-height);
+  min-height: calc(100vh - var(--navbar-height));
+  background-color: #f8f9fa;
 }
-  
-.search-bar {
+
+/* Sidebar para filtros */
+.sidebar {
+  width: 280px;
+  background: linear-gradient(135deg, #add8e6 0%, #92c3d3 100%);
+  height: calc(100vh - var(--navbar-height));
+  position: fixed;
+  top: var(--navbar-height);
+  left: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 900;
+  padding-top: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.sidebar-collapsed {
+  width: 70px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 15px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-title {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #333;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.toggle-sidebar {
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  color: #333;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-sidebar:hover {
+  background: white;
+  color: #4b83e5;
+  transform: scale(1.1);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar-content {
+  padding: 20px 15px;
+}
+
+.filters-section {
+  margin-bottom: 25px;
+}
+
+.filter-category {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.filter-category h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.category-icon {
+  margin-right: 10px;
+  color: #4b83e5;
+  font-size: 1.2rem;
+}
+
+.filter-group {
+  margin-bottom: 8px;
+}
+
+.filter-option {
+  padding: 6px 0;
+}
+
+/* Estilos para checkbox personalizado */
+.custom-checkbox {
+  position: relative;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #333;
+  transition: all 0.2s ease;
+  padding: 5px 0;
+}
+
+.checkbox-custom {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 4px;
+  margin-right: 10px;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.check-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  color: white;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  opacity: 0;
+}
+
+.custom-checkbox input[type="checkbox"]:checked ~ .checkbox-label .checkbox-custom {
+  background-color: #4b83e5;
+}
+
+.custom-checkbox input[type="checkbox"]:checked ~ .checkbox-label .check-icon {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.checkbox-label:hover .checkbox-custom {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.checkbox-label:hover .filter-text {
+  color: #4b83e5;
+}
+
+.filter-text {
+  transition: color 0.2s ease;
+}
+
+/* Estilos para los filtros activos */
+.active-filters {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 25px;
+}
+
+.active-filters-title {
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+  color: #333;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.active-filters-title i {
+  margin-right: 8px;
+  color: #4b83e5;
+}
+
+.filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.filter-tag {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-tag i {
+  cursor: pointer;
+  color: #f44336;
+  font-size: 0.7rem;
+  transition: transform 0.2s;
+}
+
+.filter-tag i:hover {
+  transform: scale(1.2);
+}
+
+.clear-filters-btn {
+  background-color: #f8f9fa;
+  border: none;
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  color: #f44336;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.clear-filters-btn:hover {
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Mejoras para cuando está colapsado */
+.sidebar-collapsed .filter-option {
   display: flex;
   justify-content: center;
-  margin-bottom: 30px; 
 }
-  
+
+.sidebar-collapsed .checkbox-custom {
+  margin-right: 0;
+}
+
+/* Ajustar main content para el nuevo sidebar */
+.main-content {
+  flex: 1;
+  margin-left: 280px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  background-color: #bfe3c0;
+}
+
+.content-expanded {
+  margin-left: 70px;
+}
+
+/* Barra de búsqueda */
+.search-container {
+  margin-bottom: 25px;
+}
+
+.search-bar {
+  display: flex;
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 .search-bar input {
-  width: 400px; 
-  padding: 15px; 
-  font-size: 1.2rem; 
-  border-radius: 25px;
-  border: 1px solid #ccc;
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
 }
-  
-.search-bar button {
+
+.search-button {
   background: none;
   border: none;
+  padding: 0 20px;
   cursor: pointer;
-  margin-left: -50px; 
-  font-size: 1.5rem;
+  color: #4b83e5;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
 }
-  
-.content {
-  display: flex;
+
+.search-button:hover {
+  color: #2c5aa0;
+  transform: scale(1.1);
 }
-  
-.filters {
-  width: 250px; 
+
+/* Sección de protectoras */
+.protectoras-container {
+  padding: 10px;
 }
-  
-.filters h3 {
-  cursor: pointer;
-  font-size: 1.2rem; 
+
+.section-title {
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+  color: #333;
+  text-align: center;
+  position: relative;
 }
-  
-.filter {
-  background: #ddd;
-  margin: 10px; 
-  padding: 15px;
-  border-radius: 15px;
-  font-size: 1.1rem;
+
+.section-title::after {
+  content: '';
+  display: block;
+  width: 100px;
+  height: 3px;
+  background: #4b83e5;
+  margin: 10px auto 0;
+  border-radius: 3px;
 }
-  
-.protectoras-list {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  align-items: center;
+
+.protectoras-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
 }
 
 .protectora-card {
+  background-color: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.protectora-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.protectora-image-container {
+  height: 160px;
+  overflow: hidden;
+}
+
+.protectora-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.protectora-card:hover .protectora-image {
+  transform: scale(1.05);
+}
+
+.protectora-content {
+  padding: 20px;
+}
+
+.protectora-name {
+  font-size: 1.4rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.protectora-info {
+  margin-bottom: 20px;
+}
+
+.protectora-info p {
+  margin: 8px 0;
   display: flex;
   align-items: center;
-  background: #add8e6;
-  border-radius: 25px;
-  padding: 20px; 
-  position: relative;
-  width: 90%;
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1); 
+  color: #666;
 }
 
-.logo {
-  width: 100px; 
-  height: 100px;
-  margin-right: 15px; 
-  border-radius: 50%; 
+.info-icon {
+  width: 20px;
+  margin-right: 10px;
+  color: #4b83e5;
 }
 
-.info {
-  flex-grow: 1;
-  font-size: 1.1rem; 
+.protectora-action {
+  text-align: right;
 }
 
-.arrow {
-  font-size: 2rem; 
-  margin-right: 50px; 
+.view-more-btn {
+  background-color: #4b83e5;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
+.view-more-btn:hover {
+  background-color: #3b6fc7;
+  transform: translateX(5px);
+}
+
+.view-more-btn i {
+  margin-left: 5px;
+}
+
+/* Mensaje de no resultados */
+.no-results {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.empty-icon {
+  font-size: 3rem;
+  color: #ccc;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.no-results p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Mensaje de pie de página */
 .footer-message {
-  font-size: 1.2rem; 
-  margin-top: 20px; 
-}
-   
- 
-/* Estils per a pantalles petites (menys de 576px) */
-@media (max-width: 575px) {
-  .container {
-      max-width: 100%; /* Ajusta el max-width per a pantalles molt petites */
-  }
+  text-align: center;
+  margin-top: 40px;
+  padding: 20px;
+  font-size: 1.6rem;
+  color: #333;
+  font-style: italic;
 }
 
-/* Estils per a pantalles mitjanes (576px a 768px) */
-@media (min-width: 576px) and (max-width: 767px) {
-  .container {
-      max-width: 100%; /* Ajusta el max-width per a pantalles petites */
+/* Responsividad */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
   }
-}
-
-/* Estils per a pantalles mitjanes-altes (768px a 992px) */
-@media (min-width: 768px) and (max-width: 991px) {
-  .container {
-      max-width: 100%; /* Ajusta el max-width per a pantalles mitjanes */
+  
+  .sidebar-collapsed {
+    transform: translateX(-70px);
   }
-}
-
-/* Estils per a pantalles grans (992px a 1200px) */
-@media (min-width: 992px) and (max-width: 1199px) {
-  .container {
-      max-width: 100%; /* Ajusta el max-width per a pantalles grans */
+  
+  .main-content {
+    margin-left: 70px;
   }
-}
-
-/* Estils per a pantalles molt grans (1200px a 1400px) */
-@media (min-width: 1200px) and (max-width: 1399px) {
-  .container {
-      max-width: 100%; /* Ajusta el max-width per a pantalles molt grans */
+  
+  .content-expanded {
+    margin-left: 0;
   }
-}
-
-/* Estils per a pantalles extra grans (1400px i més) */
-@media (min-width: 1400px) {
-  .container {
-      max-width: 100%; /* Ajusta el max-width per a pantalles extra grans */
+  
+  .protectoras-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
   }
 }

@@ -30,6 +30,7 @@ import { RegistrarProtectoraComponent } from './registrar-protectora/registrar-p
 import { AfegirPublicacioComponent } from './afegir-publicacio/afegir-publicacio.component';
 import { EditarPublicacioComponent } from './editar-publicacio/editar-publicacio.component';
 import { DetallAnimalPublicacioComponent } from './detall-animal-publicacio/detall-animal-publicacio.component';
+import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCyePW5xWgzy4RHS7p6TmPJHlCgRSr8vWE",
@@ -65,7 +66,8 @@ const firebaseConfig = {
     RegistrarProtectoraComponent,
     AfegirPublicacioComponent,
     EditarPublicacioComponent,
-    DetallAnimalPublicacioComponent
+    DetallAnimalPublicacioComponent,
+    UserDashboardComponent
   ],
   imports: [
     BrowserModule,

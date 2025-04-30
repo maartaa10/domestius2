@@ -80,39 +80,24 @@
       />
     </div>
     <div class="form-group">
-      <label for="ubicacionNombre">Nom de la ubicació</label>
+      <label for="ubicacion">Ubicación</label>
       <input
-        type="text"
-        id="ubicacionNombre"
-        name="ubicacionNombre"
-        [(ngModel)]="ubicacion.nombre"
-        placeholder="Exemple: Barcelona"
-        required
-      />
-    </div>
-    
-    <div class="form-group">
-      <label for="latitud">Latitud</label>
-      <input
-        type="text"
-        id="latitud"
-        name="latitud"
-        [(ngModel)]="ubicacion.latitud"
-        placeholder="Exemple: 41.3754960"
-        required
-      />
-    </div>
-    
-    <div class="form-group">
-      <label for="longitud">Longitud</label>
-      <input
-        type="text"
-        id="longitud"
-        name="longitud"
-        [(ngModel)]="ubicacion.longitud"
-        placeholder="Exemple: 2.1768060"
-        required
-      />
+      id="ubicacion"
+      type="text"
+      class="form-control"
+      [(ngModel)]="ubicacion.nombre"
+      name="ubicacion"
+      (input)="buscarUbicacion(ubicacion.nombre)"
+      placeholder="Escribe una ubicación"
+    />
+      <ul *ngIf="sugerencias.length > 0" class="suggestions-list">
+        <li
+          *ngFor="let sugerencia of sugerencias"
+          (click)="seleccionarUbicacion(sugerencia)"
+        >
+          {{ sugerencia.nombre }}, {{ sugerencia.direccion }}
+        </li>
+      </ul>
     </div>
     <div class="form-group">
       <label>

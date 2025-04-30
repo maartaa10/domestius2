@@ -71,7 +71,7 @@ export class EditarPublicacioComponent {
     this.publicacioService.updatePublicacio(this.publicacio.id, this.publicacio).subscribe({
       next: () => {
         alert('Publicació actualitzada camb exit.');
-        this.router.navigate(['/animal-publicacio']);
+        this.router.navigate(['/user-dashboard']);
       },
       error: (err) => {
         console.error('Error al actualitzar la publi:', err);

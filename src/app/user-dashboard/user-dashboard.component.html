@@ -1,0 +1,289 @@
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <div class="sidebar" [ngClass]="{'sidebar-collapsed': sidebarCollapsed}">
+    <div class="sidebar-header">
+      <img *ngIf="!sidebarCollapsed" src="assets/logo.png" alt="Domestius" class="sidebar-logo">
+      <button class="toggle-sidebar" (click)="toggleSidebar()">
+        <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
+      </button>
+    </div>
+    <div class="sidebar-menu">
+      <a class="menu-item" [ngClass]="{'active': activeSection === 'profile'}" (click)="changeSection('profile')">
+        <i class="fas fa-user"></i>
+        <span *ngIf="!sidebarCollapsed">Perfil</span>
+      </a>
+      <a class="menu-item" [ngClass]="{'active': activeSection === 'mis-animales'}" (click)="changeSection('mis-animales')">
+        <i class="fas fa-paw"></i>
+        <span *ngIf="!sidebarCollapsed">Els meus animals</span>
+      </a>
+      <!-- Nuevo ítem: Registrar animal -->
+      <a class="menu-item" (click)="navigateToRegistrarAnimal()">
+        <i class="fas fa-plus-circle"></i>
+        <span *ngIf="!sidebarCollapsed">Registrar animal</span>
+      </a>
+      <a class="menu-item" [ngClass]="{'active': activeSection === 'mis-publicaciones'}" (click)="changeSection('mis-publicaciones')">
+        <i class="fas fa-bullhorn"></i>
+        <span *ngIf="!sidebarCollapsed">Les meves publicacions</span>
+      </a>
+      <a class="menu-item logout" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+        <span *ngIf="!sidebarCollapsed">Tancar sessió</span>
+      </a>
+    </div>
+  </div>
+  
+    <!-- Main Content -->
+    <div class="main-content" [ngClass]="{'content-expanded': sidebarCollapsed}">
+      <!-- Content Loader -->
+      <div *ngIf="loading" class="loader-container animate__animated animate__fadeIn">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Carregant...</span>
+        </div>
+        <p>Carregant la teva informació...</p>
+      </div>
+  
+      <!-- Error Message -->
+      <div *ngIf="error" class="error-container animate__animated animate__fadeIn">
+        <div class="alert alert-danger">
+          <i class="fas fa-exclamation-triangle"></i>
+          {{ error }}
+        </div>
+      </div>
+  
+      <!-- SECCIÓN DE PERFIL -->
+      <div *ngIf="!loading && !error && activeSection === 'profile'" class="dashboard-content animate__animated animate__fadeIn">
+        <header class="dashboard-header">
+          <h1 class="animate__animated animate__fadeIn">El teu espai personal</h1>
+          <div class="user-welcome animate__animated animate__fadeIn animate__delay-1s">
+            Benvingut/da, {{ userName || 'Usuari' }}
+          </div>
+        </header>
+        
+        <div class="card profile-card">
+          <div class="card-body">
+            <div class="profile-header">
+              <div class="profile-image-container">
+              </div>
+              <div class="profile-info">
+                <h2>{{ userName }}</h2>
+                <span class="profile-role">Usuari</span>
+              </div>
+            </div>
+            
+            <div class="profile-details">
+              <div class="info-group">
+                <div class="info-item">
+                  <div class="info-icon">
+                    <i class="fas fa-envelope"></i>
+                  </div>
+                  <div class="info-content">
+                    <span class="info-label">Email</span>
+                    <span class="info-value">{{ userEmail || 'No disponible' }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Quick Actions Section -->
+        <div class="quick-actions">
+          <h3 class="section-title">Accions ràpides</h3>
+          <div class="action-cards">
+            <div class="action-card" (click)="reportarAnimalPerdido()">
+              <div class="action-icon">
+                <i class="fas fa-search"></i>
+              </div>
+              <div class="action-content">
+                <h4>Reportar animal perdut</h4>
+                <p>Publica una alerta sobre un animal perdut</p>
+              </div>
+            </div>
+
+            <div class="action-card" (click)="navigateToRegistrarAnimal()">
+              <div class="action-icon">
+                <i class="fas fa-plus-circle"></i>
+              </div>
+              <div class="action-content">
+                <h4>Registrar animal</h4>
+                <p>Afegeix un nou animal al sistema</p>
+              </div>
+            </div>
+            
+            <div class="action-card" (click)="changeSection('mis-animales')">
+              <div class="action-icon">
+                <i class="fas fa-paw"></i>
+              </div>
+              <div class="action-content">
+                <h4>Els meus animals</h4>
+                <p>Gestiona la informació dels teus animals</p>
+              </div>
+            </div>
+            
+            <div class="action-card" (click)="editProfile()">
+              <div class="action-icon">
+                <i class="fas fa-edit"></i>
+              </div>
+              <div class="action-content">
+                <h4>Editar perfil</h4>
+                <p>Actualitza la teva informació personal</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- SECCIÓN DE MIS ANIMALES -->
+      <div *ngIf="!loading && !error && activeSection === 'mis-animales'" class="animals-content animate__animated animate__fadeIn">
+        <header class="dashboard-header">
+          <h1 class="animate__animated animate__fadeIn">Els meus animals</h1>
+          <div class="user-welcome animate__animated animate__fadeIn animate__delay-1s">
+            Gestiona els teus animals registrats
+          </div>
+        </header>
+  
+        <!-- Loader específico para los animales -->
+        <div *ngIf="loadingAnimals" class="loader-container animate__animated animate__fadeIn">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Carregant animals...</span>
+          </div>
+          <p>Carregant els teus animals...</p>
+        </div>
+  
+        <!-- Mensaje de error específico para los animales -->
+        <div *ngIf="animalsError" class="error-container animate__animated animate__fadeIn">
+          <div class="alert alert-danger">
+            <i class="fas fa-exclamation-triangle"></i>
+            {{ animalsError }}
+          </div>
+        </div>
+  
+        <!-- Lista de animales -->
+        <div *ngIf="!loadingAnimals && !animalsError" class="animals-list">
+          <div *ngIf="userAnimals.length === 0" class="no-animals-message">
+            <i class="fas fa-paw empty-icon"></i>
+            <p>No tens cap animal registrat encara.</p>
+            <div class="action-buttons">
+              <button class="add-animal-btn" (click)="navigateToRegistrarAnimal()">
+                <i class="fas fa-plus-circle"></i> Registrar nou animal
+              </button>
+              <button class="add-animal-btn" (click)="reportarAnimalPerdido()">
+                <i class="fas fa-search"></i> Reportar animal perdut
+              </button>
+            </div>
+          </div>
+  
+          <div *ngIf="userAnimals.length > 0" class="animals-grid">
+            <div *ngFor="let animal of paginatedAnimals" class="animal-card">
+              <div class="animal-image-container">
+                <img [src]="animal.imatge || 'assets/default-animal.jpg'" alt="{{ animal.nom }}" class="animal-image">
+              </div>
+              <div class="animal-content">
+                <h3 class="animal-name">{{ animal.nom }}</h3>
+                <div class="animal-tags">
+                  <span class="animal-tag especie">{{ animal.especie }}</span>
+                  <span class="animal-tag estado" [ngClass]="'estado-' + animal.estat.toLowerCase().replace(' ', '-')">{{ animal.estat }}</span>
+                </div>
+                <div class="animal-info">
+                  <p><i class="fas fa-birthday-cake info-icon"></i> {{ animal.edat || 'Edat desconeguda' }}</p>
+                  <p><i class="fas fa-dna info-icon"></i> {{ animal['raça'] || 'Raça desconeguda' }}</p>
+                  <p class="animal-description"><i class="fas fa-comment-alt info-icon"></i> {{ animal.descripcio || 'Sense descripció' }}</p>
+                </div>
+                <div class="animal-actions">
+                  <button class="action-btn edit-btn" [routerLink]="['/editar-animal', animal.id]">
+                    <i class="fas fa-edit"></i> Editar
+                  </button>
+                  <button class="action-btn delete-btn" (click)="confirmDeleteAnimal(animal.id)">
+                    <i class="fas fa-trash-alt"></i> Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div *ngIf="userAnimals.length > 0" class="pagination">
+            <button class="pagination-btn" [disabled]="animalPage === 1" (click)="changeAnimalPage(-1)">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <span class="page-indicator">{{ animalPage }} / {{ animalTotalPages }}</span>
+            <button class="pagination-btn" [disabled]="animalPage === animalTotalPages" (click)="changeAnimalPage(1)">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- SECCIÓN DE MIS PUBLICACIONES -->
+      <div *ngIf="!loading && !error && activeSection === 'mis-publicaciones'" class="publicaciones-content animate__animated animate__fadeIn">
+        <header class="dashboard-header">
+          <h1 class="animate__animated animate__fadeIn">Les meves publicacions</h1>
+          <div class="user-welcome animate__animated animate__fadeIn animate__delay-1s">
+            Gestiona les teves publicacions sobre animals
+          </div>
+        </header>
+  
+        <!-- Loader específico para las publicaciones -->
+        <div *ngIf="loadingPublicaciones" class="loader-container animate__animated animate__fadeIn">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Carregant publicacions...</span>
+          </div>
+          <p>Carregant les teves publicacions...</p>
+        </div>
+  
+        <!-- Mensaje de error específico para las publicaciones -->
+        <div *ngIf="publicacionesError" class="error-container animate__animated animate__fadeIn">
+          <div class="alert alert-danger">
+            <i class="fas fa-exclamation-triangle"></i>
+            {{ publicacionesError }}
+          </div>
+        </div>
+  
+        <!-- Lista de publicaciones -->
+        <div *ngIf="!loadingPublicaciones && !publicacionesError" class="publicaciones-list">
+          <div *ngIf="userPublicaciones.length === 0" class="no-publicaciones-message">
+            <i class="fas fa-bullhorn empty-icon"></i>
+            <p>No tens cap publicació encara.</p>
+            <button class="add-publicacion-btn" (click)="reportarAnimalPerdido()">Crear publicació</button>
+          </div>
+  
+          <div *ngIf="userPublicaciones.length > 0" class="publicaciones-grid">
+            <div *ngFor="let publicacion of paginatedPublicaciones" class="publicacion-card">
+              <div class="publicacion-header">
+                <span class="publicacion-tipo">{{ publicacion.tipus }}</span>
+                <span class="publicacion-fecha">{{ publicacion.data | date:'dd/MM/yyyy' }}</span>
+              </div>
+              <div class="publicacion-content"><!-- 
+                <div *ngIf="publicacion.animal?.imatge" class="publicacion-image-container">
+                  <img [src]="publicacion.animal?.imatge" alt="{{ publicacion.animal?.nom }}" class="publicacion-image">
+                </div> -->
+                <h3 class="publicacion-animal">{{ publicacion.animal?.nom || 'Animal desconegut' }}</h3>
+                <p class="publicacion-detalle">{{ publicacion.detalls }}</p>
+                <div class="publicacion-tags">
+                  <span *ngIf="publicacion.animal?.especie" class="publicacion-tag especie">{{ publicacion.animal?.especie }}</span>
+                  <span *ngIf="publicacion.animal?.['raça']" class="publicacion-tag raza">{{ publicacion.animal?.['raça'] }}</span>
+                </div>
+                <div class="publicacion-actions">
+                  <button class="action-btn edit-btn" [routerLink]="['/editar-publicacio', publicacion.id]">
+                    <i class="fas fa-edit"></i> Editar
+                  </button>
+                  <button class="action-btn delete-btn" (click)="confirmDeletePublicacion(publicacion.id)">
+                    <i class="fas fa-trash-alt"></i> Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div *ngIf="userPublicaciones.length > 0" class="pagination">
+            <button class="pagination-btn" [disabled]="pubPage === 1" (click)="changePublicacionPage(-1)">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <span class="page-indicator">{{ pubPage }} / {{ pubTotalPages }}</span>
+            <button class="pagination-btn" [disabled]="pubPage === pubTotalPages" (click)="changePublicacionPage(1)">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
