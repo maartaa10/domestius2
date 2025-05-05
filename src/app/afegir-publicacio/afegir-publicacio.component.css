@@ -109,3 +109,8 @@
     margin: 20px 0; /* Añade un margen razonable arriba y abajo */
     height: auto; /* Ajusta la altura al contenido */
   }
+  .error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 5px;
+  }

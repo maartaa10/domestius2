@@ -54,12 +54,20 @@ export class AfegirPublicacioComponent {
   }
 
   loadAnimals(): void {
-    this.animalPerdutService.getAnimals().subscribe({
-      next: (data) => {
-        this.animals = data;
+    this.authService.getUserProfile().subscribe({
+      next: (userData) => {
+        const userId = userData.id;
+        this.animalPerdutService.getAnimalesByUsuario(userId).subscribe({
+          next: (data) => {
+            this.animals = data; 
+          },
+          error: (err) => {
+            console.error('Error al carregar els animals del usuari:', err);
+          }
+        });
       },
       error: (err) => {
-        console.error('Error al carregar els animals:', err);
+        console.error('Error al obtenir el perfil del usuari:', err);
       }
     });
   }
