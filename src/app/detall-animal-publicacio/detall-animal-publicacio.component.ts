@@ -92,7 +92,7 @@ export class DetallAnimalPublicacioComponent implements OnChanges {
   toggleContactForm(): void {
     this.showContactForm = !this.showContactForm;
   }
-   onSubmit(): void {
+ /*   onSubmit(): void {
     console.log('Formulario enviado:', this.contactForm);
     alert('Gracias por interesarte, en breves nos comunicaremos contigo.');
     this.contactForm = {
@@ -101,5 +101,21 @@ export class DetallAnimalPublicacioComponent implements OnChanges {
       message: ''
     };
     this.showContactForm = false;
-  }
+  } */
+    onFormSubmit(event: Event): void {
+      event.preventDefault(); // Evita el comportamiento predeterminado para depuración
+      const form = event.target as HTMLFormElement;
+    
+      // Captura los datos del formulario
+      const formData = new FormData(form);
+      const data: { [key: string]: string } = {};
+      formData.forEach((value, key) => {
+        data[key] = value.toString();
+      });
+    
+      console.log('Formulario enviado con los siguientes datos:', data);
+    
+      // Permite que el formulario se envíe después de la depuración
+      form.submit();
+    }
 }

@@ -1,10 +1,9 @@
 <div class="container">
-  <!-- Eliminada la clase condicional 'hide' para que el título siempre sea visible -->
   <h1 class="title">Doméstius</h1>
   
   <div class="split-screen">
-    <!-- Modificado el evento click para permitir cambio directo entre menús -->
-    <div class="side animal-side" [ngClass]="{'active': showAnimalInfo}" (click)="showAnimalMessage()">
+    <!-- Panel de Animals Perduts -->
+    <div class="side animal-side hover-animation">
       <div class="side-content initial">
         <h2>ANIMALS PERDUTS</h2>
       </div>
@@ -22,21 +21,12 @@
               <div class="b2">Entrar</div>
             </div>
           </button>
-          <button class="bone back-bone" (click)="hideAnimalMessage(); $event.stopPropagation()">
-            <div class="c1"></div>
-            <div class="c2"></div>
-            <div class="c3"></div>
-            <div class="c4"></div>
-            <div class="b1">
-              <div class="b2">Tornar</div>
-            </div>
-          </button>
         </div>
       </div>
     </div>
     
-    <!-- Modificado el evento click para permitir cambio directo entre menús -->
-    <div class="side protector-side" [ngClass]="{'active': showProtectorInfo}" (click)="showProtectorMessage()">
+    <!-- Panel de Protectora -->
+    <div class="side protector-side hover-animation">
       <div class="side-content initial">
         <h2>PROTECTORA</h2>
       </div>
@@ -52,15 +42,6 @@
             <div class="c4"></div>
             <div class="b1">
               <div class="b2">Entrar</div>
-            </div>
-          </button>
-          <button class="bone back-bone" (click)="hideProtectorMessage(); $event.stopPropagation()">
-            <div class="c1"></div>
-            <div class="c2"></div>
-            <div class="c3"></div>
-            <div class="c4"></div>
-            <div class="b1">
-              <div class="b2">Tornar</div>
             </div>
           </button>
         </div>

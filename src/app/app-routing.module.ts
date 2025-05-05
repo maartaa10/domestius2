@@ -23,6 +23,7 @@ import { RegistrarProtectoraComponent } from './registrar-protectora/registrar-p
 import { AfegirPublicacioComponent } from './afegir-publicacio/afegir-publicacio.component';
 import { EditarPublicacioComponent } from './editar-publicacio/editar-publicacio.component';
 import { DetallAnimalPublicacioComponent } from './detall-animal-publicacio/detall-animal-publicacio.component';
+import { GraciesComponent } from './gracies/gracies.component';
 
 const routes: Routes = [ 
   { path: '', component: IniciComponent },
@@ -56,7 +57,8 @@ const routes: Routes = [
   { path: 'editar-publicacio/:id', component: EditarPublicacioComponent },
  
  
- 
+  { path: 'gracies', component: GraciesComponent },
+
 
 { path: 'footer', component: FooterComponent },
 { path: 'perfil', component: PerfilComponent },

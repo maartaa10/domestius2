@@ -1,0 +1,135 @@
+* {
+    margin: 0;
+    padding: 0;
+  }
+  
+  body h1 {
+    position: absolute;
+    left: 35%;
+    top: 10%;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 60px;
+    font-family: monospace;
+  }
+  
+  #back {
+    width: 100%;
+    height: 100vh;
+    background: url('/assets/background.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    animation: road2 40s 0s linear infinite;
+    position: relative;
+  }
+  
+  @keyframes road2 {
+    0% { background-repeat: repeat-x; }
+    50% { background-repeat: repeat-x; }
+    70% { background-repeat: repeat-x; }
+    90% { background-repeat: repeat-x; }
+    100% { background-position: 1920px 0; }
+  }
+  
+  .gracies-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+  
+  .gracies-container h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .gracies-container p {
+    font-size: 1.2rem;
+    color: #555;
+  }
+  
+
+  .cat img, .dog img, .rat img {
+    animation: moveAnimal 10s linear infinite; 
+  }
+  
+  .cat img {
+    width: 300px;
+    height: 200px;
+    position: absolute;
+    bottom: 10px;
+    left: 400px;
+    mix-blend-mode: multiply;
+  }
+  
+  .dog img {
+    width: 300px;
+    height: 200px;
+    position: absolute;
+    bottom: 10px;
+    left: 800px;
+  }
+  
+  .rat img {
+    width: 300px;
+    height: 200px;
+    position: absolute;
+    bottom: 10px;
+    left: 150px;
+    mix-blend-mode: multiply;
+  }
+  
+
+  @keyframes moveAnimal {
+    0% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(50px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+  
+  @media (max-width: 600px) {
+    body h1 {
+      font-size: 40px;
+      margin-left: -50px;
+    }
+    .gracies-container {
+      width: 90%;
+      padding: 15px 20px;
+    }
+    .gracies-container h2 {
+      font-size: 1.5rem;
+    }
+    .gracies-container p {
+      font-size: 1rem;
+    }
+    .cat img {
+      width: 140px;
+      height: 100px;
+      bottom: 130px;
+      left: 180px;
+    }
+    .dog img {
+      width: 140px;
+      height: 100px;
+      bottom: 130px;
+      left: 280px;
+    }
+    .rat img {
+      width: 120px;
+      height: 60px;
+      bottom: 130px;
+      left: 80px;
+    }
+  }

@@ -38,7 +38,7 @@
     <button class="interested-button" (click)="toggleContactForm()">Estic interessat</button>
   
    
-    <div class="contact-form" *ngIf="showContactForm">
+  <!--   <div class="contact-form" *ngIf="showContactForm">
         <h3>Contacta amb nosaltres</h3>
         <form (ngSubmit)="onSubmit()">
           <label for="name">Nom:</label>
@@ -52,5 +52,38 @@
       
           <button type="submit" class="submit-button">Enviar</button>
         </form>
+      </div> -->
+      <div class="contact-form" *ngIf="showContactForm">
+        <div class="container">
+          <h1>Contacta amb nosaltres</h1>
+          <form
+  target="_blank"
+  action="https://formsubmit.co/mrodrigoll13@gmail.com"
+  method="POST"
+  (submit)="onFormSubmit($event)"
+>
+            <div class="form-group">
+              <div class="form-row">
+                <div class="col">
+                  <input type="text" name="name" class="form-control" placeholder="El teu nom" required>
+                </div>
+                <div class="col">
+                  <input type="email" name="email" class="form-control" placeholder="Email" required>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <textarea placeholder="Escriu el teu missatge" class="form-control" name="message" rows="10" required></textarea>
+            </div>
+      
+            <!-- Campo oculto para el mensaje automático al usuario -->
+            <input type="hidden" name="_autoresponse" value="Gràcies per contactar amb nosaltres. Ens posarem en contacte amb tu aviat.">
+      
+            <!-- Opcional: redirigir a una página de éxito -->
+            <input type="hidden" name="_next" value="http://localhost:4200/gracies">
+      
+            <button type="submit" class="btn btn-lg btn-dark btn-block">Enviar</button>
+          </form>
+        </div>
       </div>
   </div>
