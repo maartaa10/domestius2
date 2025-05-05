@@ -68,7 +68,7 @@
   }
   
   .c1, .c2, .c3, .c4 {
-    background: #b7d608;
+    background: #bfe3c0;
     height: 40px; /* Aumenta el tamaño de los círculos */
     width: 40px; /* Aumenta el tamaño de los círculos */
     border: 1px solid #000;
@@ -82,7 +82,7 @@
   .c4 { bottom: 0; right: 0; }
   
   .b1 {
-    background: #b7d608;
+    background: #bfe3c0;
     height: 40px; /* Aumenta la altura del cuerpo */
     width: 160px; /* Aumenta el ancho del cuerpo */
     position: absolute;
