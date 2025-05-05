@@ -44,23 +44,5 @@ export class IniciComponent {
   showAnimals() {
     this.currentSection = 'animal-perdut';
   }
-
-  showProtectorMessage() {
-    this.showProtectorInfo = true;
-    this.showAnimalInfo = false; // Asegura que el otro menú se cierre
-  }
-  
-  hideProtectorMessage() {
-    this.showProtectorInfo = false;
-  }
-  
-  showAnimalMessage() {
-    this.showAnimalInfo = true;
-    this.showProtectorInfo = false; // Asegura que el otro menú se cierre
-  }
-  
-  hideAnimalMessage() {
-    this.showAnimalInfo = false;
-  }
   
 }
