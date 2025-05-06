@@ -2,7 +2,6 @@
   <!-- Sidebar -->
   <div class="sidebar" [ngClass]="{'sidebar-collapsed': sidebarCollapsed}">
     <div class="sidebar-header">
-      <img *ngIf="!sidebarCollapsed" src="assets/logo.png" alt="Domestius" class="sidebar-logo">
       <button class="toggle-sidebar" (click)="toggleSidebar()">
         <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
       </button>
@@ -16,14 +15,19 @@
         <i class="fas fa-paw"></i>
         <span *ngIf="!sidebarCollapsed">Els meus animals</span>
       </a>
-      <!-- Nuevo ítem: Registrar animal -->
+      <!-- Registrar animal -->
       <a class="menu-item" (click)="navigateToRegistrarAnimal()">
         <i class="fas fa-plus-circle"></i>
         <span *ngIf="!sidebarCollapsed">Registrar animal</span>
       </a>
       <a class="menu-item" [ngClass]="{'active': activeSection === 'mis-publicaciones'}" (click)="changeSection('mis-publicaciones')">
-        <i class="fas fa-bullhorn"></i>
+        <i class="fas fa-list"></i>
         <span *ngIf="!sidebarCollapsed">Les meves publicacions</span>
+      </a>
+      <!-- Nueva opción: Crear publicación -->
+      <a class="menu-item" (click)="reportarAnimalPerdido()">
+        <i class="fas fa-bullhorn"></i>
+        <span *ngIf="!sidebarCollapsed">Crear publicació</span>
       </a>
       <a class="menu-item logout" (click)="logout()">
         <i class="fas fa-sign-out-alt"></i>
