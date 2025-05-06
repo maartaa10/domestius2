@@ -93,6 +93,10 @@ export class AuthService {
   getUsuarioActualId(): number {
     return this.usuarioActual?.id || 1;
   }
+
+  getNombreUsuarioActual(): string {
+    return this.usuarioActual?.nom || 'Usuari desconegut';
+  }
   getUserType(): Observable<string> {
     return this.getUserProfile().pipe(
       map(userData => {
