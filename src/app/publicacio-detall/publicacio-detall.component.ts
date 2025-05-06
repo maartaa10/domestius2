@@ -7,6 +7,8 @@ import { Animal } from '../interfaces/animal';
 import { AnimalPerdutService } from '../services/animal-perdut.service';
 import { InteraccionsService } from '../services/interaccions.service';
 import { AuthService } from '../services/auth.service';
+import * as L from 'leaflet';
+import { AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-publicacio-detall',
@@ -15,6 +17,8 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./publicacio-detall.component.css']
 })
 export class PublicacioDetallComponent implements OnInit {
+  map: L.Map | null = null;
+
   publicacio: Publicacio | null = null;
   animal: Animal | null = null;
   interaccions: Interaccio[] = [];
@@ -27,6 +31,8 @@ export class PublicacioDetallComponent implements OnInit {
     tipus_interaccio_id: 1
   };
   mostrarFormulario: boolean = false;
+  latitude: number = 41.3851;
+  longitude: number = 2.1734;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,35 +44,80 @@ export class PublicacioDetallComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
+
     this.publicacioService.getPublicacioById(id).subscribe({
-        next: (data) => {
-            this.publicacio = data;
-            if (data.animal_id) {
-                this.loadAnimalDetails(data.animal_id);
-            }
-            this.loadInteraccions(data.id);
-        },
-        error: (err) => {
-            console.error('Error en carregar la publicació:', err);
+      next: (data) => {
+        this.publicacio = data;
+
+        if (data.animal?.geolocalitzacio?.latitud && data.animal?.geolocalitzacio?.longitud) {
+          this.latitude = parseFloat(data.animal.geolocalitzacio.latitud);
+          this.longitude = parseFloat(data.animal.geolocalitzacio.longitud);
         }
+
+        if (data.animal_id) {
+          this.loadAnimalDetails(data.animal_id);
+        }
+        this.loadInteraccions(data.id);
+      },
+      error: (err) => {
+        console.error('Error en carregar la publicació:', err);
+      }
     });
 
     this.authService.cargarUsuarioActual().subscribe({
-        next: (usuari) => {
-            console.log('Usuari autenticat carregat:', usuari);
-        },
-        error: (err) => {
-            console.error('Error en carregar l\'usuari autenticat:', err);
-        }
+      next: (usuari) => {},
+      error: (err) => {
+        console.error('Error en carregar l\'usuari autenticat:', err);
+      }
     });
+  }
+
+  initMap(): void {
+    if (this.map) {
+      this.map.remove();
+    }
+
+    this.map = L.map('map', {
+      zoomControl: false,
+      dragging: false,
+      scrollWheelZoom: false,
+      doubleClickZoom: false,
+      boxZoom: false,
+      keyboard: false,
+      touchZoom: false,
+    }).setView([this.latitude, this.longitude], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      crossOrigin: 'anonymous',
+    }).addTo(this.map);
+
+    L.marker([this.latitude, this.longitude])
+      .addTo(this.map)
+      .bindPopup('Ubicació de la publicació')
+      .openPopup();
+
+    setTimeout(() => {
+      this.map?.invalidateSize();
+    }, 100);
   }
 
   loadAnimalDetails(animalId: number): void {
     this.animalPerdutService.getAnimalById(animalId).subscribe({
       next: (animal) => {
         this.animal = animal;
+
         if (this.animal.imatge && !this.animal.imatge.startsWith('http')) {
           this.animal.imatge = `http://127.0.0.1:8000/uploads/${this.animal.imatge}`;
+        }
+
+        if (this.animal.geolocalitzacio?.latitud && this.animal.geolocalitzacio?.longitud) {
+          this.latitude = parseFloat(this.animal.geolocalitzacio.latitud);
+          this.longitude = parseFloat(this.animal.geolocalitzacio.longitud);
+
+          this.initMap();
+        } else {
+          alert('Aquest animal no te coordenades disponibles.');
         }
       },
       error: (err) => {
@@ -117,8 +168,6 @@ export class PublicacioDetallComponent implements OnInit {
     this.novaInteraccio.usuari_id = usuariId;
     this.novaInteraccio.tipus_interaccio_id = 1;
     this.novaInteraccio.data = formattedDate;
-
-    console.log('Dades enviades al backend:', JSON.stringify(this.novaInteraccio, null, 2));
 
     this.interaccioService.createInteraccio(this.novaInteraccio).subscribe({
       next: (interaccio) => {
