@@ -1,59 +1,59 @@
-<div class="publicacions-container">
-  <div *ngFor="let publicacio of publicacions" class="publicacio-card" (click)="navigateToPublicacio(publicacio.id)">
-    <h3>{{ publicacio.tipus }}</h3>
-
-   
-    <div *ngIf="publicacio.animal?.imatge" class="animal-image-container">
-      <img 
-        [src]="publicacio.animal?.imatge" 
-        alt="Imatge de {{ publicacio.animal?.nom }}" 
-        class="animal-image"
-      />
+<div class="page-container">
+  <div class="header-section">
+    <h1 class="main-title"><i class="fas fa-paw"></i> Publicacions d'Animals</h1>
+    <div class="search-bar">
+      <input type="text" placeholder="Buscar publicacions..." [(ngModel)]="searchQuery" (input)="filterPublicacions()">
+      <button class="search-button">
+        <i class="fas fa-search"></i>
+      </button>
     </div>
-    <p><strong>Data:</strong> {{ publicacio.data }}</p>
-    <p><strong>Detalls:</strong> {{ publicacio.detalls }}</p>
-    <p><strong>Publicat per:</strong> {{ publicacio.usuari?.nom }}</p>
-    <p><strong>Animal:</strong> {{ publicacio.animal?.nom }}</p>
-    <p><strong>Ubicació:</strong> {{ publicacio.animal?.geolocalitzacio?.nombre || 'No disponible' }}</p>
-    <p><strong>Latitut:</strong> {{ publicacio.animal?.geolocalitzacio?.latitud || 'No disponible' }}</p>
-    <p><strong>Longitut:</strong> {{ publicacio.animal?.geolocalitzacio?.longitud || 'No disponible' }}</p>
-    <!-- <div class="actions">
-      <button 
-        class="action-button edit rounded-circle" 
-        [routerLink]="['/editar-publicacio', publicacio.id]"
-        (click)="$event.stopPropagation()">
-        E
-      </button>
-
-      <button 
-        class="action-button delete rounded-circle" 
-        (click)="eliminarPublicacio(publicacio.id); $event.stopPropagation()">
-        D
-      </button>
-    </div> -->
   </div>
-</div>
-<!-- <div class="details-container" *ngIf="selectedPublicacio">
-  <div class="animal-details">
-    <h3>Datos del Animal</h3>
-    <p><strong>Nombre:</strong> {{ selectedPublicacio.animal?.nom }}</p>
-    <p><strong>Edad:</strong> {{ selectedPublicacio.animal?.edat || 'No disponible' }}</p>
-    <p><strong>Especie:</strong> {{ selectedPublicacio.animal?.especie }}</p>
-    <p><strong>Raza:</strong> {{ selectedPublicacio.animal?.['raça'] || 'No disponible' }}</p>
-    <p><strong>Descripción:</strong> {{ selectedPublicacio.animal?.descripcio || 'No disponible' }}</p>
-    <p><strong>Estado:</strong> {{ selectedPublicacio.animal?.estat }}</p>
-  </div> -->
 
-<!--   <div class="interactions">
-    <h3>Interacciones</h3>
-    <div *ngIf="interaccions.length > 0; else noInteractions">
-      <div class="interaction-card" *ngFor="let interaccio of interaccions">
-        <p><strong>Acción:</strong> {{ interaccio.accio }}</p>
-        <p><strong>Fecha:</strong> {{ interaccio.data }}</p>
-        <p><strong>Detalles:</strong> {{ interaccio.detalls }}</p>
+  <div class="publicacions-grid">
+    <div *ngFor="let publicacio of publicacions" class="publicacio-card animate__animated animate__fadeIn" (click)="navigateToPublicacio(publicacio.id)">
+      <div class="publicacio-header">
+        <span class="publicacio-tipo">{{ publicacio.tipus }}</span>
+        <span class="publicacio-date"><i class="fas fa-calendar-alt"></i> {{ publicacio.data | date:'dd/MM/yyyy' }}</span>
+      </div>
+
+      <div class="publicacio-image-container" *ngIf="publicacio.animal?.imatge">
+        <img [src]="publicacio.animal?.imatge" alt="Imatge de {{ publicacio.animal?.nom }}" class="publicacio-image">
+      </div>
+
+      <div class="publicacio-content">
+        <h3 class="publicacio-animal"><i class="fas fa-paw"></i> {{ publicacio.animal?.nom || 'Animal sense nom' }}</h3>
+        
+        <p class="publicacio-detalle">{{ publicacio.detalls }}</p>
+        
+        <div class="publicacio-tags">
+          <span class="publicacio-tag especie" *ngIf="publicacio.animal?.especie">{{ publicacio.animal?.especie }}</span>
+          <span class="publicacio-tag raza" *ngIf="publicacio.animal?.['raça']">{{ publicacio.animal?.['raça'] }}</span>
+          <span class="publicacio-tag estado" *ngIf="publicacio.animal?.estat" 
+          [ngClass]="getEstadoClass(publicacio.animal?.estat)">
+            {{ publicacio.animal?.estat }}
+          </span>
+        </div>
+        
+        <div class="publicacio-footer">
+          <div class="publicacio-author">
+            <i class="fas fa-user"></i> {{ publicacio.usuari?.nom || 'Usuari desconegut' }}
+          </div>
+          <div class="publicacio-location" *ngIf="publicacio.animal?.geolocalitzacio?.nombre">
+            <i class="fas fa-map-marker-alt"></i> {{ publicacio.animal?.geolocalitzacio?.nombre }}
+          </div>
+        </div>
+      </div>
+      
+      <div class="view-more">
+        <span>Veure detalls <i class="fas fa-chevron-right"></i></span>
       </div>
     </div>
-    <ng-template #noInteractions>
-      <p>No hay interacciones para esta publicación.</p>
-    </ng-template>
-  </div> -->
+  </div>
+
+  <!-- Mensaje para cuando no hay publicaciones -->
+  <div *ngIf="publicacions.length === 0" class="no-publicaciones">
+    <i class="fas fa-search empty-icon"></i>
+    <h3>No s'han trobat publicacions</h3>
+    <p>Intenta amb una cerca diferent o torna més tard.</p>
+  </div>
+</div>

@@ -1,76 +1,7 @@
-<div class="dashboard-container">
-  <!-- Sidebar para filtros mejorado -->
-  <div class="sidebar" [ngClass]="{'sidebar-collapsed': sidebarCollapsed}">
-    <div class="sidebar-header">
-      <h3 *ngIf="!sidebarCollapsed" class="sidebar-title">Filtres</h3>
-      <button class="toggle-sidebar" (click)="toggleSidebar()">
-        <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
-      </button>
-    </div>
-    <div class="sidebar-content">
-      <!-- Filtros de ubicación y servicios -->
-      <div class="filters-section">
-        <div class="filter-category" *ngIf="!sidebarCollapsed">
-          <i class="fas fa-map-marker-alt category-icon"></i>
-          <h4>Ubicació i serveis</h4>
-        </div>
-        <div class="filter-group" *ngFor="let filtro of filtros">
-          <div class="filter-option">
-            <div class="custom-checkbox">
-              <input type="checkbox" [id]="filtro" (change)="applyFilter(filtro)" [checked]="selectedFilters.includes(filtro)"/> 
-              <label [for]="filtro" class="checkbox-label">
-                <span class="checkbox-custom">
-                  <i class="fas fa-check check-icon"></i>
-                </span>
-                <span class="filter-text" *ngIf="!sidebarCollapsed">{{ filtro }}</span>
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Filtros por código postal -->
-      <div class="filters-section">
-        <div class="filter-category" *ngIf="!sidebarCollapsed">
-          <i class="fas fa-envelope category-icon"></i>
-          <h4>Codi postal</h4>
-        </div>
-        <div class="filter-group" *ngFor="let cp of codigosPostales">
-          <div class="filter-option">
-            <div class="custom-checkbox">
-              <input type="checkbox" [id]="cp" (change)="applyFilter(cp)" [checked]="selectedFilters.includes(cp)"/> 
-              <label [for]="cp" class="checkbox-label">
-                <span class="checkbox-custom">
-                  <i class="fas fa-check check-icon"></i>
-                </span>
-                <span class="filter-text" *ngIf="!sidebarCollapsed">{{ cp }}</span>
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Indicador de filtros aplicados -->
-      <div class="active-filters" *ngIf="!sidebarCollapsed && selectedFilters.length > 0">
-        <h5 class="active-filters-title">
-          <i class="fas fa-filter"></i> Filtres aplicats: {{ selectedFilters.length }}
-        </h5>
-        <div class="filter-tags">
-          <span class="filter-tag" *ngFor="let filter of selectedFilters">
-            {{ filter }}
-            <i class="fas fa-times" (click)="removeFilter(filter)"></i>
-          </span>
-        </div>
-        <button class="clear-filters-btn" *ngIf="selectedFilters.length > 0" (click)="clearAllFilters()">
-          <i class="fas fa-trash-alt"></i> Eliminar tots
-        </button>
-      </div>
-    </div>
-  </div>
-
+<div class="dashboard-container" [class.blur-background]="showFiltersModal">
   <!-- Contenido principal -->
-  <div class="main-content" [ngClass]="{'content-expanded': sidebarCollapsed}">
-    <!-- Barra de búsqueda -->
+  <div class="main-content">
+    <!-- Barra de búsqueda con botón de filtros -->
     <div class="search-container">
       <div class="search-bar">
         <input 
@@ -80,6 +11,29 @@
           (input)="filterProtectoras()" />
         <button class="search-button">
           <i class="fas fa-search"></i>
+        </button>
+      </div>
+      <button class="filter-button" (click)="toggleFiltersModal()">
+        <i class="fas fa-filter"></i>
+        <span>Filtres</span>
+        <span class="filter-count" *ngIf="selectedFilters.length > 0">{{ selectedFilters.length }}</span>
+      </button>
+    </div>
+
+    <!-- Indicador de filtros aplicados -->
+    <div class="active-filters-bar" *ngIf="selectedFilters.length > 0">
+      <div class="active-filters-content">
+        <span class="active-filters-label">
+          <i class="fas fa-filter"></i> Filtres actius:
+        </span>
+        <div class="filter-tags">
+          <span class="filter-tag" *ngFor="let filter of selectedFilters">
+            {{ filter }}
+            <i class="fas fa-times" (click)="removeFilter(filter); $event.stopPropagation()"></i>
+          </span>
+        </div>
+        <button class="clear-all-btn" (click)="clearAllFilters()">
+          <i class="fas fa-trash-alt"></i>
         </button>
       </div>
     </div>
@@ -122,6 +76,66 @@
       <!-- Mensaje de pie de página -->
       <div class="footer-message">
         <p>On cada història compta i cada vida importa.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Filtros -->
+<div class="filters-modal-overlay" [class.show-modal]="showFiltersModal" (click)="closeFiltersModal()">
+  <div class="filters-modal-container" (click)="$event.stopPropagation()">
+    <div class="filters-modal-header">
+      <h3><i class="fas fa-sliders-h"></i> Filtres</h3>
+      <button class="modal-close-btn" (click)="closeFiltersModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <div class="filters-modal-body">
+      <!-- Filtros de ubicación y servicios -->
+      <div class="filter-section">
+        <h4><i class="fas fa-map-marker-alt"></i> Ubicació i serveis</h4>
+        <div class="filter-options">
+          <div class="filter-option" *ngFor="let filtro of filtros">
+            <div class="custom-checkbox">
+              <input type="checkbox" [id]="'modal-'+filtro" (change)="applyFilter(filtro)" [checked]="selectedFilters.includes(filtro)"/> 
+              <label [for]="'modal-'+filtro" class="checkbox-label">
+                <span class="checkbox-custom">
+                  <i class="fas fa-check check-icon"></i>
+                </span>
+                <span class="filter-text">{{ filtro }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Filtros por código postal -->
+      <div class="filter-section">
+        <h4><i class="fas fa-envelope"></i> Codi postal</h4>
+        <div class="filter-options">
+          <div class="filter-option" *ngFor="let cp of codigosPostales">
+            <div class="custom-checkbox">
+              <input type="checkbox" [id]="'modal-'+cp" (change)="applyFilter(cp)" [checked]="selectedFilters.includes(cp)"/> 
+              <label [for]="'modal-'+cp" class="checkbox-label">
+                <span class="checkbox-custom">
+                  <i class="fas fa-check check-icon"></i>
+                </span>
+                <span class="filter-text">{{ cp }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="filters-modal-footer">
+      <div class="selected-filters-count" *ngIf="selectedFilters.length > 0">
+        {{ selectedFilters.length }} filtres seleccionats
+      </div>
+      <div class="modal-actions">
+        <button class="clear-btn" (click)="clearAllFilters()">Netejar tots</button>
+        <button class="apply-btn" (click)="applyFilters()">Aplicar</button>
       </div>
     </div>
   </div>

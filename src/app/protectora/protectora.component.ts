@@ -13,6 +13,8 @@ export class ProtectoraComponent implements OnInit {
   searchQuery: string = '';
   sidebarCollapsed: boolean = false;
   showFilters: boolean = false;
+  showFiltersModal: boolean = false;
+
   
   // Filtros relevantes para protectoras
   filtros: string[] = [
@@ -130,6 +132,28 @@ export class ProtectoraComponent implements OnInit {
 
   toggleFilters() {
     this.showFilters = !this.showFilters;
+  }
+
+  toggleFiltersModal(): void {
+    this.showFiltersModal = !this.showFiltersModal;
+    
+    if (this.showFiltersModal) {
+      // Bloquea el scroll cuando el modal está abierto
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Restaura el scroll cuando el modal está cerrado
+      document.body.style.overflow = 'auto';
+    }
+  }
+  
+  closeFiltersModal(): void {
+    this.showFiltersModal = false;
+    document.body.style.overflow = 'auto';
+  }
+  
+  applyFilters(): void {
+    this.filterProtectoras();
+    this.closeFiltersModal();
   }
 
   removeFilter(filtro: string): void {

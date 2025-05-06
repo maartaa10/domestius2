@@ -1,151 +1,274 @@
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-  padding: 20px;
+/* Estilos para la página de publicaciones */
+.page-container {
+  padding: 30px 20px;
   background-color: #bfe3c0;
-  margin-top: 70px;
-}
-
-.animal-card {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 15px;
-}
-
-.animal-image {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  margin-bottom: 15px;
-}
-
-.info p {
-  margin: 5px 0;
-  font-size: 14px;
-  color: #333;
-}
-
-.status-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
-.status-buttons .btn {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  color: #fff;
-}
-
-.status-buttons .btn.lost {
-  background-color: #ff6b6b;
-}
-
-.status-buttons .btn.last-seen {
-  background-color: #ffa502;
-}
-
-.status-buttons .btn.found {
-  background-color: #2ed573;
-}
-
-.publicacions-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-  padding: 20px;
+  min-height: 100vh;
   margin-top: var(--navbar-height);
 }
 
-.animal-image {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin: 10px auto;
-  object-fit: cover;
+.header-section {
+  max-width: 1200px;
+  margin: 0 auto 30px;
 }
 
-.publicacio-card {
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 15px;
-  background-color: #fff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.main-title {
+  text-align: center;
+  font-size: 2.2rem;
+  color: #333;
+  margin-bottom: 30px;
 }
 
-button.action-button.edit {
-  background-color: #2196f3;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+.main-title i {
+  color: #4b83e5;
   margin-right: 10px;
 }
 
-button.action-button.edit:hover {
-  background-color: #1976d2;
-  transform: scale(1.1);
+.search-bar {
+  display: flex;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-button.action-button.delete {
-  background-color: #f44336;
-  color: white;
+.search-bar input {
+  flex: 1;
+  padding: 12px 20px;
   border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  outline: none;
+  font-size: 1rem;
 }
 
-button.action-button.delete:hover {
-  background-color: #d32f2f;
+.search-button {
+  background: none;
+  border: none;
+  padding: 0 20px;
+  cursor: pointer;
+  color: #4b83e5;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+}
+
+.search-button:hover {
+  color: #2c5aa0;
   transform: scale(1.1);
 }
 
-@media (max-width: 575px) {
-  .container {
-    max-width: 100%;
-  }
+/* Grid de publicaciones */
+.publicacions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-@media (min-width: 576px) and (max-width: 767px) {
-  .container {
-    max-width: 100%;
-  }
+.publicacio-card {
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
-@media (min-width: 768px) and (max-width: 991px) {
-  .container {
-    max-width: 100%;
-  }
+.publicacio-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
-@media (min-width: 992px) and (max-width: 1199px) {
-  .container {
-    max-width: 100%;
-  }
+.publicacio-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 15px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #eee;
 }
 
-@media (min-width: 1200px) and (max-width: 1399px) {
-  .container {
-    max-width: 100%;
-  }
+.publicacio-tipo {
+  font-weight: 600;
+  color: #4b83e5;
 }
 
-@media (min-width: 1400px) {
-  .container {
-    max-width: 100%;
+.publicacio-date {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.publicacio-date i {
+  margin-right: 5px;
+}
+
+.publicacio-image-container {
+  height: 180px;
+  overflow: hidden;
+}
+
+.publicacio-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.publicacio-card:hover .publicacio-image {
+  transform: scale(1.05);
+}
+
+.publicacio-content {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.publicacio-animal {
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.publicacio-animal i {
+  color: #4b83e5;
+  font-size: 1.2rem;
+  margin-right: 8px;
+}
+
+.publicacio-detalle {
+  color: #666;
+  margin-bottom: 15px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.publicacio-tags {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.publicacio-tag {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.publicacio-tag.especie {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.publicacio-tag.raza {
+  background-color: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.publicacio-tag.estado {
+  background-color: #e8f5e9;
+  color: #388e3c;
+}
+
+.estado-adoptat {
+  background-color: #e8f5e9 !important;
+  color: #388e3c !important;
+}
+
+.estado-disponible {
+  background-color: #e3f2fd !important;
+  color: #1976d2 !important;
+}
+
+.estado-en-adopció {
+  background-color: #fff3e0 !important;
+  color: #e65100 !important;
+}
+
+.estado-reservat {
+  background-color: #f3e5f5 !important;
+  color: #7b1fa2 !important;
+}
+
+.publicacio-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.publicacio-author, .publicacio-location {
+  display: flex;
+  align-items: center;
+}
+
+.publicacio-author i, .publicacio-location i {
+  margin-right: 5px;
+  color: #4b83e5;
+}
+
+.view-more {
+  background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.9));
+  padding: 10px;
+  text-align: center;
+  font-weight: 500;
+  color: #4b83e5;
+  border-top: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+}
+
+.publicacio-card:hover .view-more {
+  background: #4b83e5;
+  color: white;
+}
+
+/* Mensaje para cuando no hay publicaciones */
+.no-publicaciones {
+  text-align: center;
+  padding: 50px 20px;
+  background-color: white;
+  border-radius: 10px;
+  margin: 40px auto;
+  max-width: 500px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.empty-icon {
+  font-size: 3.5rem;
+  color: #ccc;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.no-publicaciones h3 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.no-publicaciones p {
+  color: #666;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 1.8rem;
+  }
+  
+  .publicacions-grid {
+    grid-template-columns: 1fr;
+    padding: 0 10px;
   }
 }
