@@ -7,7 +7,16 @@ import { Animal } from '../interfaces/animal';
 import { AnimalPerdutService } from '../services/animal-perdut.service';
 import { InteraccionsService } from '../services/interaccions.service';
 import { AuthService } from '../services/auth.service';
-import * as L from 'leaflet';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import OSM from 'ol/source/OSM';
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
+import { fromLonLat } from 'ol/proj';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import { Icon, Style } from 'ol/style';
 
 @Component({
   selector: 'app-publicacio-detall',
@@ -16,12 +25,12 @@ import * as L from 'leaflet';
   styleUrls: ['./publicacio-detall.component.css']
 })
 export class PublicacioDetallComponent implements OnInit {
-  map: L.Map | null = null;
+  map: Map | null = null;
 
   publicacio: Publicacio | null = null;
   animal: Animal | null = null;
-  interaccions: any[] = []; // Cambiado a any[] para manejar usuarios
-  errorMessage: string = ''; // Añadida propiedad errorMessage
+  interaccions: any[] = [];
+  errorMessage: string = '';
   
   novaInteraccio: Interaccio = {
     accio: '',
@@ -76,35 +85,43 @@ export class PublicacioDetallComponent implements OnInit {
 
   initMap(): void {
     if (this.map) {
-      this.map.remove();
+      this.map.setTarget(undefined); // Use undefined instead of null
     }
   
-    this.map = L.map('map', {
-      zoomControl: true, // Habilitamos los controles de zoom
-      dragging: true, // Permitimos arrastrar el mapa
-      scrollWheelZoom: true, // Permitimos zoom con la rueda del ratón
-      doubleClickZoom: true,
-      boxZoom: true,
-      keyboard: true,
-      touchZoom: true,
-    }).setView([this.latitude, this.longitude], 13);
+    const vectorSource = new VectorSource();
+    const vectorLayer = new VectorLayer({
+      source: vectorSource,
+    });
   
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      crossOrigin: 'anonymous',
-    }).addTo(this.map);
+    this.map = new Map({
+      target: 'map', // ID of the map container
+      layers: [
+        new TileLayer({
+          source: new OSM(),
+        }),
+        vectorLayer,
+      ],
+      view: new View({
+        center: fromLonLat([this.longitude, this.latitude]), // Initial coordinates
+        zoom: 13, // Initial zoom level
+      }),
+    });
   
-    L.marker([this.latitude, this.longitude])
-      .addTo(this.map)
-      .bindPopup('Ubicació de l\'animal')
-      .openPopup();
+    // Add a marker at the animal's location
+    const marker = new Feature({
+      geometry: new Point(fromLonLat([this.longitude, this.latitude])),
+    });
   
-    // Aumentamos el tiempo de espera para asegurar que el mapa cargue correctamente
-    setTimeout(() => {
-      if (this.map) {
-        this.map.invalidateSize();
-      }
-    }, 300); // Aumentamos a 300ms
+   /*  marker.setStyle(
+      new Style({
+        image: new Icon({
+          src: 'https://cdn-icons-png.flaticon.com/512/616/616408.png', // Marker icon
+          scale: 0.05,
+        }),
+      })
+    ); */
+  
+    vectorSource.addFeature(marker);
   }
 
   loadAnimalDetails(animalId: number): void {
@@ -134,7 +151,6 @@ export class PublicacioDetallComponent implements OnInit {
   loadInteraccions(publicacioId: number): void {
     this.interaccioService.getInteraccionsByPublicacio(publicacioId).subscribe({
       next: (interaccions) => {
-        // Cargar información completa de interacciones con usuario
         this.interaccions = interaccions;
       },
       error: (err) => {
@@ -147,88 +163,71 @@ export class PublicacioDetallComponent implements OnInit {
     this.mostrarFormulario = !this.mostrarFormulario;
     
     if (this.mostrarFormulario) {
-      // Bloquear el scroll del body cuando se muestra el modal
       document.body.style.overflow = 'hidden';
     } else {
-      // Restaurar el scroll cuando se cierra el modal
       document.body.style.overflow = 'auto';
     }
   }
 
-
-
-  // Método agregarInteraccio mejorado
-agregarInteraccio(): void {
-  if (!this.novaInteraccio.accio || !this.novaInteraccio.detalls) {
-    alert('Si us plau, completa tots els camps de la interacció.');
-    return;
-  }
-
-  // Asegúrate de obtener un ID de usuario válido
-  const usuariId = this.authService.getUsuarioActualId();
-  if (!usuariId) {
-    console.error('No se pudo obtener el ID del usuario');
-    alert('No es pot afegir la interacció perquè no hi ha un usuari vàlid.');
-    return;
-  }
-
-  // Formatear la fecha al formato que espera el backend (YYYY-MM-DD HH:MM:SS)
-  const now = new Date();
-  const formattedDate = `${now.getFullYear()}-${(now.getMonth() + 1)
-    .toString()
-    .padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')} ${now
-    .getHours()
-    .toString()
-    .padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now
-    .getSeconds()
-    .toString()
-    .padStart(2, '0')}`;
-
-  // Crear el objeto de interacción
-  const interaccioData = {
-    accio: this.novaInteraccio.accio,
-    data: formattedDate,
-    detalls: this.novaInteraccio.detalls,
-    publicacio_id: this.publicacio?.id || 0,
-    usuari_id: usuariId,
-    tipus_interaccio_id: 1
-  };
-
-  console.log('Datos de la interacción a enviar:', interaccioData);
-
-  // Enviar la interacción al servidor
-  this.interaccioService.createInteraccio(interaccioData).subscribe({
-    next: (respuesta) => {
-      console.log('Respuesta del servidor:', respuesta);
-      alert('Interacció afegida amb èxit.');
-      
-      // Añadir la interacción a la lista local
-      const nombreUsuario = this.authService.getNombreUsuarioActual() || 'Usuari actual';
-      const interaccioConUsuario = {
-        ...respuesta,
-        usuari: {
-          id: usuariId,
-          nom: nombreUsuario
-        }
-      };
-      
-      this.interaccions.unshift(interaccioConUsuario); // Añadir al principio de la lista
-      
-      // Resetear el formulario
-      this.novaInteraccio = {
-        accio: '',
-        data: new Date(),
-        detalls: '',
-        publicacio_id: this.publicacio?.id || 0,
-        usuari_id: usuariId,
-        tipus_interaccio_id: 1
-      };
-      this.mostrarFormulario = false;
-    },
-    error: (err) => {
-      console.error('Error al añadir interacción:', err);
-      alert('Hi ha hagut un error en afegir la interacció. Si us plau, intenta-ho de nou.');
+  agregarInteraccio(): void {
+    if (!this.novaInteraccio.accio || !this.novaInteraccio.detalls) {
+      alert('Si us plau, completa tots els camps de la interacció.');
+      return;
     }
-  });
-}
+
+    const usuariId = this.authService.getUsuarioActualId();
+    if (!usuariId) {
+      console.error('No se pudo obtener el ID del usuario');
+      alert('No es pot afegir la interacció perquè no hi ha un usuari vàlid.');
+      return;
+    }
+
+    const now = new Date();
+    const formattedDate = `${now.getFullYear()}-${(now.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')} ${now
+      .getHours()
+      .toString()
+      .padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now
+      .getSeconds()
+      .toString()
+      .padStart(2, '0')}`;
+
+    const interaccioData = {
+      accio: this.novaInteraccio.accio,
+      data: formattedDate,
+      detalls: this.novaInteraccio.detalls,
+      publicacio_id: this.publicacio?.id || 0,
+      usuari_id: usuariId,
+      tipus_interaccio_id: 1
+    };
+
+    this.interaccioService.createInteraccio(interaccioData).subscribe({
+      next: (respuesta) => {
+        alert('Interacció afegida amb èxit.');
+        const nombreUsuario = this.authService.getNombreUsuarioActual() || 'Usuari actual';
+        const interaccioConUsuario = {
+          ...respuesta,
+          usuari: {
+            id: usuariId,
+            nom: nombreUsuario
+          }
+        };
+        this.interaccions.unshift(interaccioConUsuario);
+        this.novaInteraccio = {
+          accio: '',
+          data: new Date(),
+          detalls: '',
+          publicacio_id: this.publicacio?.id || 0,
+          usuari_id: usuariId,
+          tipus_interaccio_id: 1
+        };
+        this.mostrarFormulario = false;
+      },
+      error: (err) => {
+        console.error('Error al añadir interacción:', err);
+        alert('Hi ha hagut un error en afegir la interacció. Si us plau, intenta-ho de nou.');
+      }
+    });
+  }
 }

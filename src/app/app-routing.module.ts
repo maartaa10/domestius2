@@ -24,6 +24,7 @@ import { AfegirPublicacioComponent } from './afegir-publicacio/afegir-publicacio
 import { EditarPublicacioComponent } from './editar-publicacio/editar-publicacio.component';
 import { DetallAnimalPublicacioComponent } from './detall-animal-publicacio/detall-animal-publicacio.component';
 import { GraciesComponent } from './gracies/gracies.component';
+import { MapaAnimalsPerdutsComponent } from './mapa-animals-perduts/mapa-animals-perduts.component';
 
 const routes: Routes = [ 
   { path: '', component: IniciComponent },
@@ -59,7 +60,7 @@ const routes: Routes = [
  
   { path: 'gracies', component: GraciesComponent },
 
-
+  { path: 'mapa-animals-perduts', component: MapaAnimalsPerdutsComponent },
 { path: 'footer', component: FooterComponent },
 { path: 'perfil', component: PerfilComponent },
 ];
