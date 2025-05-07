@@ -85,7 +85,7 @@ export class PublicacioDetallComponent implements OnInit {
 
   initMap(): void {
     if (this.map) {
-      this.map.setTarget(undefined); // Use undefined instead of null
+      this.map.setTarget(undefined);
     }
   
     const vectorSource = new VectorSource();
@@ -94,7 +94,7 @@ export class PublicacioDetallComponent implements OnInit {
     });
   
     this.map = new Map({
-      target: 'map', // ID of the map container
+      target: 'map', 
       layers: [
         new TileLayer({
           source: new OSM(),
@@ -102,26 +102,17 @@ export class PublicacioDetallComponent implements OnInit {
         vectorLayer,
       ],
       view: new View({
-        center: fromLonLat([this.longitude, this.latitude]), // Initial coordinates
-        zoom: 13, // Initial zoom level
+        center: fromLonLat([this.longitude, this.latitude]), 
+        zoom: 13, 
       }),
     });
   
-    // Add a marker at the animal's location
+  
     const marker = new Feature({
       geometry: new Point(fromLonLat([this.longitude, this.latitude])),
     });
   
-   /*  marker.setStyle(
-      new Style({
-        image: new Icon({
-          src: 'https://cdn-icons-png.flaticon.com/512/616/616408.png', // Marker icon
-          scale: 0.05,
-        }),
-      })
-    ); */
-  
-    vectorSource.addFeature(marker);
+    
   }
 
   loadAnimalDetails(animalId: number): void {
