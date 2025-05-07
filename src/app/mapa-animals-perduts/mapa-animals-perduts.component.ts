@@ -11,6 +11,7 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Icon, Style } from 'ol/style';
 import { AnimalPerdutService } from '../services/animal-perdut.service';
+import { NominatimService } from '../services/nominatim.service';
 
 @Component({
   selector: 'app-mapa-animals-perduts',
@@ -23,7 +24,10 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
   map!: Map;
   vectorSource!: VectorSource;
 
-  constructor(private animalPerdutService: AnimalPerdutService) {}
+  constructor(
+    private animalPerdutService: AnimalPerdutService,
+    private nominatimService: NominatimService
+  ) {}
 
   ngOnInit(): void {
     this.initMap();
@@ -45,12 +49,11 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
         vectorLayer,
       ],
       view: new View({
-        center: fromLonLat([2.1734, 41.3851]), 
+        center: fromLonLat([2.1734, 41.3851]),
         zoom: 8,
       }),
     });
 
-   
     const popup = new Overlay({
       element: document.getElementById('popup')!,
       positioning: 'bottom-center',
@@ -58,7 +61,6 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
     });
     this.map.addOverlay(popup);
 
-   
     this.map.on('click', (event) => {
       const features = this.map.getFeaturesAtPixel(event.pixel);
       if (features && features.length > 0) {
@@ -70,70 +72,67 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
           const coordinates = geometry.getCoordinates();
           popup.setPosition(coordinates);
 
-         
           const popupElement = document.getElementById('popup-content')!;
           popupElement.innerHTML = `<strong>${animal.nom}</strong><br>${animal.especie}`;
         }
       } else {
-        popup.setPosition(undefined); 
+        popup.setPosition(undefined);
       }
     });
   }
 
   buscarProvincia(): void {
     if (!this.searchQuery.trim()) {
-      alert('Por favor, introduce una provincia.');
+      alert('Si us plau, introdueix una província.');
       return;
     }
-  
+
     const centerCoords = this.getProvinceCenter(this.searchQuery);
     if (centerCoords) {
-      this.map.getView().setCenter(fromLonLat(centerCoords)); 
-      this.map.getView().setZoom(10); 
+      this.map.getView().setCenter(fromLonLat(centerCoords));
+      this.map.getView().setZoom(10);
     } else {
-      alert('No se pudo encontrar la provincia especificada.');
+      alert('No s\'ha pogut trobar la província especificada.');
       return;
     }
-  
-    
-    this.vectorSource.clear(); 
+
+    this.vectorSource.clear();
     this.mostrarAnimalesPorProvincia(this.searchQuery);
   }
+
   getRandomCoordsInProvince(provincia: string): [number, number] | null {
     const provinceBounds: { [key: string]: { minLon: number; maxLon: number; minLat: number; maxLat: number; safePoint: [number, number] } } = {
       barcelona: { minLon: 2.05, maxLon: 2.2, minLat: 41.35, maxLat: 41.45, safePoint: [2.15, 41.38] },
-      tarragona: { minLon: 1.05, maxLon: 1.25, minLat: 41.05, maxLat: 41.15, safePoint: [1.15, 41.10] }, 
+      tarragona: { minLon: 1.05, maxLon: 1.25, minLat: 41.05, maxLat: 41.15, safePoint: [1.15, 41.10] },
       girona: { minLon: 2.6, maxLon: 3.0, minLat: 41.85, maxLat: 42.2, safePoint: [2.82, 41.98] },
       lleida: { minLon: 0.6, maxLon: 0.9, minLat: 41.5, maxLat: 41.8, safePoint: [0.75, 41.65] },
     };
-  
+
     const bounds = provinceBounds[provincia.toLowerCase()];
     if (!bounds) {
-      console.warn(`No se encontraron límites para la provincia ${provincia}`);
+      console.warn(`No s'han trobat límits per a la província ${provincia}`);
       return null;
     }
-  
+
     let attempts = 0;
-    const maxAttempts = 20; 
-  
+    const maxAttempts = 20;
+
     while (attempts < maxAttempts) {
       const randomLon = Math.random() * (bounds.maxLon - bounds.minLon) + bounds.minLon;
       const randomLat = Math.random() * (bounds.maxLat - bounds.minLat) + bounds.minLat;
-  
-    
+
       if (this.isLand(provincia, randomLon, randomLat)) {
         return [randomLon, randomLat];
       }
-  
+
       attempts++;
     }
-  
-    console.warn(`No se pudieron generar coordenadas válidas para la provincia ${provincia} después de ${maxAttempts} intentos. Usando punto seguro.`);
-    return bounds.safePoint; 
+
+    console.warn(`No s'han pogut generar coordenades vàlides per a la província ${provincia} després de ${maxAttempts} intents. S'està utilitzant un punt segur.`);
+    return bounds.safePoint;
   }
-  
+
   isLand(provincia: string, lon: number, lat: number): boolean {
-  
     const provincePolygons: { [key: string]: { lon: number[]; lat: number[] } } = {
       barcelona: {
         lon: [2.05, 2.2, 2.2, 2.05],
@@ -152,13 +151,12 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
         lat: [41.5, 41.5, 41.8, 41.8],
       },
     };
-  
+
     const polygon = provincePolygons[provincia.toLowerCase()];
     if (!polygon) {
       return true;
     }
-  
-   
+
     return (
       lon >= Math.min(...polygon.lon) &&
       lon <= Math.max(...polygon.lon) &&
@@ -166,56 +164,133 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
       lat <= Math.max(...polygon.lat)
     );
   }
-  
+
   mostrarAnimalesPorProvincia(provincia: string): void {
-    const distribucionProvincias: { [key: string]: { minId: number; maxId: number } } = {
-      girona: { minId: 0, maxId: 10 },
-      barcelona: { minId: 11, maxId: 20 },
-      tarragona: { minId: 21, maxId: 30 },
-      lleida: { minId: 31, maxId: 40 },
-    };
-  
-    const rango = distribucionProvincias[provincia.toLowerCase()];
-    if (!rango) {
-      console.warn(`No se encontró el rango para la provincia ${provincia}`);
+    this.animalPerdutService.getAnimals().subscribe({
+      next: (animales) => {
+        this.vectorSource.clear();
+
+        const animalesFiltrats = animales.filter((animal) => {
+          const lat = parseFloat(animal.geolocalitzacio?.latitud || '0');
+          const lon = parseFloat(animal.geolocalitzacio?.longitud || '0');
+          return this.isLand(provincia, lon, lat);
+        });
+
+        animalesFiltrats.forEach((animal) => {
+          if (animal.geolocalitzacio?.latitud && animal.geolocalitzacio?.longitud) {
+            const coords = fromLonLat([
+              parseFloat(animal.geolocalitzacio.longitud),
+              parseFloat(animal.geolocalitzacio.latitud),
+            ]);
+
+            const marker = new Feature({
+              geometry: new Point(coords),
+              animalData: animal,
+            });
+
+            marker.setStyle(
+              new Style({
+                image: new Icon({
+                  src: 'https://cdn-icons-png.flaticon.com/512/616/616408.png',
+                  scale: 0.05,
+                }),
+              })
+            );
+
+            this.vectorSource.addFeature(marker);
+          } else {
+            console.warn(`L'animal amb ID ${animal.id} no té coordenades vàlides.`);
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Error en obtenir els animals:', err);
+      },
+    });
+  }
+
+  buscarComarcaOCiudad(): void {
+    if (!this.searchQuery.trim()) {
       return;
     }
-  
-    const addedAnimalIds = new Set<number>(); 
-  
-    for (let id = rango.minId; id <= rango.maxId; id++) {
-      this.animalPerdutService.getAnimalById(id).subscribe({
-        next: (animal) => {
-          if (animal && !addedAnimalIds.has(animal.id)) {
-            const randomCoords = this.getRandomCoordsInProvince(provincia);
-  
-            if (randomCoords) {
-              const marker = new Feature({
-                geometry: new Point(fromLonLat(randomCoords)),
-                animalData: animal,
-              });
-  
-              marker.setStyle(
-                new Style({
-                  image: new Icon({
-                    src: 'https://cdn-icons-png.flaticon.com/512/616/616408.png', 
-                    scale: 0.05,
-                  }),
-                })
-              );
-  
-              this.vectorSource.addFeature(marker);
-              addedAnimalIds.add(animal.id); 
-            } else {
-              console.warn(`No se pudieron generar coordenadas para la provincia ${provincia}`);
-            }
+
+    this.nominatimService.getComarcasOrCities(this.searchQuery).subscribe({
+      next: (results) => {
+        if (results.length > 0) {
+          const firstResult = results[0];
+          const centerCoords: [number, number] = [
+            parseFloat(firstResult.lon),
+            parseFloat(firstResult.lat),
+          ];
+
+          this.map.getView().setCenter(fromLonLat(centerCoords));
+          this.map.getView().setZoom(10);
+
+          this.mostrarAnimalesPorUbicacion(centerCoords);
+        } else {
+          alert('No s\'han trobat resultats per a la cerca.');
+        }
+      },
+      error: (err) => {
+        console.error('Error en cercar la comarca o ciutat:', err);
+        alert('Hi ha hagut un error en cercar la comarca o ciutat. Si us plau, verifica la teva connexió o intenta amb un altre terme.');
+      },
+    });
+  }
+
+  mostrarAnimalesPorUbicacion(centerCoords: [number, number]): void {
+    this.animalPerdutService.getAnimals().subscribe({
+      next: (animales) => {
+        this.vectorSource.clear();
+
+        const animalesFiltrats = animales.filter((animal) => {
+          const lat = parseFloat(animal.geolocalitzacio?.latitud || '0');
+          const lon = parseFloat(animal.geolocalitzacio?.longitud || '0');
+          return this.isNearby(centerCoords, [lon, lat]);
+        });
+
+        animalesFiltrats.forEach((animal) => {
+          if (animal.geolocalitzacio?.latitud && animal.geolocalitzacio?.longitud) {
+            const coords = fromLonLat([
+              parseFloat(animal.geolocalitzacio.longitud),
+              parseFloat(animal.geolocalitzacio.latitud),
+            ]);
+
+            const marker = new Feature({
+              geometry: new Point(coords),
+              animalData: animal,
+            });
+
+            marker.setStyle(
+              new Style({
+                image: new Icon({
+                  src: 'https://cdn-icons-png.flaticon.com/512/616/616408.png',
+                  scale: 0.05,
+                }),
+              })
+            );
+
+            this.vectorSource.addFeature(marker);
+          } else {
+            console.warn(`L'animal amb ID ${animal.id} no té coordenades vàlides.`);
           }
-        },
-        error: (err) => {
-          console.warn(`No se pudo obtener el animal con ID ${id}:`, err);
-        },
-      });
-    }
+        });
+      },
+      error: (err) => {
+        console.error('Error en obtenir els animals:', err);
+      },
+    });
+  }
+
+  isNearby(centerCoords: [number, number], animalCoords: [number, number]): boolean {
+    const [centerLon, centerLat] = centerCoords;
+    const [animalLon, animalLat] = animalCoords;
+
+    const distance = Math.sqrt(
+      Math.pow(centerLon - animalLon, 2) + Math.pow(centerLat - animalLat, 2)
+    );
+
+    return distance < 0.1;
   }
   getProvinceCenter(provincia: string): [number, number] | null {
    
