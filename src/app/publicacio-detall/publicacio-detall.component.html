@@ -1,41 +1,150 @@
-<div class="details-container" *ngIf="publicacio">
-  <div class="animal-details">
-    <h3>Dades de l'Animal</h3>
-    <img [src]="animal?.imatge || 'assets/default-animal.png'" alt="Mascota" class="logo">
-    <p><strong>Nom:</strong> {{ animal?.nom || 'No disponible' }}</p>
-    <p><strong>Edat:</strong> {{ animal?.edat || 'No disponible' }}</p>
-    <p><strong>Espècie:</strong> {{ animal?.especie || 'No disponible' }}</p>
-    <p><strong>Raça:</strong> {{ animal?.['raça'] || 'No disponible' }}</p>
-    <p><strong>Descripció:</strong> {{ animal?.descripcio || 'No disponible' }}</p>
-  </div>
-
- <div class="interactions">
-<h3>Interaccions</h3>
-<div *ngIf="interaccions.length > 0; else noInteractions">
-  <div class="interaction-card" *ngFor="let interaccio of interaccions">
-    <p><strong>Acció:</strong> {{ interaccio.accio || 'No disponible' }}</p>
-    <p><strong>Data:</strong> {{ interaccio.data || 'No disponible' }}</p>
-    <p><strong>Detalls:</strong> {{ interaccio.detalls || 'No disponible' }}</p>
-  </div>
-</div>
-<ng-template #noInteractions>
-  <p>No hi ha interaccions per a aquesta publicació.</p>
-</ng-template>
-<br>
-<button class="action-button" (click)="toggleFormulario()">Afegir Interacció</button>
-
-<div *ngIf="mostrarFormulario" class="add-interaction-form">
-  <h3>Afegir Interacció</h3>
-  <form (ngSubmit)="agregarInteraccio()">
-    <div class="form-group">
-      <label for="accio">Acció</label>
-      <input id="accio" [(ngModel)]="novaInteraccio.accio" name="accio" required />
+<div class="publicacio-detall-container" [class.blur-background]="mostrarFormulario">
+  <div class="publicacio-content" *ngIf="publicacio">
+    <!-- Sección superior con información de la publicación -->
+    <div class="publicacio-header">
+      <div class="back-link">
+        <a routerLink="/animal-publicacio"><i class="fas fa-arrow-left"></i> Tornar a publicacions</a>
+      </div>
+      <div class="publicacio-title">
+        <h1>{{ publicacio.tipus || 'Publicació' }}</h1>
+        <span class="publicacio-date"><i class="fas fa-calendar-alt"></i> {{ publicacio.data | date:'dd/MM/yyyy' }}</span>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="detalls">Detalls</label>
-      <textarea id="detalls" [(ngModel)]="novaInteraccio.detalls" name="detalls" required></textarea>
+
+    <div class="content-grid">
+      <!-- Tarjeta de información del animal -->
+      <div class="card animal-card">
+        <div class="card-header">
+          <i class="fas fa-paw"></i>
+          <h3>Dades de l'Animal</h3>
+        </div>
+        <div class="card-content">
+          <div class="animal-image-container">
+            <img [src]="animal?.imatge || 'assets/default-animal.png'" alt="{{ animal?.nom }}" class="animal-image">
+          </div>
+          <div class="animal-info">
+            <div class="info-group">
+              <div class="info-item">
+                <div class="info-icon"><i class="fas fa-tag"></i></div>
+                <div class="info-content">
+                  <span class="info-label">Nom</span>
+                  <span class="info-value">{{ animal?.nom || 'No disponible' }}</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <div class="info-icon"><i class="fas fa-birthday-cake"></i></div>
+                <div class="info-content">
+                  <span class="info-label">Edat</span>
+                  <span class="info-value">{{ animal?.edat || 'No disponible' }}</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <div class="info-icon"><i class="fas fa-paw"></i></div>
+                <div class="info-content">
+                  <span class="info-label">Espècie</span>
+                  <span class="info-value">{{ animal?.especie || 'No disponible' }}</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <div class="info-icon"><i class="fas fa-dna"></i></div>
+                <div class="info-content">
+                  <span class="info-label">Raça</span>
+                  <span class="info-value">{{ animal?.['raça'] || 'No disponible' }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="animal-description">
+              <p><i class="fas fa-comment-alt"></i> {{ animal?.descripcio || 'No hi ha descripció disponible' }}</p>
+            </div>
+          </div>
+          <div class="map-container">
+            <h4><i class="fas fa-map-marker-alt"></i> Ubicació</h4>
+            <div class="map-wrapper">
+              <div id="map"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tarjeta de interacciones -->
+      <div class="card interactions-card">
+        <div class="card-header">
+          <i class="fas fa-comments"></i>
+          <h3>Interaccions</h3>
+          <button class="add-btn" (click)="toggleFormulario()">
+            <i class="fas fa-plus-circle"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <div *ngIf="interaccions.length > 0; else noInteractions" class="interaccions-list">
+            <div class="interaction-card" *ngFor="let interaccio of interaccions">
+              <div class="interaction-header">
+                <span class="interaction-action">{{ interaccio.accio || 'No disponible' }}</span>
+                <span class="interaction-date">{{ interaccio.data | date:'dd/MM/yyyy HH:mm' }}</span>
+              </div>
+              <div class="interaction-body">
+                <p>{{ interaccio.detalls || 'Sense detalls' }}</p>
+              </div>
+              <div class="interaction-footer">
+                <span class="interaction-user">
+                  <i class="fas fa-user"></i> 
+                  {{ interaccio.usuari?.nom || 'Usuari ' + interaccio.usuari_id }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <ng-template #noInteractions>
+            <div class="no-data-message">
+              <i class="fas fa-comment-slash empty-icon"></i>
+              <p>No hi ha interaccions per a aquesta publicació.</p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
     </div>
-    <button type="submit" class="action-button">Desar Interacció</button>
-  </form>
-</div>
+  </div>
+  
+  <!-- Mensaje de carga o error -->
+  <div *ngIf="!publicacio" class="loading-error">
+    <div class="spinner-border text-primary" role="status" *ngIf="!errorMessage">
+      <span class="visually-hidden">Carregant...</span>
+    </div>
+    <div class="alert-error" *ngIf="errorMessage">
+      <i class="fas fa-exclamation-circle"></i>
+      <p>{{ errorMessage }}</p>
+      <button class="action-button" routerLink="/animal-publicacio">Tornar a publicacions</button>
+    </div>
+  </div>
+  
+  <!-- Modal para añadir interacción -->
+  <div class="modal-overlay" [ngClass]="{'modal-open': mostrarFormulario}" (click)="toggleFormulario()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3><i class="fas fa-plus-circle"></i> Nova interacció</h3>
+        <button class="modal-close" (click)="toggleFormulario()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="agregarInteraccio()">
+          <div class="form-group">
+            <label for="accio">Acció</label>
+            <input id="accio" [(ngModel)]="novaInteraccio.accio" name="accio" required placeholder="Tipus d'acció" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="detalls">Detalls</label>
+            <textarea id="detalls" [(ngModel)]="novaInteraccio.detalls" name="detalls" required placeholder="Descriu la interacció..." class="form-control" rows="3"></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="action-button save-btn">
+              <i class="fas fa-save"></i> Desar
+            </button>
+            <button type="button" class="action-button cancel-btn" (click)="toggleFormulario()">
+              <i class="fas fa-times"></i> Cancel·lar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

@@ -41,7 +41,7 @@ export class AnimalPerdutService {
     return this.http.get(`${this.apiUrl}/animal/imatge/${id}`, { responseType: 'blob' });
   }
   getAnimalesByUsuario(userId: number): Observable<Animal[]> {
-    return this.http.get<Animal[]>(`${this.apiUrl}/usuario/${userId}/animales`);
+    return this.http.get<Animal[]>(`${this.apiUrl}/usuario/${userId}/animales-propios`);
    
   }
 

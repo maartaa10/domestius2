@@ -32,6 +32,11 @@ export class ProtectoraDetallComponent implements OnInit {
     }
   }
 
+  getEstadoClass(estado: string | undefined | null): string {
+    if (!estado) return '';
+    return 'estado-' + estado.toLowerCase().replace(' ', '-');
+  }
+
   loadProtectoraDetails(id: number): void {
     this.protectoraService.getProtectora(id).subscribe({
       next: (data) => {

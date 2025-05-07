@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicacioService } from '../services/publicacio.service';
 import { Publicacio } from '../interfaces/publicacio';
@@ -10,9 +10,11 @@ import { AnimalPerdutService } from '../services/animal-perdut.service';
   templateUrl: './animal-publicacio.component.html',
   styleUrls: ['./animal-publicacio.component.css']
 })
-export class AnimalPublicacioComponent implements OnInit {
+export class AnimalPublicacioComponent implements OnInit, OnDestroy {
   publicacions: Publicacio[] = []; 
+  publicacionesOriginales: Publicacio[] = []; // Guardar copia original
   selectedPublicacio: Publicacio | null = null;
+  searchQuery: string = ''; // Añadido para la búsqueda
 
   constructor(
     private publicacioService: PublicacioService,
@@ -23,26 +25,34 @@ export class AnimalPublicacioComponent implements OnInit {
   ngOnInit(): void {
     this.loadPublicacions();
   }
-/*   getAnimalImageUrl(imagePath: string | null | undefined): string {
+
+  // Método para filtrar publicaciones según la búsqueda
+  filterPublicacions(): void {
+    if (!this.searchQuery.trim()) {
+      // Si la búsqueda está vacía, mostrar todas las publicaciones
+      this.publicacions = [...this.publicacionesOriginales];
+    } else {
+      const searchTermLower = this.searchQuery.toLowerCase();
+      this.publicacions = this.publicacionesOriginales.filter(publicacion => 
+        publicacion.tipus?.toLowerCase().includes(searchTermLower) ||
+        publicacion.detalls?.toLowerCase().includes(searchTermLower) ||
+        publicacion.animal?.nom?.toLowerCase().includes(searchTermLower) ||
+        publicacion.animal?.especie?.toLowerCase().includes(searchTermLower) ||
+        publicacion.animal?.['raça']?.toLowerCase().includes(searchTermLower)
+      );
+    }
+  }
+
+  getAnimalImageUrl(imagePath: string | null | undefined): string {
     if (!imagePath) {
-      return 'assets/default-animal.jpg'; // Imagen predeterminada si no hay imagen
+      return 'assets/default-animal.jpg'; 
     }
     if (!imagePath.startsWith('http')) {
-      return `http://127.0.0.1:8000/uploads/${imagePath}`;
+      return encodeURI(`http://127.0.0.1:8000/uploads/${imagePath}`);
     }
-    return imagePath;
-  } */
-    getAnimalImageUrl(imagePath: string | null | undefined): string {
-      if (!imagePath) {
-        return 'assets/default-animal.jpg'; 
-      }
-      if (!imagePath.startsWith('http')) {
-       
-        return encodeURI(`http://127.0.0.1:8000/uploads/${imagePath}`);
-      }
-      return encodeURI(imagePath); 
-    }
-    
+    return encodeURI(imagePath); 
+  }
+
   eliminarPublicacio(publicacioId: number): void {
     if (!publicacioId) {
       alert('No es pot eliminar una publicació sense un ID vàlid.');
@@ -57,9 +67,10 @@ export class AnimalPublicacioComponent implements OnInit {
     this.publicacioService.deletePublicacio(publicacioId).subscribe({
       next: () => {
         alert('Publicació eliminada amb èxit.');
-     
         this.publicacions = this.publicacions.filter(publicacio => publicacio.id !== publicacioId);
-    
+        this.publicacionesOriginales = this.publicacionesOriginales.filter(
+          publicacio => publicacio.id !== publicacioId
+        );
         this.router.navigate(['/animal-publicacio']);
       },
       error: (err) => {
@@ -68,13 +79,13 @@ export class AnimalPublicacioComponent implements OnInit {
       }
     });
   }
+
   loadAnimalImages(): void {
     this.publicacions.forEach((publicacio) => {
       if (publicacio.animal?.id) {
         this.animalPerdutService.getAnimalImatge(publicacio.animal.id).subscribe({
           next: (imageBlob: Blob) => {
             if (publicacio.animal) {
-         
               const objectURL = URL.createObjectURL(imageBlob);
               publicacio.animal.imatge = objectURL;
             }
@@ -86,6 +97,7 @@ export class AnimalPublicacioComponent implements OnInit {
       }
     });
   }
+
   ngOnDestroy(): void {
     this.publicacions.forEach((publicacio) => {
       if (publicacio.animal?.imatge) {
@@ -93,10 +105,12 @@ export class AnimalPublicacioComponent implements OnInit {
       }
     });
   }
+
   loadPublicacions(): void {
     this.publicacioService.getPublicacions().subscribe({
       next: (data) => {
         this.publicacions = data;
+        this.publicacionesOriginales = [...data]; // Guardar copia original
         this.loadAnimalImages(); 
       },
       error: (err) => {
@@ -108,4 +122,16 @@ export class AnimalPublicacioComponent implements OnInit {
   navigateToPublicacio(id: number): void {
     this.router.navigate(['/publicacio', id]); 
   }
+
+  // Método para limpiar la búsqueda
+  clearSearch(): void {
+    this.searchQuery = '';
+    this.filterPublicacions();
+  }
+
+  // Añadir este método al componente
+getEstadoClass(estado: string | undefined | null): string {
+  if (!estado) return '';
+  return 'estado-' + estado.toLowerCase().replace(' ', '-');
+}
 }

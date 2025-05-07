@@ -7,6 +7,16 @@ import { Animal } from '../interfaces/animal';
 import { AnimalPerdutService } from '../services/animal-perdut.service';
 import { InteraccionsService } from '../services/interaccions.service';
 import { AuthService } from '../services/auth.service';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import OSM from 'ol/source/OSM';
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
+import { fromLonLat } from 'ol/proj';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import { Icon, Style } from 'ol/style';
 
 @Component({
   selector: 'app-publicacio-detall',
@@ -15,9 +25,13 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./publicacio-detall.component.css']
 })
 export class PublicacioDetallComponent implements OnInit {
+  map: Map | null = null;
+
   publicacio: Publicacio | null = null;
   animal: Animal | null = null;
-  interaccions: Interaccio[] = [];
+  interaccions: any[] = [];
+  errorMessage: string = '';
+  
   novaInteraccio: Interaccio = {
     accio: '',
     data: new Date(),
@@ -27,6 +41,8 @@ export class PublicacioDetallComponent implements OnInit {
     tipus_interaccio_id: 1
   };
   mostrarFormulario: boolean = false;
+  latitude: number = 41.3851;
+  longitude: number = 2.1734;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,35 +54,92 @@ export class PublicacioDetallComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
+
     this.publicacioService.getPublicacioById(id).subscribe({
-        next: (data) => {
-            this.publicacio = data;
-            if (data.animal_id) {
-                this.loadAnimalDetails(data.animal_id);
-            }
-            this.loadInteraccions(data.id);
-        },
-        error: (err) => {
-            console.error('Error en carregar la publicació:', err);
+      next: (data) => {
+        this.publicacio = data;
+
+        if (data.animal?.geolocalitzacio?.latitud && data.animal?.geolocalitzacio?.longitud) {
+          this.latitude = parseFloat(data.animal.geolocalitzacio.latitud);
+          this.longitude = parseFloat(data.animal.geolocalitzacio.longitud);
         }
+
+        if (data.animal_id) {
+          this.loadAnimalDetails(data.animal_id);
+        }
+        this.loadInteraccions(data.id);
+      },
+      error: (err) => {
+        console.error('Error en carregar la publicació:', err);
+        this.errorMessage = 'No s\'ha pogut carregar la publicació. Si us plau, intenta-ho més tard.';
+      }
     });
 
     this.authService.cargarUsuarioActual().subscribe({
-        next: (usuari) => {
-            console.log('Usuari autenticat carregat:', usuari);
-        },
-        error: (err) => {
-            console.error('Error en carregar l\'usuari autenticat:', err);
-        }
+      next: (usuari) => {},
+      error: (err) => {
+        console.error('Error en carregar l\'usuari autenticat:', err);
+      }
     });
+  }
+
+  initMap(): void {
+    if (this.map) {
+      this.map.setTarget(undefined); // Use undefined instead of null
+    }
+  
+    const vectorSource = new VectorSource();
+    const vectorLayer = new VectorLayer({
+      source: vectorSource,
+    });
+  
+    this.map = new Map({
+      target: 'map', // ID of the map container
+      layers: [
+        new TileLayer({
+          source: new OSM(),
+        }),
+        vectorLayer,
+      ],
+      view: new View({
+        center: fromLonLat([this.longitude, this.latitude]), // Initial coordinates
+        zoom: 13, // Initial zoom level
+      }),
+    });
+  
+    // Add a marker at the animal's location
+    const marker = new Feature({
+      geometry: new Point(fromLonLat([this.longitude, this.latitude])),
+    });
+  
+   /*  marker.setStyle(
+      new Style({
+        image: new Icon({
+          src: 'https://cdn-icons-png.flaticon.com/512/616/616408.png', // Marker icon
+          scale: 0.05,
+        }),
+      })
+    ); */
+  
+    vectorSource.addFeature(marker);
   }
 
   loadAnimalDetails(animalId: number): void {
     this.animalPerdutService.getAnimalById(animalId).subscribe({
       next: (animal) => {
         this.animal = animal;
+
         if (this.animal.imatge && !this.animal.imatge.startsWith('http')) {
           this.animal.imatge = `http://127.0.0.1:8000/uploads/${this.animal.imatge}`;
+        }
+
+        if (this.animal.geolocalitzacio?.latitud && this.animal.geolocalitzacio?.longitud) {
+          this.latitude = parseFloat(this.animal.geolocalitzacio.latitud);
+          this.longitude = parseFloat(this.animal.geolocalitzacio.longitud);
+
+          this.initMap();
+        } else {
+          alert('Aquest animal no te coordenades disponibles.');
         }
       },
       error: (err) => {
@@ -88,6 +161,12 @@ export class PublicacioDetallComponent implements OnInit {
 
   toggleFormulario(): void {
     this.mostrarFormulario = !this.mostrarFormulario;
+    
+    if (this.mostrarFormulario) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
   }
 
   agregarInteraccio(): void {
@@ -98,6 +177,7 @@ export class PublicacioDetallComponent implements OnInit {
 
     const usuariId = this.authService.getUsuarioActualId();
     if (!usuariId) {
+      console.error('No se pudo obtener el ID del usuario');
       alert('No es pot afegir la interacció perquè no hi ha un usuari vàlid.');
       return;
     }
@@ -113,17 +193,27 @@ export class PublicacioDetallComponent implements OnInit {
       .toString()
       .padStart(2, '0')}`;
 
-    this.novaInteraccio.publicacio_id = this.publicacio?.id || 0;
-    this.novaInteraccio.usuari_id = usuariId;
-    this.novaInteraccio.tipus_interaccio_id = 1;
-    this.novaInteraccio.data = formattedDate;
+    const interaccioData = {
+      accio: this.novaInteraccio.accio,
+      data: formattedDate,
+      detalls: this.novaInteraccio.detalls,
+      publicacio_id: this.publicacio?.id || 0,
+      usuari_id: usuariId,
+      tipus_interaccio_id: 1
+    };
 
-    console.log('Dades enviades al backend:', JSON.stringify(this.novaInteraccio, null, 2));
-
-    this.interaccioService.createInteraccio(this.novaInteraccio).subscribe({
-      next: (interaccio) => {
+    this.interaccioService.createInteraccio(interaccioData).subscribe({
+      next: (respuesta) => {
         alert('Interacció afegida amb èxit.');
-        this.interaccions.push(interaccio);
+        const nombreUsuario = this.authService.getNombreUsuarioActual() || 'Usuari actual';
+        const interaccioConUsuario = {
+          ...respuesta,
+          usuari: {
+            id: usuariId,
+            nom: nombreUsuario
+          }
+        };
+        this.interaccions.unshift(interaccioConUsuario);
         this.novaInteraccio = {
           accio: '',
           data: new Date(),
@@ -135,7 +225,7 @@ export class PublicacioDetallComponent implements OnInit {
         this.mostrarFormulario = false;
       },
       error: (err) => {
-        console.error('Error en afegir la interacció:', err);
+        console.error('Error al añadir interacción:', err);
         alert('Hi ha hagut un error en afegir la interacció. Si us plau, intenta-ho de nou.');
       }
     });

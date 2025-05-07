@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Interaccio } from '../interfaces/interaccio';
@@ -29,7 +29,13 @@ export class InteraccionsService {
 
   // Crear una nueva interacción
   createInteraccio(interaccio: Interaccio): Observable<Interaccio> {
-    return this.http.post<Interaccio>(`${this.apiUrl}/interaccio/create`, interaccio);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    
+    console.log('Enviando interacción:', interaccio); // Para debugging
+    
+    return this.http.post<Interaccio>(`${this.apiUrl}/interaccio/create`, interaccio, { headers });
   }
 
   // Actualizar una interacción existente

@@ -12,7 +12,6 @@
 .sidebar {
   width: 280px;
   background: linear-gradient(135deg, #add8e6 0%, #92c3d3 100%);
-  height: calc(100vh - var(--navbar-height));
   position: fixed;
   top: var(--navbar-height);
   left: 0;
@@ -23,6 +22,11 @@
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  
+  /* Modificar la altura para que termine donde comienza el footer */
+  height: calc(100vh - var(--navbar-height) - var(--footer-height) - 60px);
+  /* El valor 60px es para dar un pequeño margen y compensar el margin-top del footer */
+  max-height: calc(100vh - var(--navbar-height) - var(--footer-height) - 60px);
 }
 
 .sidebar::-webkit-scrollbar {
@@ -274,6 +278,7 @@
   padding: 20px;
   transition: all 0.3s ease;
   background-color: #bfe3c0;
+  min-height: calc(100vh - var(--navbar-height) - var(--footer-height) - 60px);
 }
 
 .content-expanded {
@@ -484,5 +489,419 @@
   
   .section-title {
     font-size: 1.5rem;
+  }
+}
+
+/* Nueva estructura sin sidebar */
+.dashboard-container {
+  width: 100%;
+  min-height: calc(100vh - var(--navbar-height));
+  margin-top: var(--navbar-height);
+  background-color: #bfe3c0;
+  position: relative;
+  transition: filter 0.3s ease;
+}
+
+/* Aplicar blur cuando el modal está activo */
+.blur-background {
+  filter: blur(5px);
+  pointer-events: none;
+}
+
+/* Contenido principal expandido */
+.main-content {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+/* Barra de búsqueda con botón de filtros */
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.search-bar {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  background-color: white;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+}
+
+.search-button {
+  background: none;
+  border: none;
+  padding: 0 20px;
+  cursor: pointer;
+  color: #4b83e5;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+}
+
+.filter-button {
+  background-color: #4b83e5;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(75, 131, 229, 0.3);
+}
+
+.filter-button:hover {
+  background-color: #3a6bb5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(75, 131, 229, 0.4);
+}
+
+.filter-count {
+  background-color: white;
+  color: #4b83e5;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+/* Barra de filtros activos */
+.active-filters-bar {
+  background-color: white;
+  border-radius: 10px;
+  padding: 12px 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.active-filters-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.active-filters-label {
+  color: #555;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.active-filters-label i {
+  color: #4b83e5;
+}
+
+.filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex: 1;
+}
+
+.filter-tag {
+  background-color: #f0f7ff;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: #4b83e5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.filter-tag i {
+  cursor: pointer;
+  color: #4b83e5;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+}
+
+.filter-tag:hover {
+  background-color: #e0eeff;
+}
+
+.filter-tag:hover i {
+  opacity: 1;
+}
+
+.clear-all-btn {
+  background: none;
+  border: none;
+  color: #f44336;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-all-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Mantener estilos existentes de la grid de protectoras */
+.protectoras-container {
+  padding: 10px;
+}
+
+/* Modal de filtros */
+.filters-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.3s, opacity 0.3s;
+}
+
+.show-modal {
+  visibility: visible;
+  opacity: 1;
+}
+
+.filters-modal-container {
+  width: 90%;
+  max-width: 600px;
+  max-height: 85vh;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  transform: translateY(-20px);
+  transition: transform 0.3s;
+  overflow: hidden;
+  animation: modalSlideIn 0.3s forwards;
+}
+
+@keyframes modalSlideIn {
+  to { transform: translateY(0); }
+}
+
+.filters-modal-header {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #add8e6;
+}
+
+.filters-modal-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filters-modal-header h3 i {
+  color: #4b83e5;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.modal-close-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #f44336;
+}
+
+.filters-modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  max-height: calc(85vh - 135px); /* Header + Footer height */
+}
+
+.filter-section {
+  margin-bottom: 25px;
+}
+
+.filter-section h4 {
+  font-size: 1.1rem;
+  margin: 0 0 15px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.filter-section h4 i {
+  color: #4b83e5;
+}
+
+.filter-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.filter-option {
+  padding: 3px 0;
+}
+
+/* Checkbox personalizado */
+.custom-checkbox {
+  position: relative;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-custom {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid #ccc;
+  background-color: white;
+  margin-right: 10px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.check-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  color: white;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  opacity: 0;
+}
+
+.custom-checkbox input[type="checkbox"]:checked ~ .checkbox-label .checkbox-custom {
+  background-color: #4b83e5;
+  border-color: #4b83e5;
+}
+
+.custom-checkbox input[type="checkbox"]:checked ~ .checkbox-label .check-icon {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.filters-modal-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9f9f9;
+}
+
+.selected-filters-count {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.modal-actions button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clear-btn {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.clear-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.apply-btn {
+  background-color: #4b83e5;
+  color: white;
+}
+
+.apply-btn:hover {
+  background-color: #3a6bb5;
+}
+
+/* Mantener estilos responsivos existentes pero ajustados sin sidebar */
+@media (max-width: 768px) {
+  .search-container {
+    flex-direction: column;
+  }
+  
+  .search-bar {
+    width: 100%;
+  }
+  
+  .filter-button {
+    align-self: flex-start;
+  }
+  
+  .filter-options {
+    grid-template-columns: 1fr;
   }
 }

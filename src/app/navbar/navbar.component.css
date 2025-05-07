@@ -1,61 +1,266 @@
 :root {
-  --navbar-height: 70px; /* Define la altura de la navbar como una variable */
+  --navbar-height: 70px;
 }
 
-.navbar-custom {
+/* Estilos generales de la navbar */
+.navbar {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: var(--navbar-height); /* Usa la variable global */
+  height: var(--navbar-height);
   z-index: 1000;
   background-color: #add8e6;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  padding: 0;
+  transition: all 0.3s ease;
 }
-/* .navbar-custom {
-  background-color: #add8e6;
-  color: black;
-  padding: 10px 20px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 70px; /* Define una altura fija 
-} */
-.navbar-brand {
+
+/* Contenedor para centrar el contenido */
+.container {
+  max-width: 1400px;
+  padding: 0 20px;
+}
+
+/* Logo y nombre de la marca */
+.brand-container {
   display: flex;
   align-items: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: white;
-  text-decoration: none;
+  gap: 12px;
 }
 
 .navbar-logo {
-  height: 80px;
-  margin-right: 10px;
+  height: 45px;
+  transition: none;
+}
+
+.brand-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  opacity: 1;
+  transform: none;
+}
+
+/* Clase especial para bloquear animaciones */
+.no-animation .navbar-logo,
+.no-animation .brand-name {
+  transition: none;
+}
+
+/* Versión sin animación para hover */
+.navbar-brand:hover .navbar-logo {
+  transform: none;
+}
+
+.navbar-brand:hover .brand-name {
+  display: inline-block;
+  opacity: 1;
+  transform: none;
+}
+
+/* Botón de hamburguesa para móviles */
+.navbar-toggler {
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+  outline: none;
+  color: #4b83e5;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.navbar-toggler:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
+}
+
+.navbar-toggler i {
+  color: #333;
+  font-size: 1.3rem;
+}
+
+/* Estilo para los items de navegación */
+.navbar-nav {
+  gap: 10px;
+}
+
+.nav-item {
+  position: relative;
 }
 
 .nav-link {
-  color: black;
-  font-size: 1.5rem;
-  margin-right: 15px;
-  text-decoration: none;
-  transition: color 0.3s;
+  color: #333;
+  font-weight: 500;
+  padding: 10px 15px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: all 0.3s ease;
 }
 
-.nav-link:hover {
-  color: #006181;
+.nav-link i {
+  font-size: 1.1rem;
 }
 
-.user-icon {
-  font-size: 1.5rem;
-  color: white;
-  transition: color 0.3s;
+.nav-link:hover,
+.nav-link.active {
+  color: #4b83e5;
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
-.user-icon:hover {
-  color: #006181;
+/* Botón de usuario */
+.user-button {
+  cursor: pointer;
+}
+
+.user-icon-container {
+  width: 40px;
+  height: 40px;
+  background-color: #bfe3c0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.user-icon-container i {
+  color: #333;
+}
+
+.user-button:hover .user-icon-container {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Animación para aparecer desde arriba cuando se carga la página */
+@keyframes navbarSlideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.navbar {
+  animation: navbarSlideDown 0.5s forwards;
+}
+
+/* Estilos para móviles */
+@media (max-width: 991px) {
+  .navbar {
+    padding: 8px 0;
+  }
+  
+  .navbar-collapse {
+    background: linear-gradient(135deg, #add8e6 0%, #92c3d3 100%);
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+    margin-top: 10px;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: fadeInDown 0.4s forwards;
+  }
+  
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .navbar-nav {
+    padding: 15px 15px;
+    gap: 8px;
+  }
+  
+  .nav-item {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    transform: translateX(0);
+  }
+  
+  .nav-item:hover {
+    transform: translateX(5px);
+  }
+  
+  .nav-link {
+    padding: 14px 20px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    margin: 2px 0;
+    transition: all 0.3s ease;
+  }
+  
+  .nav-link.active {
+    background: rgba(75, 131, 229, 0.2);
+    border-left: 4px solid #4b83e5;
+  }
+  
+  .nav-link i {
+    width: 24px;
+    text-align: center;
+    font-size: 1.2rem;
+  }
+  
+  .brand-name {
+    display: inline-block;
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  .user-item {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .user-icon-container {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #bfe3c0 0%, #9ecca0 100%);
+  }
+}
+
+/* Mejoras adicionales para dispositivos muy pequeños */
+@media (max-width: 480px) {
+  .navbar-brand .brand-container {
+    gap: 8px;
+  }
+  
+  .navbar-logo {
+    height: 40px;
+  }
+  
+  .brand-name {
+    font-size: 1.2rem;
+  }
 }

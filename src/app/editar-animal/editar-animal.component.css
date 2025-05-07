@@ -56,3 +56,47 @@
   button.action-button:active {
     transform: scale(1);
   }
+  .bone {
+    position: relative;
+    width: 200px;
+    height: 80px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+}
+
+.c1, .c2, .c3, .c4 {
+    background: #bfe3c0;
+    height: 40px;
+    width: 40px;
+    border: 1px solid #000;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.c1 { left: 0; top: 0; }
+.c2 { right: 0; top: 0; }
+.c3 { left: 0; bottom: 0; }
+.c4 { bottom: 0; right: 0; }
+
+.b1 {
+    background: #bfe3c0;
+    height: 40px;
+    width: 160px;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+}
+
+.b2 {
+    position: absolute;
+    left: 20px;
+    top: 0;
+    width: 120px;
+    height: 40px;
+    line-height: 40px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    text-align: center;
+    font-size: 1rem;
+}
