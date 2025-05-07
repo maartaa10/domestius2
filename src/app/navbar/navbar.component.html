@@ -1,47 +1,48 @@
-<nav class="navbar navbar-expand-lg navbar-custom">
-    <div class="container-fluid">
-     
-        <a class="navbar-brand nav-link" [routerLink]="['/inici']">
-            <img src="assets/logo.png" alt="Domestius" class="navbar-logo">
-        </a>
-
-
-       
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/protectora']">Protectores</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/animal-publicacio']">Animals Perduts</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/mapa-animals-perduts']">Perduts</a>
-                </li>
-
-               <!--  <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/registrar-animal']">Registra un animla</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/registrar-protectora']">Registrar Protectora</a>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/animal-llista']">Animal llista</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/afegir-publicacio']">Afegir publicacio</a>
-                </li> -->
-                <li class="nav-item">
-                    <a class="nav-link" (click)="navigateToDashboardOrLogin()">
-                      <i class="fa-solid fa-user"></i>
-                    </a>
-                  </li>
-            </ul>
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <!-- Logo y nombre de la aplicación -->
+      <a class="navbar-brand" [routerLink]="['/inici']">
+        <div class="brand-container no-animation">
+          <img src="assets/logo.png" alt="Domestius" class="navbar-logo">
         </div>
+      </a>
+  
+      <!-- Botón para móviles - solo visible en dispositivos pequeños y medianos -->
+      <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" 
+              data-bs-target="#navbarMenu" aria-controls="navbarMenu" 
+              aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+  
+      <!-- Menú principal -->
+      <div class="collapse navbar-collapse" id="navbarMenu">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/protectora']" routerLinkActive="active">
+              <i class="fas fa-home"></i>
+              <span>Protectores</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/animal-publicacio']" routerLinkActive="active">
+              <i class="fas fa-paw"></i>
+              <span>Animals Perduts</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/mapa-animals-perduts']" routerLinkActive="active">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>Mapa</span>
+            </a>
+          </li>
+          <li class="nav-item user-item">
+            <a class="nav-link user-button" (click)="navigateToDashboardOrLogin()">
+              <div class="user-icon-container">
+                <i class="fas fa-user"></i>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
-</nav>
+  </nav>
