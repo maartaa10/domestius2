@@ -1,42 +1,105 @@
 <div class="protectora-detail-container">
   <div *ngIf="!selectedAnimalId; else animalDetailTemplate">
     <div *ngIf="!errorMessage; else errorTemplate">
-      <button class="action-button back-button" routerLink="/protectora">← Tornar a Protectoras</button>
-      <div class="protectora-info">
+      <!-- Botón de regreso mejorado -->
+      <button class="back-button" routerLink="/protectora">
+        <i class="fas fa-arrow-left"></i> Tornar a Protectores
+      </button>
+      
+      <!-- Tarjeta principal de la protectora -->
+      <div class="profile-card animate__animated animate__fadeIn">
+        <div class="profile-header">
+          <div class="profile-image-container">
+            <img [src]="protectora?.imatge || 'assets/default-profile.jpg'" alt="{{ protectora?.usuari?.nom }}" class="profile-image">
+          </div>
+          <div class="profile-info">
+            <h2>{{ protectora?.usuari?.nom || 'Protectora desconeguda' }}</h2>
+            <span class="profile-role">Protectora</span>
+          </div>
+        </div>
         
-        <img [src]="protectora?.imatge" alt="Logo" class="logo">
-        <h2>{{ protectora?.usuari?.nom || 'Usuari desconegut' }}</h2>
-        <p><strong>Adreça:</strong> {{ protectora?.direccion || 'No disponible' }}</p>
-        <p><strong>Telèfon:</strong> {{ protectora?.telefono || 'No disponible' }}</p>
-        <p><strong>Horari:</strong> {{ protectora?.horario_apertura || 'No disponible' }} - {{ protectora?.horario_cierre || 'No disponible' }}</p>
-      </div>
-      <div class="animal-list">
-        <h3>Animals de la protectora</h3>
-        <div *ngIf="animals.length > 0; else noAnimalsTemplate">
-          <div class="animal-card" *ngFor="let animal of animals" (click)="navigateToAnimalDetail(animal.id)">
-            <img [src]="animal.imatge" alt="{{ animal.nom }}" class="animal-image">
-            <div class="animal-info">
-              <p><strong>Nom:</strong> {{ animal.nom }}</p>
-              <p><strong>Edat:</strong> {{ animal.edat || 'No disponible' }}</p>
-              <p><strong>Espècie:</strong> {{ animal.especie }}</p>
-              <p><strong>Estat:</strong> {{ animal.estat }}</p>
+        <div class="profile-details">
+          <div class="info-group">
+            <div class="info-item">
+              <div class="info-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div class="info-content">
+                <span class="info-label">Adreça</span>
+                <span class="info-value">{{ protectora?.direccion || 'No disponible' }}</span>
+              </div>
+            </div>
+            
+            <div class="info-item">
+              <div class="info-icon">
+                <i class="fas fa-phone"></i>
+              </div>
+              <div class="info-content">
+                <span class="info-label">Telèfon</span>
+                <span class="info-value">{{ protectora?.telefono || 'No disponible' }}</span>
+              </div>
+            </div>
+            
+            <div class="info-item">
+              <div class="info-icon">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div class="info-content">
+                <span class="info-label">Horari</span>
+                <span class="info-value">{{ protectora?.horario_apertura || '00:00' }} - {{ protectora?.horario_cierre || '00:00' }}</span>
+              </div>
             </div>
           </div>
         </div>
+      </div>
+      
+      <!-- Sección de animales -->
+      <div class="animals-section animate__animated animate__fadeIn">
+        <h3 class="section-title"><i class="fas fa-paw"></i> Animals de la protectora</h3>
+        
+        <div *ngIf="animals.length > 0; else noAnimalsTemplate" class="animals-grid">
+          <div class="animal-card" *ngFor="let animal of animals" (click)="navigateToAnimalDetail(animal.id)">
+            <div class="animal-image-container">
+              <img [src]="animal.imatge || 'assets/default-animal.jpg'" alt="{{ animal.nom }}" class="animal-image">
+            </div>
+            <div class="animal-content">
+              <h4 class="animal-name">{{ animal.nom }}</h4>
+              <div class="animal-info">
+                <p><i class="fas fa-birthday-cake info-icon"></i> {{ animal.edat || 'Edat desconeguda' }}</p>
+                <p><i class="fas fa-paw info-icon"></i> {{ animal.especie }}</p>
+                <p>
+                  <i class="fas fa-info-circle info-icon"></i> 
+                  <span [ngClass]="getEstadoClass(animal.estat)">{{ animal.estat }}</span>                </p>
+              </div>
+              <div class="view-more">
+                <span>Veure detalls <i class="fas fa-chevron-right"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
         <ng-template #noAnimalsTemplate>
-          <p class="no-animals-message">No hi ha animals associats a aquesta protectora.</p>
-          <div class="button-container">
-            <button class="action-button" routerLink="/registrar-animal">Vols registrar-ne un?</button>
+          <div class="no-animals-message">
+            <i class="fas fa-search empty-icon"></i>
+            <h4>No hi ha animals associats a aquesta protectora.</h4>
+            <p>Aquesta protectora encara no té animals registrats.</p>
           </div>
         </ng-template>
       </div>
     </div>
+    
     <ng-template #errorTemplate>
-      <div class="error-message">
+      <div class="error-message animate__animated animate__fadeIn">
+        <i class="fas fa-exclamation-circle error-icon"></i>
+        <h3>Error</h3>
         <p>{{ errorMessage }}</p>
+        <button class="back-button" routerLink="/protectora">
+          <i class="fas fa-arrow-left"></i> Tornar a Protectores
+        </button>
       </div>
     </ng-template>
   </div>
+  
   <ng-template #animalDetailTemplate>
     <app-detall-animal-publicacio 
       [animalId]="selectedAnimalId" 

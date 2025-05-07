@@ -15,18 +15,16 @@ export class ProtectoraComponent implements OnInit {
   showFilters: boolean = false;
   showFiltersModal: boolean = false;
 
-  
-  // Filtros relevantes para protectoras
-  filtros: string[] = [
-    'Barcelona', 
-    'Girona', 
-    'Lleida', 
-    'Tarragona', 
-    'Obert caps de setmana', 
-    'Obertura matí', 
-    'Obertura tarda'
+  // Separar los filtros en categorías para mejor organización
+  provincias: string[] = ['Barcelona', 'Girona', 'Lleida', 'Tarragona'];
+
+  // Nuevos filtros de horarios
+  horarios: string[] = [
+    'Obert matí (01:00-12:00)', 
+    'Obert tarda (12:00-24:00)',
+    'Obert ara'
   ];
-  
+
   // Filtros por código postal
   codigosPostales: string[] = [
     'CP: 08001-08042 (Barcelona ciutat)',
@@ -44,6 +42,12 @@ export class ProtectoraComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProtectoras();
+    // Establecer un intervalo para actualizar el filtro "Obert ara" si está seleccionado
+    setInterval(() => {
+      if (this.selectedFilters.includes('Obert ara')) {
+        this.filterProtectoras();
+      }
+    }, 60000); // Actualizar cada minuto
   }
 
   toggleSidebar(): void {
@@ -65,7 +69,7 @@ export class ProtectoraComponent implements OnInit {
   filterProtectoras() {
     // Primero filtramos por texto de búsqueda
     let result = this.protectoras.filter(protectora =>
-      protectora.direccion.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+      protectora.direccion?.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
       protectora.usuari?.nom?.toLowerCase().includes(this.searchQuery.toLowerCase()) || 
       protectora.telefono?.toLowerCase().includes(this.searchQuery.toLowerCase())
     );
@@ -82,7 +86,7 @@ export class ProtectoraComponent implements OnInit {
               const maxCP = parseInt(cpRange[2]);
               
               // Extraer el código postal de la dirección
-              const cpMatch = protectora.direccion.match(/\b(\d{5})\b/);
+              const cpMatch = protectora.direccion?.match(/\b(\d{5})\b/);
               if (cpMatch && cpMatch.length > 1) {
                 const protectoraCP = parseInt(cpMatch[1]);
                 return protectoraCP >= minCP && protectoraCP <= maxCP;
@@ -92,33 +96,21 @@ export class ProtectoraComponent implements OnInit {
             return false;
           }
           
-          // Filtros existentes
+          // Filtros de provincia
+          if (this.provincias.includes(filter)) {
+            return protectora.direccion?.includes(filter);
+          }
+          
+          // Nuevos filtros de horario
           switch (filter) {
-            case 'Barcelona':
-            case 'Girona':
-            case 'Lleida':
-            case 'Tarragona':
-              return protectora.direccion.includes(filter);
-            
-            case 'Obert caps de setmana':
-              // Suponiendo que hay un campo o podríamos inferir esto basado en horarios
-              return true; // Implementar lógica real
-            
-            case 'Obertura matí':
-              // Verificar si abre por la mañana (antes de las 12)
-              if (protectora.horario_apertura) {
-                const hour = parseInt(protectora.horario_apertura.split(':')[0]);
-                return hour < 12;
-              }
-              return false;
-            
-            case 'Obertura tarda':
-              // Verificar si abre por la tarde (después de las 12)
-              if (protectora.horario_apertura) {
-                const hour = parseInt(protectora.horario_apertura.split(':')[0]);
-                return hour >= 12;
-              }
-              return false;
+            case 'Obert matí (01:00-12:00)':
+              return this.estaAbiertoEnRangoHorario(protectora, 1, 12);
+              
+            case 'Obert tarda (12:00-24:00)':
+              return this.estaAbiertoEnRangoHorario(protectora, 12, 24);
+              
+            case 'Obert ara':
+              return this.estaAbiertoAhora(protectora);
               
             default:
               return false;
@@ -183,5 +175,56 @@ export class ProtectoraComponent implements OnInit {
 
   goToProtectoraDetails(protectoraId: number): void {
     this.router.navigate(['/protectora-detall', protectoraId]);
+  }
+
+  // Método auxiliar para comprobar si una protectora está abierta en un rango horario
+  estaAbiertoEnRangoHorario(protectora: Protectora, horaInicio: number, horaFin: number): boolean {
+    if (!protectora.horario_apertura || !protectora.horario_cierre) {
+      return false;
+    }
+    
+    const horaApertura = parseInt(protectora.horario_apertura.split(':')[0]);
+    const horaCierre = parseInt(protectora.horario_cierre.split(':')[0]);
+    
+    // Caso normal: apertura y cierre dentro del mismo día
+    if (horaApertura < horaCierre) {
+      // Verificar si alguna parte del horario de apertura cae dentro del rango
+      return (horaApertura < horaFin && horaCierre > horaInicio);
+    } 
+    // Caso especial: horario que cruza la medianoche
+    else {
+      // Parte antes de medianoche
+      const rangoAntesMedianoche = (horaApertura < horaFin && horaApertura >= horaInicio);
+      // Parte después de medianoche
+      const rangoDespuesMedianoche = (horaCierre > horaInicio && horaCierre <= horaFin);
+      
+      return rangoAntesMedianoche || rangoDespuesMedianoche;
+    }
+  }
+
+  // Método para verificar si una protectora está abierta en el momento actual
+  estaAbiertoAhora(protectora: Protectora): boolean {
+    if (!protectora.horario_apertura || !protectora.horario_cierre) {
+      return false;
+    }
+    
+    const ahora = new Date();
+    const horaActual = ahora.getHours();
+    const minutosActual = ahora.getMinutes();
+    
+    const [horaApertura, minutosApertura] = protectora.horario_apertura.split(':').map(Number);
+    const [horaCierre, minutosCierre] = protectora.horario_cierre.split(':').map(Number);
+    
+    // Convertir a minutos desde medianoche para comparación fácil
+    const tiempoActual = horaActual * 60 + minutosActual;
+    const tiempoApertura = horaApertura * 60 + minutosApertura;
+    const tiempoCierre = horaCierre * 60 + minutosCierre;
+    
+    // Si el horario cruza la medianoche
+    if (tiempoApertura > tiempoCierre) {
+      return tiempoActual >= tiempoApertura || tiempoActual <= tiempoCierre;
+    } else {
+      return tiempoActual >= tiempoApertura && tiempoActual <= tiempoCierre;
+    }
   }
 }

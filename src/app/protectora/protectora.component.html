@@ -87,23 +87,41 @@
     <div class="filters-modal-header">
       <h3><i class="fas fa-sliders-h"></i> Filtres</h3>
       <button class="modal-close-btn" (click)="closeFiltersModal()">
-        <i class="fas fa-times"></i>
+      <i class="fas fa-times"></i>
       </button>
     </div>
     
     <div class="filters-modal-body">
-      <!-- Filtros de ubicación y servicios -->
+      <!-- Filtros de provincias -->
       <div class="filter-section">
-        <h4><i class="fas fa-map-marker-alt"></i> Ubicació i serveis</h4>
+        <h4><i class="fas fa-map-marker-alt"></i> Província</h4>
         <div class="filter-options">
-          <div class="filter-option" *ngFor="let filtro of filtros">
+          <div class="filter-option" *ngFor="let provincia of provincias">
             <div class="custom-checkbox">
-              <input type="checkbox" [id]="'modal-'+filtro" (change)="applyFilter(filtro)" [checked]="selectedFilters.includes(filtro)"/> 
-              <label [for]="'modal-'+filtro" class="checkbox-label">
+              <input type="checkbox" [id]="'modal-'+provincia" (change)="applyFilter(provincia)" [checked]="selectedFilters.includes(provincia)"/> 
+              <label [for]="'modal-'+provincia" class="checkbox-label">
                 <span class="checkbox-custom">
                   <i class="fas fa-check check-icon"></i>
                 </span>
-                <span class="filter-text">{{ filtro }}</span>
+                <span class="filter-text">{{ provincia }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Filtros de horario -->
+      <div class="filter-section">
+        <h4><i class="fas fa-clock"></i> Horari</h4>
+        <div class="filter-options">
+          <div class="filter-option" *ngFor="let horario of horarios">
+            <div class="custom-checkbox">
+              <input type="checkbox" [id]="'modal-'+horario" (change)="applyFilter(horario)" [checked]="selectedFilters.includes(horario)"/> 
+              <label [for]="'modal-'+horario" class="checkbox-label">
+                <span class="checkbox-custom">
+                  <i class="fas fa-check check-icon"></i>
+                </span>
+                <span class="filter-text">{{ horario }}</span>
               </label>
             </div>
           </div>
