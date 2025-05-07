@@ -50,7 +50,7 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
       ],
       view: new View({
         center: fromLonLat([2.1734, 41.3851]),
-        zoom: 8,
+        zoom: 13,
       }),
     });
 
@@ -90,7 +90,7 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
     const centerCoords = this.getProvinceCenter(this.searchQuery);
     if (centerCoords) {
       this.map.getView().setCenter(fromLonLat(centerCoords));
-      this.map.getView().setZoom(10);
+      this.map.getView().setZoom(13);
     } else {
       alert('No s\'ha pogut trobar la província especificada.');
       return;
@@ -224,7 +224,7 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
           ];
 
           this.map.getView().setCenter(fromLonLat(centerCoords));
-          this.map.getView().setZoom(10);
+          this.map.getView().setZoom(13);
 
           this.mostrarAnimalesPorUbicacion(centerCoords);
         } else {

@@ -1,10 +1,10 @@
 <div class="registrar-protectora-container">
-    <h2>Registrar Protectora</h2>
-    <div *ngIf="loading" class="loading-spinner">
-        Registrant protectora, si us plau espera...
-      </div>
-    <form (ngSubmit)="onSubmit()" #protectoraForm="ngForm">
-    
+  <h2>Registrar Protectora</h2>
+  <div *ngIf="loading" class="loading-spinner">
+      Registrant protectora, si us plau espera...
+    </div>
+  <form (ngSubmit)="onSubmit()" #protectoraForm="ngForm">
+  
       <h3>Dades de l'Usuari</h3>
       <div class="form-group">
         <label for="nom">Nom</label>
@@ -106,4 +106,14 @@
   
       <button type="submit" class="action-button">Registrar Protectora</button>
     </form>
+
+    <!-- Enlaces de navegación -->
+    <div class="registrar-protectora-footer">
+      <a routerLink="/login" class="login-link">
+        <i class="fas fa-sign-in-alt"></i> Ja tinc un compte
+      </a>
+      <a routerLink="/inici" class="back-link">
+        <i class="fas fa-arrow-left"></i> Tornar a l'inici
+      </a>
+    </div>
   </div>
