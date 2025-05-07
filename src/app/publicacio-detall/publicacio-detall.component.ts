@@ -174,14 +174,14 @@ export class PublicacioDetallComponent implements OnInit {
       alert('Si us plau, completa tots els camps de la interacció.');
       return;
     }
-
+  
     const usuariId = this.authService.getUsuarioActualId();
     if (!usuariId) {
       console.error('No se pudo obtener el ID del usuario');
       alert('No es pot afegir la interacció perquè no hi ha un usuari vàlid.');
       return;
     }
-
+  
     const now = new Date();
     const formattedDate = `${now.getFullYear()}-${(now.getMonth() + 1)
       .toString()
@@ -192,7 +192,7 @@ export class PublicacioDetallComponent implements OnInit {
       .getSeconds()
       .toString()
       .padStart(2, '0')}`;
-
+  
     const interaccioData = {
       accio: this.novaInteraccio.accio,
       data: formattedDate,
@@ -201,19 +201,12 @@ export class PublicacioDetallComponent implements OnInit {
       usuari_id: usuariId,
       tipus_interaccio_id: 1
     };
-
+  
     this.interaccioService.createInteraccio(interaccioData).subscribe({
-      next: (respuesta) => {
+      next: () => {
         alert('Interacció afegida amb èxit.');
-        const nombreUsuario = this.authService.getNombreUsuarioActual() || 'Usuari actual';
-        const interaccioConUsuario = {
-          ...respuesta,
-          usuari: {
-            id: usuariId,
-            nom: nombreUsuario
-          }
-        };
-        this.interaccions.unshift(interaccioConUsuario);
+        
+        // Reiniciar el formulario
         this.novaInteraccio = {
           accio: '',
           data: new Date(),
@@ -222,7 +215,15 @@ export class PublicacioDetallComponent implements OnInit {
           usuari_id: usuariId,
           tipus_interaccio_id: 1
         };
+        
+        // Cerrar el formulario y desbloquear el scroll
         this.mostrarFormulario = false;
+        document.body.style.overflow = 'auto';
+        
+        // Recargar las interacciones para asegurar que se muestren correctamente
+        if (this.publicacio?.id) {
+          this.loadInteraccions(this.publicacio.id);
+        }
       },
       error: (err) => {
         console.error('Error al añadir interacción:', err);
