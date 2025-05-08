@@ -51,6 +51,23 @@
         </button>
       </div>
     </form>
+
+  
+    <div class="password-reset">
+      <h3>¿Has oblidat la contrasenya?</h3>
+      <div class="form-group">
+        <label for="resetEmail">Introdueix el teu correu electronic</label>
+        <input 
+          type="email" 
+          id="resetEmail" 
+          [(ngModel)]="emailForReset" 
+          placeholder="El teu correu electronic">
+      </div>
+      <button (click)="sendPasswordReset()" class="reset-button">
+        Enviar enllaç de recuperació
+      </button>
+      <p *ngIf="resetMessage" class="reset-message">{{ resetMessage }}</p>
+    </div>
     
     <div class="login-footer">
       <div class="login-options">

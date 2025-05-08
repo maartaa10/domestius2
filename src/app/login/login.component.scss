@@ -196,7 +196,39 @@ form {
   padding-top: 15px;
   border-top: 1px solid #eee;
 }
+.password-reset {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
 
+.password-reset h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.reset-button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #4b83e5;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reset-button:hover {
+  background-color: #3a6bb5;
+}
+
+.reset-message {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: green;
+}
 /* Responsive */
 @media (max-width: 576px) {
   .login-card {
