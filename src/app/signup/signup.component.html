@@ -1,75 +1,109 @@
-<section class="row py-5">
-  <div class="col-12 col-md-6 col-lg-4 offset-md-3 offset-lg-4">
-    <div class="card">
-      <div class="card-body">
-        <h2 class="text-center my-4">Sign Up</h2>
-
-        <!-- Errors -->
-        <div class="alert alert-danger" *ngIf="errors?.name">
-          {{ errors.name }}
-        </div>
-        <div class="alert alert-danger" *ngIf="errors?.email">
-          {{ errors.email }}
-        </div>
-        <div class="alert alert-danger" *ngIf="errors?.password">
-          {{ errors.password }}
-        </div>
-        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-          <!-- Campo Nombre -->
-          <div class="mb-3">
-            <label for="nom" class="form-label">Nom</label>
-            <input type="text" id="nom" class="form-control" formControlName="nom">
-            <div *ngIf="registerForm.get('nom')?.invalid && (registerForm.get('nom')?.touched || registerForm.get('nom')?.dirty)" class="text-danger">
-              <small *ngIf="registerForm.get('nom')?.hasError('required')">El camp nom és obligatori.</small>
-              <small *ngIf="registerForm.get('nom')?.hasError('minlength')">El nom ha de tenir almenys 3 caràcters.</small>
-            </div>
-          </div>
-        
-          <!-- Campo Email -->
-          <div class="mb-3">
-            <label for="email" class="form-label">Correu electrònic</label>
-            <input type="email" id="email" class="form-control" formControlName="email">
-            <div *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.touched || registerForm.get('email')?.dirty)" class="text-danger">
-              <small *ngIf="registerForm.get('email')?.hasError('required')">El camp correu electrònic és obligatori.</small>
-              <small *ngIf="registerForm.get('email')?.hasError('email')">El camp correu electrònic ha de ser vàlid.</small>
-            </div>
-          </div>
-        
-          <div class="mb-3">
-            <label for="password" class="form-label">Contrasenya</label>
-            <div class="password-wrapper">
-              <input [type]="showPassword ? 'text' : 'password'" id="password" class="form-control" formControlName="password">
-              <i class="toggle-password bi" [class.bi-eye-slash]="showPassword" [class.bi-eye]="!showPassword" (click)="togglePasswordVisibility()"></i>
-            </div>
-            <div *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.touched || registerForm.get('password')?.dirty)" class="text-danger">
-              <small *ngIf="registerForm.get('password')?.hasError('required')">El camp contrasenya és obligatori.</small>
-              <small *ngIf="registerForm.get('password')?.hasError('minlength')">La contrasenya ha de tenir almenys 6 caràcters.</small>
-            </div>
-          </div>
-        
-          <div class="mb-3">
-            <label for="password_confirmation" class="form-label">Confirmació de contrasenya</label>
-            <div class="password-wrapper">
-              <input [type]="showPasswordConfirmation ? 'text' : 'password'" id="password_confirmation" class="form-control" formControlName="password_confirmation">
-              <i class="toggle-password bi" [class.bi-eye-slash]="showPasswordConfirmation" [class.bi-eye]="!showPasswordConfirmation" (click)="togglePasswordConfirmationVisibility()"></i>
-            </div>
-            <div *ngIf="registerForm.get('password_confirmation')?.invalid && (registerForm.get('password_confirmation')?.touched || registerForm.get('password_confirmation')?.dirty)" class="text-danger">
-              <small *ngIf="registerForm.get('password_confirmation')?.hasError('required')">El camp confirmació de contrasenya és obligatori.</small>
-            </div>
-            <div *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('password_confirmation')?.touched" class="text-danger">
-              <small>Les contrasenyes no coincideixen.</small>
-            </div>
-          </div>
-        
+<div class="signup-container">
+  <div class="signup-background"></div>
   
-       <!--    <re-captcha
-          siteKey="6LegCRErAAAAAHHHciXcBfnmaww-V0iS3yEW1Urx"
-          (resolved)="onCaptchaResolved($event)">
-        </re-captcha> -->
-          <button type="submit" class="btn btn-lg w-100 btn-primary mt-1 mb-4">Sign Up</button>
-          <a routerLink="/login" class="d-block text-center mb-4">Ja tinc un compte</a>
-        </form>
+  <div class="signup-card animate__animated animate__fadeIn">
+    <div class="signup-header">
+      <img src="assets/logo.png" alt="Domestius" class="signup-logo">
+      <h2>Crea el teu compte a Doméstius</h2>
+      <p class="signup-subtitle">Registra't per accedir a tots els serveis</p>
+    </div>
+    
+    <!-- Alertas de error -->
+    <div class="alert-container" *ngIf="errors">
+      <div class="error-alert" *ngIf="errors?.name">
+        <i class="fas fa-exclamation-circle"></i> {{ errors.name }}
+      </div>
+      <div class="error-alert" *ngIf="errors?.email">
+        <i class="fas fa-exclamation-circle"></i> {{ errors.email }}
+      </div>
+      <div class="error-alert" *ngIf="errors?.password">
+        <i class="fas fa-exclamation-circle"></i> {{ errors.password }}
       </div>
     </div>
+    
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <!-- Campo Nombre -->
+      <div class="form-group">
+        <label for="nom">
+          <i class="fas fa-user"></i> Nom
+        </label>
+        <input type="text" id="nom" formControlName="nom" placeholder="El teu nom">
+        <div *ngIf="registerForm.get('nom')?.invalid && (registerForm.get('nom')?.touched || registerForm.get('nom')?.dirty)" class="field-error">
+          <small *ngIf="registerForm.get('nom')?.hasError('required')">El camp nom és obligatori.</small>
+          <small *ngIf="registerForm.get('nom')?.hasError('minlength')">El nom ha de tenir almenys 3 caràcters.</small>
+        </div>
+      </div>
+      
+      <!-- Campo Email -->
+      <div class="form-group">
+        <label for="email">
+          <i class="fas fa-envelope"></i> Correu electrònic
+        </label>
+        <input type="email" id="email" formControlName="email" placeholder="El teu correu electrònic">
+        <div *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.touched || registerForm.get('email')?.dirty)" class="field-error">
+          <small *ngIf="registerForm.get('email')?.hasError('required')">El camp correu electrònic és obligatori.</small>
+          <small *ngIf="registerForm.get('email')?.hasError('email')">El camp correu electrònic ha de ser vàlid.</small>
+        </div>
+      </div>
+      
+      <!-- Campo Contraseña -->
+      <div class="form-group">
+        <label for="password">
+          <i class="fas fa-lock"></i> Contrasenya
+        </label>
+        <div class="password-field">
+          <input 
+            [type]="showPassword ? 'text' : 'password'" 
+            id="password" 
+            formControlName="password" 
+            placeholder="La teva contrasenya">
+          <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+            <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </button>
+        </div>
+        <div *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.touched || registerForm.get('password')?.dirty)" class="field-error">
+          <small *ngIf="registerForm.get('password')?.hasError('required')">El camp contrasenya és obligatori.</small>
+          <small *ngIf="registerForm.get('password')?.hasError('minlength')">La contrasenya ha de tenir almenys 6 caràcters.</small>
+        </div>
+      </div>
+      
+      <!-- Campo Confirmación de Contraseña -->
+      <div class="form-group">
+        <label for="password_confirmation">
+          <i class="fas fa-check-circle"></i> Confirmació de contrasenya
+        </label>
+        <div class="password-field">
+          <input 
+            [type]="showPasswordConfirmation ? 'text' : 'password'" 
+            id="password_confirmation" 
+            formControlName="password_confirmation" 
+            placeholder="Confirma la teva contrasenya">
+          <button type="button" class="toggle-password" (click)="togglePasswordConfirmationVisibility()">
+            <i class="fas" [ngClass]="showPasswordConfirmation ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </button>
+        </div>
+        <div *ngIf="registerForm.get('password_confirmation')?.invalid && (registerForm.get('password_confirmation')?.touched || registerForm.get('password_confirmation')?.dirty)" class="field-error">
+          <small *ngIf="registerForm.get('password_confirmation')?.hasError('required')">El camp confirmació de contrasenya és obligatori.</small>
+        </div>
+        <div *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('password_confirmation')?.touched" class="field-error">
+          <small>Les contrasenyes no coincideixen.</small>
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <button type="submit" class="signup-button">
+          <i class="fas fa-user-plus"></i> Registrar-me
+        </button>
+      </div>
+    </form>
+    
+    <div class="signup-footer">
+      <a routerLink="/login" class="login-link">
+        <i class="fas fa-sign-in-alt"></i> Ja tinc un compte
+      </a>
+      <a routerLink="/inici" class="back-link">
+        <i class="fas fa-arrow-left"></i> Tornar a l'inici
+      </a>
+    </div>
   </div>
-</section>
+</div>

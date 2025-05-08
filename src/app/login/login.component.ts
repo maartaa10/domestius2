@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { TokenService } from '../services/token.service';
+import { EmailService } from '../services/email.service';
 
 @Component({
   selector: 'app-login',
@@ -13,48 +14,33 @@ import { TokenService } from '../services/token.service';
 export class LoginComponent {
   loginForm: FormGroup;
   errors: any;
-/*   captchaToken: string = '';  */
-  showPassword: boolean = false; 
+  showPassword: boolean = false;
+  emailForReset: string = ''; 
+  resetMessage: string = ''; 
 
   constructor(
     private authService: AuthService,
     private tokenService: TokenService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private emailService: EmailService 
   ) {
     this.loginForm = this.fb.group({
       email: [''],
       password: ['']
     });
   }
-/*   onCaptchaResolved(token: string | null): void {
-    if (token) {
-      this.captchaToken = token;
-      console.log('Token CAPTCHA:', token);
-    } else {
-      console.warn('No se generó un token de reCAPTCHA.');
-      this.captchaToken = ''; 
-    }
-  } */
 
   onSubmit(): void {
     this.cleanErrors();
-  
-    
-/*     if (!this.captchaToken) {
-      alert('Completa el captcha antes de enviar');
-      return;
-    } */
-  
+
     const loginData = {
       ...this.loginForm.value,
-      /* captcha: this.captchaToken */
     };
-  
+
     this.authService.login(loginData).subscribe(
       response => {
         this.tokenService.handleToken(response.token);
-        console.log('Token guardado en localStorage:', this.tokenService.getToken());
         this.authService.getUserType().subscribe(userType => {
           if (userType === 'protectora') {
             this.router.navigate(['/dashboard']);
@@ -67,21 +53,43 @@ export class LoginComponent {
     );
   }
 
-  private handleResponse(response: any): void {
-    console.log('Respuesta del login:', response);
-    this.tokenService.handleToken(response.token);
-    console.log('Token guardado en localStorage:', this.tokenService.getToken());
-    this.router.navigateByUrl('/dashboard');
+  sendPasswordReset(): void {
+    if (!this.emailForReset.trim()) {
+      this.resetMessage = 'Por favor, introduce un correo válido.';
+      return;
+    }
+  
+    // Llamar al backend para generar el token
+    this.authService.generatePasswordResetToken(this.emailForReset).subscribe({
+      next: (response) => {
+        const token = response.token; // Obtener el token del backend
+  
+        // Llamar a EmailService para enviar el correo
+        this.emailService.sendPasswordResetEmail(this.emailForReset, token).then(
+          () => {
+            this.resetMessage = 'Correo de recuperación enviado con éxito.';
+          },
+          (error) => {
+            console.error('Error al enviar el correo:', error);
+            this.resetMessage = 'Error al enviar el correo. Intenta de nuevo.';
+          }
+        );
+      },
+      error: (err) => {
+        console.error('Error al generar el token:', err);
+        this.resetMessage = 'Error al generar el token. Intenta de nuevo.';
+      },
+    });
   }
 
   private handleErrors(errors: any): void {
     this.errors = errors.error.errors;
-    console.log(this.errors);
   }
 
   private cleanErrors(): void {
     this.errors = null;
   }
+
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
