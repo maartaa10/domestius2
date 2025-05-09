@@ -27,11 +27,15 @@
           [(ngModel)]="publicacio.animal_id"
           name="animal"
           required
+          [disabled]="animals.length === 0"
         >
           <option *ngFor="let animal of animals" [value]="animal.id">
             {{ animal.nom }}
           </option>
         </select>
+        <p *ngIf="animals.length === 0" class="error-message">
+          No tienes ningún animal registrado. Por favor, registra un animal antes de modificar una publicación.
+        </p>
       </div>
       <button class="bone" type="submit">
         <div class="c1"></div>

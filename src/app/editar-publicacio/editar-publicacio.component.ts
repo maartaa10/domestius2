@@ -4,6 +4,7 @@ import { Animal } from '../interfaces/animal';
 import { Publicacio } from '../interfaces/publicacio';
 import { AnimalPerdutService } from '../services/animal-perdut.service';
 import { PublicacioService } from '../services/publicacio.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-editar-publicacio',
@@ -30,7 +31,8 @@ export class EditarPublicacioComponent {
     private publicacioService: PublicacioService,
     private animalPerdutService: AnimalPerdutService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -57,12 +59,23 @@ export class EditarPublicacioComponent {
     });
   }
   loadAnimals(): void {
-    this.animalPerdutService.getAnimals().subscribe({
-      next: (data) => {
-        this.animals = data;
+    this.authService.getUserProfile().subscribe({
+      next: (userData) => {
+        const userId = userData.id; 
+  
+        this.animalPerdutService.getAnimalesByProtectora(userId).subscribe({
+          next: (data) => {
+            this.animals = data; 
+          },
+          error: (err) => {
+            console.error('Error al cargar los animales del usuario:', err);
+            alert('No se han podido cargar los animales. Por favor, inténtalo más tarde.');
+          }
+        });
       },
       error: (err) => {
-        console.error('Error al carregar els animals:', err);
+        console.error('Error al obtener el perfil del usuario:', err);
+        alert('No se ha podido cargar la información del usuario.');
       }
     });
   }
@@ -70,12 +83,13 @@ export class EditarPublicacioComponent {
   onSubmit(): void {
     this.publicacioService.updatePublicacio(this.publicacio.id, this.publicacio).subscribe({
       next: () => {
-        alert('Publicació actualitzada camb exit.');
-        this.router.navigate(['/user-dashboard']);
+        alert('Publicació actualitzada amb èxit.');
+        
+        this.router.navigate(['/dashboard']);
       },
       error: (err) => {
-        console.error('Error al actualitzar la publi:', err);
-        alert('hi ha hagut un error al actualitzar la publi.');
+        console.error('Error al actualitzar la publicació:', err);
+        alert('Hi ha hagut un error al actualitzar la publicació.');
       }
     });
   }
