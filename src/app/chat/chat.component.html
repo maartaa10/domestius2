@@ -1,0 +1,104 @@
+<div class="container">
+  <div class="row clearfix">
+    <div class="col-lg-12">
+      <div class="card chat-app">
+        <div id="plist" class="people-list">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fa fa-search"></i></span>
+            </div>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Cerca usuaris o protectores..."
+              [(ngModel)]="searchQuery"
+              (input)="searchUsers()"
+            />
+          </div>
+          <ul class="list-unstyled chat-list mt-2 mb-0">
+            <li
+              class="clearfix"
+              *ngFor="let user of searchResults"
+              [class.active]="selectedUser?.id === user.id"
+              (click)="startChat(user)"
+            >
+            <img [src]="getRandomAvatar(selectedUser)" alt="Avatar">
+              <div class="about">
+                <div class="name">{{ user.nom }}</div>
+                <div class="status">
+                  <i
+                    class="fa"
+                    [ngClass]="{
+                      'fa-circle online': user.online,
+                      'fa-circle offline': !user.online
+                    }"
+                  ></i>
+                  {{ user.online ? 'en línia' : 'offline' }}
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="chat">
+          <div class="chat-header clearfix">
+            <div class="row">
+              <div class="col-lg-6">
+                <img
+                  [src]="getRandomAvatar(selectedUser)"
+                  alt="avatar"
+                  class="rounded-circle"
+                />
+                <div class="chat-about">
+                  <h6 class="m-b-0">Xat amb {{ selectedUser?.nom }}</h6>
+                  <small>Última connexió: {{ getUltimaConexio() }}</small>
+                </div>
+              </div>
+              <div class="col-lg-6 text-right">
+                <a href="javascript:void(0);" class="btn btn-outline-secondary"><i class="fa fa-camera"></i></a>
+                <a href="javascript:void(0);" class="btn btn-outline-primary"><i class="fa fa-image"></i></a>
+                <a href="javascript:void(0);" class="btn btn-outline-info"><i class="fa fa-cogs"></i></a>
+                <a href="javascript:void(0);" class="btn btn-outline-warning"><i class="fa fa-question"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="chat-history">
+            <ul class="m-b-0">
+              <li class="clearfix" *ngFor="let message of messages">
+                <div
+                  class="message-container"
+                  [ngClass]="{ 'text-right': message.user?.id === chatClient.userID, 'text-left': message.user?.id !== chatClient.userID }"
+                >
+                  <div class="message-data">
+                    <span class="message-sender">{{ message.user?.name || 'Desconegut' }}</span>
+                    <span class="message-data-time">{{ message.created_at | date: 'shortTime' }}</span>
+                  </div>
+                  <div
+                    class="message"
+                    [ngClass]="{ 'my-message': message.user?.id === chatClient.userID, 'other-message': message.user?.id !== chatClient.userID }"
+                  >
+                    {{ message.text }}
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="chat-message clearfix">
+            <div class="input-group mb-0">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-send"></i></span>
+              </div>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Escriu un missatge..."
+                [(ngModel)]="newMessage"
+                (keyup.enter)="sendMessage()"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
