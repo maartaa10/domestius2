@@ -107,40 +107,44 @@ export class ChatComponent implements OnInit {
     try {
       console.log('Iniciando chat con el usuario:', user);
       this.selectedUser = user;
-
+  
       localStorage.setItem('lastUser', JSON.stringify(user));
       console.log('Usuario guardado en localStorage:', user);
-
+  
       await this.chatClient.upsertUser({
         id: user.id.toString(),
         name: user.nom || 'Usuario desconocido',
       });
       console.log('Usuario sincronizado con Stream Chat.');
-
-      this.channel = this.chatClient.channel('messaging', {
-        members: [this.chatClient.userID?.toString(), user.id.toString()],
+  
+      // Generar un ID único para el canal basado en los IDs de los usuarios
+      const userIds = [this.chatClient.userID?.toString(), user.id.toString()].sort();
+      const channelId = `chat-${userIds.join('-')}`;
+  
+      this.channel = this.chatClient.channel('messaging', channelId, {
+        members: userIds,
       });
       await this.channel.watch();
       console.log('Canal inicializado:', this.channel.id);
-
+  
       // Verificar los miembros del canal
       console.log('Miembros del canal:', this.channel.state.members);
-
+  
       // Listener para mensajes nuevos
       this.channel.on('message.new', (event: any) => {
         console.log('Mensaje recibido en tiempo real:', event.message);
         this.messages.push(event.message);
       });
-
+  
       // Listener para eventos de usuario
       this.channel.on('member.updated', (event: any) => {
         console.log('Estado de un miembro actualizado:', event.member);
       });
-
+  
       this.channel.on('member.added', (event: any) => {
         console.log('Nuevo miembro añadido al canal:', event.member);
       });
-
+  
       const response = await this.channel.query({ messages: { limit: 20 } });
       console.log('Mensajes cargados del canal:', response.messages);
       this.messages = response?.messages ?? [];
@@ -148,7 +152,6 @@ export class ChatComponent implements OnInit {
       console.error('Error al iniciar el chat:', error);
     }
   }
-
   async sendMessage(): Promise<void> {
     if (this.newMessage.trim() === '') return;
 
