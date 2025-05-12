@@ -25,6 +25,7 @@ import { EditarPublicacioComponent } from './editar-publicacio/editar-publicacio
 import { DetallAnimalPublicacioComponent } from './detall-animal-publicacio/detall-animal-publicacio.component';
 import { GraciesComponent } from './gracies/gracies.component';
 import { MapaAnimalsPerdutsComponent } from './mapa-animals-perduts/mapa-animals-perduts.component';
+import { RegenerarContrasenyaComponent } from './regenerar-contrasenya/regenerar-contrasenya.component';
 
 const routes: Routes = [ 
   { path: '', component: IniciComponent },
@@ -59,6 +60,7 @@ const routes: Routes = [
  
  
   { path: 'gracies', component: GraciesComponent },
+  { path: 'reset-password', component: RegenerarContrasenyaComponent }, // Ruta para el componente
 
   { path: 'mapa-animals-perduts', component: MapaAnimalsPerdutsComponent },
 { path: 'footer', component: FooterComponent },

@@ -55,20 +55,31 @@ export class LoginComponent {
 
   sendPasswordReset(): void {
     if (!this.emailForReset.trim()) {
-      this.resetMessage = 'Si us plau, introdueix un correu valid.';
+      this.resetMessage = 'Por favor, introduce un correo válido.';
       return;
     }
-
-    const resetLink = `http://localhost:4200/reset-password?email=${this.emailForReset}`;
-    this.emailService.sendPasswordResetEmail(this.emailForReset, resetLink).then(
-      () => {
-        this.resetMessage = 'Correu de recuperació enviat amb exit.';
+  
+    // Llamar al backend para generar el token
+    this.authService.generatePasswordResetToken(this.emailForReset).subscribe({
+      next: (response) => {
+        const token = response.token; // Obtener el token del backend
+  
+        // Llamar a EmailService para enviar el correo
+        this.emailService.sendPasswordResetEmail(this.emailForReset, token).then(
+          () => {
+            this.resetMessage = 'Correo de recuperación enviado con éxito.';
+          },
+          (error) => {
+            console.error('Error al enviar el correo:', error);
+            this.resetMessage = 'Error al enviar el correo. Intenta de nuevo.';
+          }
+        );
       },
-      (error) => {
-        console.error('Error al enviar el correu:', error);
-        this.resetMessage = 'Error al enviar el correu. Intentaho de nou.';
-      }
-    );
+      error: (err) => {
+        console.error('Error al generar el token:', err);
+        this.resetMessage = 'Error al generar el token. Intenta de nuevo.';
+      },
+    });
   }
 
   private handleErrors(errors: any): void {

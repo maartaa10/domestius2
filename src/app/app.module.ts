@@ -33,6 +33,7 @@ import { DetallAnimalPublicacioComponent } from './detall-animal-publicacio/deta
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { GraciesComponent } from './gracies/gracies.component';
 import { MapaAnimalsPerdutsComponent } from './mapa-animals-perduts/mapa-animals-perduts.component';
+import { RegenerarContrasenyaComponent } from './regenerar-contrasenya/regenerar-contrasenya.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCyePW5xWgzy4RHS7p6TmPJHlCgRSr8vWE",
@@ -71,7 +72,8 @@ const firebaseConfig = {
     DetallAnimalPublicacioComponent,
     UserDashboardComponent,
     GraciesComponent,
-    MapaAnimalsPerdutsComponent
+    MapaAnimalsPerdutsComponent,
+    RegenerarContrasenyaComponent
   ],
   imports: [
     BrowserModule,

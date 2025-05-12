@@ -64,7 +64,7 @@
           placeholder="El teu correu electronic">
       </div>
       <button (click)="sendPasswordReset()" class="reset-button">
-        Enviar enllaç de recuperació
+        <i class="fa-solid fa-key"></i> Enviar enllaç de recuperació
       </button>
       <p *ngIf="resetMessage" class="reset-message">{{ resetMessage }}</p>
     </div>

@@ -114,5 +114,23 @@ export class AuthService {
       mergeMap(result => result) // Aplanar el Observable anidado
     );
   }
+
+  resetPassword(email: string, token: string, passwords: { password: string; password_confirmation: string }): Observable<any> {
+    const url = `${this.API_URL}/reset-password`; 
+    const body = {
+      email,
+      token,
+      password: passwords.password,
+      password_confirmation: passwords.password_confirmation,
+    };
+  
+    return this.http.post(url, body);
+  }
+  generatePasswordResetToken(email: string): Observable<any> {
+    const url = `${this.API_URL}/password-reset`; // Endpoint del backend
+    const body = { email };
+  
+    return this.http.post(url, body);
+  }
 }
 
