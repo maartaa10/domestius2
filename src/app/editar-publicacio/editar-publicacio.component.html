@@ -1,49 +1,74 @@
-<div class="editar-publicacio-container">
-    <h2>Editar Publicación</h2>
-    <form (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="tipus">Titol</label>
-        <input
-          type="text"
-          id="tipus"
-          [(ngModel)]="publicacio.tipus"
-          name="tipus"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="detalls">Detalls</label>
-        <textarea
-          id="detalls"
-          [(ngModel)]="publicacio.detalls"
-          name="detalls"
-          required
-        ></textarea>
-      </div>
-      <div class="form-group">
-        <label for="animal">Animal</label>
-        <select
-          id="animal"
-          [(ngModel)]="publicacio.animal_id"
-          name="animal"
-          required
-          [disabled]="animals.length === 0"
-        >
-          <option *ngFor="let animal of animals" [value]="animal.id">
-            {{ animal.nom }}
-          </option>
-        </select>
-        <p *ngIf="animals.length === 0" class="error-message">
-          No tienes ningún animal registrado. Por favor, registra un animal antes de modificar una publicación.
-        </p>
-      </div>
-      <button class="bone" type="submit">
-        <div class="c1"></div>
-        <div class="c2"></div>
-        <div class="c3"></div>
-        <div class="c4"></div>
-        <div class="b1">
-          <div class="b2">Actualitzar Publicació</div>
-        </div>
-      </button>    </form>
+<div class="publicacio-form-container animate__animated animate__fadeIn">
+  <div class="form-header">
+    <h2><i class="fas fa-edit"></i> Editar Publicació</h2>
+    <p class="form-subtitle">Modifica la informació de la teva publicació</p>
   </div>
+  
+  <div class="form-card">
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-section">
+        <h3><i class="fas fa-heading"></i> Informació de la Publicació</h3>
+        
+        <div class="form-group">
+          <label for="tipus">
+            <i class="fas fa-tag"></i> Títol
+          </label>
+          <input 
+            type="text" 
+            id="tipus" 
+            [(ngModel)]="publicacio.tipus" 
+            name="tipus" 
+            class="form-control"
+            placeholder="Escriu el títol de la publicació" 
+            required
+          />
+        </div>
+        
+        <div class="form-group">
+          <label for="detalls">
+            <i class="fas fa-align-left"></i> Detalls
+          </label>
+          <textarea 
+            id="detalls" 
+            [(ngModel)]="publicacio.detalls" 
+            name="detalls" 
+            class="form-control"
+            placeholder="Descripció detallada de la publicació..."
+            rows="4"
+            required
+          ></textarea>
+        </div>
+      </div>
+      
+      <div class="form-section">
+        <h3><i class="fas fa-paw"></i> Animal Associat</h3>
+        
+        <div class="form-group">
+          <label for="animal">
+            <i class="fas fa-paw"></i> Animal
+          </label>
+          <select 
+            id="animal" 
+            [(ngModel)]="publicacio.animal_id" 
+            name="animal" 
+            class="form-control"
+            required
+          >
+            <option *ngFor="let animal of animals" [value]="animal.id">
+              {{ animal.nom }}
+            </option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <a routerLink="/dashboard" class="cancel-button">
+          <i class="fas fa-times"></i> Cancel·lar
+        </a>
+        <button type="submit" class="action-button">
+          <i class="fas fa-save"></i> Desar Canvis
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

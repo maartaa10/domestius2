@@ -1,48 +1,137 @@
-<div class="editar-animal-container" *ngIf="animal">
-  <h2>Editar Animal</h2>
-  <form (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="nom">Nom</label>
-      <input type="text" id="nom" [(ngModel)]="animal.nom" name="nom" required />
-    </div>
-    <div class="form-group">
-      <label for="edat">Edat</label>
-      <input type="number" id="edat" [(ngModel)]="animal.edat" name="edat" />
-    </div>
-    <div class="form-group">
-      <label for="especie">Espècie</label>
-      <input type="text" id="especie" [(ngModel)]="animal.especie" name="especie" required />
-    </div>
-    <div class="form-group">
-      <label for="raça">Raça</label>
-      <input type="text" id="raça" [(ngModel)]="animal['raça']" name="raça" />
-    </div>
-    <div class="form-group">
-      <label for="descripcio">Descripció</label>
-      <textarea id="descripcio" [(ngModel)]="animal.descripcio" name="descripcio"></textarea>
-    </div>
-    <div class="form-group">
-      <label for="estat">Estat</label>
-      <select id="estat" [(ngModel)]="animal.estat" name="estat" required>
-        <option value="Disponible">Disponible</option>
-        <option value="Adoptado">Adoptat</option>
-        <option value="En Adopción">En Adopció</option>
-        <option value="Reservado">Reservat</option>
-        <option value="En Tratamiento">En Tractament</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="imatge">Imatge</label>
-      <input type="file" id="imatge" (change)="onFileSelected($event)" />
-    </div>
-    <button class="bone" type="submit">
-      <div class="c1"></div>
-      <div class="c2"></div>
-      <div class="c3"></div>
-      <div class="c4"></div>
-      <div class="b1">
-        <div class="b2">Desar Canvis</div>
+<div class="editar-animal-container animate__animated animate__fadeIn" *ngIf="animal">
+  <div class="animal-form-header">
+    <h2><i class="fas fa-edit"></i> Editar Animal</h2>
+    <p class="form-subtitle">Modifica la informació del teu animal</p>
+  </div>
+  
+  <div class="animal-form-card">
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-section">
+        <h3><i class="fas fa-info-circle"></i> Informació bàsica</h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nom">
+              <i class="fas fa-tag"></i> Nom
+            </label>
+            <input
+              type="text"
+              id="nom"
+              [(ngModel)]="animal.nom"
+              name="nom"
+              required
+              class="form-control"
+              placeholder="Nom de l'animal"
+            />
+          </div>
+          
+          <div class="form-group">
+            <label for="edat">
+              <i class="fas fa-birthday-cake"></i> Edat
+            </label>
+            <input
+              type="number"
+              id="edat"
+              [(ngModel)]="animal.edat"
+              name="edat"
+              class="form-control"
+              placeholder="Edat en anys"
+            />
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="especie">
+              <i class="fas fa-feather-alt"></i> Espècie
+            </label>
+            <input
+              type="text"
+              id="especie"
+              [(ngModel)]="animal.especie"
+              name="especie"
+              required
+              class="form-control"
+              placeholder="Espècie de l'animal"
+            />
+          </div>
+          
+          <div class="form-group">
+            <label for="raça">
+              <i class="fas fa-dog"></i> Raça
+            </label>
+            <input
+              type="text"
+              id="raça"
+              [(ngModel)]="animal['raça']"
+              name="raça"
+              class="form-control"
+              placeholder="Raça de l'animal (opcional)"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="descripcio">
+            <i class="fas fa-align-left"></i> Descripció
+          </label>
+          <textarea
+            id="descripcio"
+            [(ngModel)]="animal.descripcio"
+            name="descripcio"
+            class="form-control"
+            placeholder="Descripció detallada de l'animal..."
+            rows="4"
+          ></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="estat">
+            <i class="fas fa-heart"></i> Estat
+          </label>
+          <select id="estat" [(ngModel)]="animal.estat" name="estat" required class="form-control">
+            <option value="Disponible">Disponible</option>
+            <option value="Adoptado">Adoptat</option>
+            <option value="En Adopción">En Adopció</option>
+            <option value="Reservado">Reservat</option>
+            <option value="En Tratamiento">En Tractament</option>
+          </select>
+        </div>
       </div>
-    </button>
-  </form>
+      
+      <div class="form-section">
+        <h3><i class="fas fa-image"></i> Imatge</h3>
+        
+        <div class="form-group">
+          <label for="imatge" class="file-upload-label">
+            <i class="fas fa-upload"></i> Selecciona una nova imatge
+          </label>
+          <div class="file-upload-container">
+            <input
+              type="file"
+              id="imatge"
+              (change)="onFileSelected($event)"
+              accept="image/*"
+              class="file-input"
+            />
+            <div class="file-upload-preview">
+              <span *ngIf="!selectedFileName" class="upload-text">{{ animal.imatge ? 'Imatge actual: ' + getImageName(animal.imatge) : 'Cap fitxer seleccionat' }}</span>
+              <span *ngIf="selectedFileName" class="selected-file">
+                <i class="fas fa-file-image"></i> {{ selectedFileName }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="form-actions">
+        <a routerLink="/dashboard" class="cancel-button">
+          <i class="fas fa-times"></i> Cancel·lar
+        </a>
+        <button type="submit" class="action-button">
+          <i class="fas fa-save"></i> Desar Canvis
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
