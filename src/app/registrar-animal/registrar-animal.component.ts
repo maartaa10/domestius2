@@ -45,6 +45,8 @@ export class RegistrarAnimalComponent {
   publicacioDetalls: string = '';
   isProtectora: boolean = false;
   userId: number = 0;
+selectedFileName: string | null = null;
+
   
 
   constructor(
@@ -106,6 +108,7 @@ export class RegistrarAnimalComponent {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
+      this.selectedFileName = this.selectedFile.name;
     }
   }
 
@@ -206,7 +209,8 @@ export class RegistrarAnimalComponent {
           detalls: 'Se ha creado esta publicación.',
           publicacio_id: nuevaPublicacion.id,
           usuari_id: nuevaPublicacion.usuari_id,
-          tipus_interaccio_id: 1
+          tipus_interaccio_id: 1,
+          hora_creacio: new Date().toLocaleTimeString()
         };
   
         this.interaccionsService.createInteraccio(interaccioInicial).subscribe({

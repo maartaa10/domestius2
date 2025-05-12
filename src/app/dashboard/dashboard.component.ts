@@ -116,20 +116,21 @@ export class DashboardComponent implements OnInit {
     
     // Verificar si la protectora tiene ID
     if (!this.protectoraId) {
-      this.animalsError = 'No se ha podido obtener el ID de la protectora.';
+      this.animalsError = 'No s\'ha pogut obtenir l\'ID de la protectora.';
       this.loadingAnimals = false;
       return;
     }
-
-    this.animalPerdutService.getAnimalesByProtectora(this.protectoraId).subscribe({
+  
+    // Usar getAnimals() y filtrar, igual que en protectora-detall
+    this.animalPerdutService.getAnimals().subscribe({
       next: (data) => {
-        this.userAnimals = data;
+        this.userAnimals = data.filter(animal => animal.protectora_id === this.protectoraId);
         this.totalPages = Math.ceil(this.userAnimals.length / this.pageSize);
         this.loadingAnimals = false;
       },
       error: (err) => {
         console.error('Error al cargar los animales de la protectora:', err);
-        this.animalsError = 'No se han podido cargar tus animales. Por favor, inténtalo más tarde.';
+        this.animalsError = 'No s\'han pogut carregar els teus animals. Si us plau, intenta-ho més tard.';
         this.loadingAnimals = false;
       }
     });

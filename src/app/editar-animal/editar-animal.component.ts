@@ -7,11 +7,12 @@ import { AnimalPerdutService } from '../services/animal-perdut.service';
   selector: 'app-editar-animal',
   standalone: false,
   templateUrl: './editar-animal.component.html',
-  styleUrl: './editar-animal.component.css'
+  styleUrl: './editar-animal.component.css',
 })
 export class EditarAnimalComponent implements OnInit {
   animal: Animal | null = null;
-  selectedFile: File | null = null; 
+  selectedFile: File | null = null;
+  selectedFileName: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -32,15 +33,20 @@ export class EditarAnimalComponent implements OnInit {
       error: (err) => {
         console.error('Error al carregar el animal:', err);
         alert('Hubo un error al carregar el animal.');
-      }
+      },
     });
   }
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
+      this.selectedFileName = input.files[0].name;
     }
+  }
+
+  getImageName(imagePath: string): string {
+    if (!imagePath) return 'Sin imagen';
+    return imagePath.split('/').pop() || 'imagen.jpg';
   }
 
   onSubmit(): void {
@@ -68,9 +74,9 @@ export class EditarAnimalComponent implements OnInit {
         this.router.navigate(['/animal-llista']);
       },
       error: (err) => {
-        console.error('Error al actualitzar l\'animal:', err);
-        alert('Error en actualizar l\'animal. Si us plau, torna a provar.');
-      }
+        console.error("Error al actualitzar l'animal:", err);
+        alert("Error en actualizar l'animal. Si us plau, torna a provar.");
+      },
     });
   }
 }

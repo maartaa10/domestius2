@@ -1,133 +1,228 @@
-<div class="add-animal-container">
-  <h2>Afegir Nou Animal</h2>
-  <form (ngSubmit)="onSubmit()" #animalForm="ngForm">
-    <div class="form-group">
-      <label for="nom">Nom</label>
-      <input
-        type="text"
-        id="nom"
-        name="nom"
-        [(ngModel)]="animal.nom"
-        required
-      />
-    </div>
-    <div class="form-group">
-      <label for="edat">Edat</label>
-      <input
-        type="number"
-        id="edat"
-        name="edat"
-        [(ngModel)]="animal.edat"
-        required
-      />
-    </div>
-    <div class="form-group">
-      <label for="especie">Espècie</label>
-      <input
-        type="text"
-        id="especie"
-        name="especie"
-        [(ngModel)]="animal.especie"
-        required
-      />
-    </div>
-    <div class="form-group">
-      <label for="raça">Raça</label>
-      <input
-        type="text"
-        id="raça"
-        name="raça"
-        [(ngModel)]="animal['raça']"
-      />
-    </div>
-    <div class="form-group">
-      <label for="descripcio">Descripció</label>
-      <textarea
-        id="descripcio"
-        name="descripcio"
-        [(ngModel)]="animal.descripcio"
-      ></textarea>
-    </div>
-    <div class="form-group">
-      <label for="estat">Estat</label>
-      <select id="estat" name="estat" [(ngModel)]="animal.estat" required>
-        <option value="Disponible">Disponible</option>
-        <option value="Adoptado">Adoptat</option>
-        <option value="En Adopción">En Adopció</option>
-        <option value="Reservado">Reservat</option>
-        <option value="En Tratamiento">En Tractament</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="imatge">Imatge</label>
-      <input
-        type="file"
-        id="imatge"
-        name="imatge"
-        (change)="onFileSelected($event)"
-        accept="image/*"
-      />
-    </div>
-    <div class="form-group" hidden>
-      <label for="protectora">Protectora</label>
-      <input
-        type="text"
-        id="protectora"
-        name="protectora"
-        [value]="getProtectoraName(animal.protectora_id)"
-        readonly
-        class="form-control"
-      />
-    </div>
-    <div class="form-group">
-      <label for="ubicacion">Ubicación</label>
-      <input
-      id="ubicacion"
-      type="text"
-      class="form-control"
-      [(ngModel)]="ubicacion.nombre"
-      name="ubicacion"
-      (input)="buscarUbicacion(ubicacion.nombre)"
-      placeholder="Escribe una ubicación"
-    />
-      <ul *ngIf="sugerencias.length > 0" class="suggestions-list">
-        <li
-          *ngFor="let sugerencia of sugerencias"
-          (click)="seleccionarUbicacion(sugerencia)"
-        >
-          {{ sugerencia.nombre }}, {{ sugerencia.direccion }}
-        </li>
-      </ul>
-    </div>
-    <div class="form-group">
-      <label>
-        <input type="checkbox" [(ngModel)]="crearPublicacio" name="crearPublicacio" />
-        Crear publicació associada
-      </label>
-    </div>
+<div class="add-animal-container animate__animated animate__fadeIn">
+  <div class="animal-form-header">
+    <h2><i class="fas fa-paw"></i> Afegir Nou Animal</h2>
+    <p class="form-subtitle">Registra un nou animal al sistema</p>
+  </div>
+  
+  <div class="animal-form-card">
+    <form (ngSubmit)="onSubmit()" #animalForm="ngForm">
+      <div class="form-section">
+        <h3><i class="fas fa-info-circle"></i> Informació bàsica</h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nom">
+              <i class="fas fa-tag"></i> Nom
+            </label>
+            <input
+              type="text"
+              id="nom"
+              name="nom"
+              [(ngModel)]="animal.nom"
+              required
+              class="form-control"
+              placeholder="Nom de l'animal"
+            />
+          </div>
+          
+          <div class="form-group">
+            <label for="edat">
+              <i class="fas fa-birthday-cake"></i> Edat
+            </label>
+            <input
+              type="number"
+              id="edat"
+              name="edat"
+              [(ngModel)]="animal.edat"
+              required
+              class="form-control"
+              placeholder="Edat en anys"
+            />
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="especie">
+              <i class="fas fa-feather-alt"></i> Espècie
+            </label>
+            <input
+              type="text"
+              id="especie"
+              name="especie"
+              [(ngModel)]="animal.especie"
+              required
+              class="form-control"
+              placeholder="Espècie de l'animal"
+            />
+          </div>
+          
+          <div class="form-group">
+            <label for="raça">
+              <i class="fas fa-dog"></i> Raça
+            </label>
+            <input
+              type="text"
+              id="raça"
+              name="raça"
+              [(ngModel)]="animal['raça']"
+              class="form-control"
+              placeholder="Raça de l'animal (opcional)"
+            />
+          </div>
+        </div>
 
-    <div *ngIf="crearPublicacio" class="form-group">
-      <label for="titulo">Títol de la publicació</label>
-      <input
-        type="text"
-        id="titulo"
-        name="titulo"
-        [(ngModel)]="publicacioTitulo"
-        placeholder="Escriu el títol de la publicació (ex. Adopció, Perdut, etc.)"
-        required
-      />
-    </div>
-    
-    <div *ngIf="crearPublicacio" class="form-group">
-      <label for="detalls">Detalls de la publicació</label>
-      <textarea
-        id="detalls"
-        name="detalls"
-        [(ngModel)]="publicacioDetalls"
-        placeholder="Escriu els detalls de la publicació..."
-      ></textarea>
-    </div>
-
-    <button type="submit" class="action-button">Afegir Animal</button>
-  </form>
+        <div class="form-group">
+          <label for="descripcio">
+            <i class="fas fa-align-left"></i> Descripció
+          </label>
+          <textarea
+            id="descripcio"
+            name="descripcio"
+            [(ngModel)]="animal.descripcio"
+            class="form-control"
+            placeholder="Descripció detallada de l'animal..."
+            rows="4"
+          ></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="estat">
+            <i class="fas fa-heart"></i> Estat
+          </label>
+          <select id="estat" name="estat" [(ngModel)]="animal.estat" required class="form-control">
+            <option value="" disabled selected>Selecciona un estat</option>
+            <option value="Disponible">Disponible</option>
+            <option value="Adoptado">Adoptat</option>
+            <option value="En Adopción">En Adopció</option>
+            <option value="Reservado">Reservat</option>
+            <option value="En Tratamiento">En Tractament</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-section">
+        <h3><i class="fas fa-map-marked-alt"></i> Ubicació</h3>
+        
+        <div class="form-group hidden">
+          <label for="protectora">
+            <i class="fas fa-home"></i> Protectora
+          </label>
+          <input
+            type="text"
+            id="protectora"
+            name="protectora"
+            [value]="getProtectoraName(animal.protectora_id)"
+            readonly
+            class="form-control"
+          />
+        </div>
+        
+        <div class="form-group">
+          <label for="ubicacion">
+            <i class="fas fa-map-marker-alt"></i> Ubicació
+          </label>
+          <div class="search-location">
+            <input
+              id="ubicacion"
+              type="text"
+              class="form-control"
+              [(ngModel)]="ubicacion.nombre"
+              name="ubicacion"
+              (input)="buscarUbicacion(ubicacion.nombre)"
+              placeholder="Escriu una ubicació"
+            />
+            <i class="fas fa-search search-icon"></i>
+          </div>
+          
+          <ul *ngIf="sugerencias.length > 0" class="suggestions-list">
+            <li
+              *ngFor="let sugerencia of sugerencias"
+              (click)="seleccionarUbicacion(sugerencia)"
+              class="suggestion-item"
+            >
+              <i class="fas fa-map-pin"></i> {{ sugerencia.nombre }}, {{ sugerencia.direccion }}
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="form-section">
+        <h3><i class="fas fa-image"></i> Imatge</h3>
+        
+        <div class="form-group">
+          <label for="imatge" class="file-upload-label">
+            <i class="fas fa-upload"></i> Selecciona una imatge
+          </label>
+          <div class="file-upload-container">
+            <input
+              type="file"
+              id="imatge"
+              name="imatge"
+              (change)="onFileSelected($event)"
+              accept="image/*"
+              class="file-input"
+            />
+            <div class="file-upload-preview">
+              <span *ngIf="!selectedFileName" class="upload-text">Cap fitxer seleccionat</span>
+              <span *ngIf="selectedFileName" class="selected-file">
+                <i class="fas fa-file-image"></i> {{ selectedFileName }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-section">
+        <h3><i class="fas fa-bullhorn"></i> Publicació</h3>
+        
+        <div class="form-group checkbox-group">
+          <label class="checkbox-container">
+            <input type="checkbox" [(ngModel)]="crearPublicacio" name="crearPublicacio" />
+            <span class="checkbox-text">Crear publicació associada</span>
+          </label>
+        </div>
+  
+        <div *ngIf="crearPublicacio" class="publicacion-details animate__animated animate__fadeIn">
+          <div class="form-group">
+            <label for="titulo">
+              <i class="fas fa-heading"></i> Títol de la publicació
+            </label>
+            <input
+              type="text"
+              id="titulo"
+              name="titulo"
+              [(ngModel)]="publicacioTitulo"
+              class="form-control"
+              placeholder="Escriu el títol de la publicació (ex. Adopció, Perdut, etc.)"
+              required
+            />
+          </div>
+          
+          <div class="form-group">
+            <label for="detalls">
+              <i class="fas fa-edit"></i> Detalls de la publicació
+            </label>
+            <textarea
+              id="detalls"
+              name="detalls"
+              [(ngModel)]="publicacioDetalls"
+              class="form-control"
+              placeholder="Escriu els detalls de la publicació..."
+              rows="4"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+  
+      <div class="form-actions">
+        <a routerLink="/dashboard" class="cancel-button">
+          <i class="fas fa-times"></i> Cancel·lar
+        </a>
+        <button type="submit" class="action-button">
+          <i class="fas fa-plus-circle"></i> Afegir Animal
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
