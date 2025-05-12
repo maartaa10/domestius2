@@ -80,7 +80,10 @@
             <div class="interaction-card" *ngFor="let interaccio of interaccions">
               <div class="interaction-header">
                 <span class="interaction-action">{{ interaccio.accio || 'No disponible' }}</span>
-                <span class="interaction-date">{{ interaccio.data | date:'dd/MM/yyyy HH:mm' }}</span>
+                <span class="interaction-date">
+                  {{ interaccio.data | date:'dd/MM/yyyy' }} 
+                  <i class="fas fa-clock ml-2"></i> {{ sumarDosHoras(interaccio.hora_creacio) }}
+                </span>
               </div>
               <div class="interaction-body">
                 <p>{{ interaccio.detalls || 'Sense detalls' }}</p>

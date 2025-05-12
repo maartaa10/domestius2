@@ -8,4 +8,5 @@ export interface Interaccio {
     publicacio_id: number;
     usuari_id: number;
     tipus_interaccio_id: number;
+    hora_creacio: string;
 }

@@ -106,7 +106,8 @@ export class AfegirPublicacioComponent {
           detalls: 'S\'ha creat aquesta publicación.',
           publicacio_id: nuevaPublicacion.id,
           usuari_id: nuevaPublicacion.usuari_id,
-          tipus_interaccio_id: 1 
+          tipus_interaccio_id: 1 ,
+          hora_creacio: now.toISOString().slice(11, 19),
         };
   
         this.interaccionsService.createInteraccio(interaccioInicial).subscribe({

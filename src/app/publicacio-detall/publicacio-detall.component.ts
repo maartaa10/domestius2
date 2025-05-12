@@ -38,7 +38,8 @@ export class PublicacioDetallComponent implements OnInit {
     detalls: '',
     publicacio_id: 0,
     usuari_id: 0,
-    tipus_interaccio_id: 1
+    tipus_interaccio_id: 1,
+    hora_creacio: new Date().toLocaleTimeString()
   };
   mostrarFormulario: boolean = false;
   latitude: number = 41.3851;
@@ -115,6 +116,27 @@ export class PublicacioDetallComponent implements OnInit {
     
   }
 
+    // Función para sumar 2 horas a la hora de las interacciones
+    sumarDosHoras(horaStr: string): string {
+      if (!horaStr) return '';
+      
+      // Separar las partes de la hora (horas, minutos, segundos)
+      const partes = horaStr.split(':');
+      if (partes.length < 2) return horaStr;
+      
+      // Convertir la hora a número y sumar 2
+      let horas = parseInt(partes[0], 10) + 2;
+      
+      // Manejar el formato 24h (si es mayor a 23, aplicar módulo 24)
+      horas = horas % 24;
+      
+      // Formatear la hora para que siempre tenga 2 dígitos
+      const horasStr = horas.toString().padStart(2, '0');
+      
+      // Reconstruir la hora con las horas modificadas
+      return `${horasStr}:${partes[1]}${partes.length > 2 ? ':' + partes[2] : ''}`;
+    }
+
   loadAnimalDetails(animalId: number): void {
     this.animalPerdutService.getAnimalById(animalId).subscribe({
       next: (animal) => {
@@ -190,7 +212,8 @@ export class PublicacioDetallComponent implements OnInit {
       detalls: this.novaInteraccio.detalls,
       publicacio_id: this.publicacio?.id || 0,
       usuari_id: usuariId,
-      tipus_interaccio_id: 1
+      tipus_interaccio_id: 1,
+      hora_creacio: now.toISOString().slice(11, 19)
     };
   
     this.interaccioService.createInteraccio(interaccioData).subscribe({
@@ -204,7 +227,8 @@ export class PublicacioDetallComponent implements OnInit {
           detalls: '',
           publicacio_id: this.publicacio?.id || 0,
           usuari_id: usuariId,
-          tipus_interaccio_id: 1
+          tipus_interaccio_id: 1,
+          hora_creacio: new Date().toLocaleTimeString()
         };
         
         // Cerrar el formulario y desbloquear el scroll

@@ -26,6 +26,7 @@ import { DetallAnimalPublicacioComponent } from './detall-animal-publicacio/deta
 import { GraciesComponent } from './gracies/gracies.component';
 import { MapaAnimalsPerdutsComponent } from './mapa-animals-perduts/mapa-animals-perduts.component';
 import { RegenerarContrasenyaComponent } from './regenerar-contrasenya/regenerar-contrasenya.component';
+import { ChatComponent } from './chat/chat.component';
 
 const routes: Routes = [ 
   { path: '', component: IniciComponent },
@@ -58,7 +59,8 @@ const routes: Routes = [
   { path: 'afegir-publicacio', component: AfegirPublicacioComponent },
   { path: 'editar-publicacio/:id', component: EditarPublicacioComponent },
  
- 
+  { path: 'chat', component: ChatComponent },
+
   { path: 'gracies', component: GraciesComponent },
   { path: 'reset-password', component: RegenerarContrasenyaComponent }, // Ruta para el componente
 
