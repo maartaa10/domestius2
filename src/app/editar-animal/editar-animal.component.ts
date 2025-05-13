@@ -40,6 +40,7 @@ export class EditarAnimalComponent implements OnInit {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
       this.selectedFileName = input.files[0].name;
     }
   }
@@ -54,7 +55,7 @@ export class EditarAnimalComponent implements OnInit {
       alert('No hi ha dades del animal per a actualitzar.');
       return;
     }
-
+  
     const formData = new FormData();
     formData.append('nom', this.animal.nom);
     formData.append('edat', this.animal.edat?.toString() || '');
@@ -62,12 +63,16 @@ export class EditarAnimalComponent implements OnInit {
     formData.append('raça', this.animal.raça || '');
     formData.append('descripcio', this.animal.descripcio || '');
     formData.append('estat', this.animal.estat);
-    formData.append('protectora_id', this.animal.protectora_id.toString());
-
+    
+    // Solo añade protectora_id si existe y no es 0
+    if (this.animal.protectora_id) {
+      formData.append('protectora_id', this.animal.protectora_id.toString());
+    }
+  
     if (this.selectedFile instanceof File) {
       formData.append('imatge', this.selectedFile);
     }
-
+  
     this.animalPerdutService.updateAnimal(this.animal.id, formData).subscribe({
       next: () => {
         alert('Animal actualitzat amb éxit.');
