@@ -264,3 +264,15 @@
     font-size: 1.2rem;
   }
 }
+
+.admin-link {
+  color: #1976d2; /* Color destacado para el enlace admin */
+}
+
+.admin-link i {
+  color: #1976d2;
+}
+
+.admin-link:hover {
+  color: #0d47a1; /* Color al hacer hover */
+}

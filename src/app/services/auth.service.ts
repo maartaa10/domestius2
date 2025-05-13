@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Usuari } from '../interfaces/usuari';
-import { Observable } from 'rxjs';
-import { map, catchError, mergeMap } from 'rxjs/operators';
+import { Observable, BehaviorSubject, forkJoin, of } from 'rxjs';
+import { map, catchError, mergeMap, tap } from 'rxjs/operators';
 import { environment } from '../environments/environment.development';
 import { AuthCredentials } from '../models/auth-credentials.model';
 import { UserRegister } from '../models/user-register.model';
 import { TokenService } from './token.service';
 import { ProtectoraService } from './protectora.service';
-import { of } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -17,40 +16,44 @@ export class AuthService {
   private readonly API_URL = environment.apiURL;
   private apiUrl = 'http://127.0.0.1:8000/api/v1/user-profile';
   private usuarioActual: Usuari | null = null;
+
+  // Añadir este BehaviorSubject para emitir eventos de autenticación
+  private authStateChanged = new BehaviorSubject<boolean>(false);
+  
+  // Observable público que otros componentes pueden escuchar
+  authState$ = this.authStateChanged.asObservable();
   
   constructor(private http: HttpClient, private tokenService: TokenService, private protectoraService: ProtectoraService) {}
 
   login(credentials: AuthCredentials): Observable<any> {
-    return this.http.post(`${this.API_URL}/login`, credentials);
+    return this.http.post(`${this.API_URL}/login`, credentials).pipe(
+      tap(() => {
+        // Emite un evento para indicar que el estado de autenticación ha cambiado
+        this.authStateChanged.next(true);
+      })
+    );
   }
 
   register(user: UserRegister): Observable<any> {
     return this.http.post(`${this.API_URL}/register`, user);
   }
 
-/*   logout(): Observable<any> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.tokenService.getToken()}`
-    });
-    return this.http.delete(`${this.API_URL}/logout`, { headers });
-  } */
-
-    getUserProfile(): Observable<any> {
-      const token = this.tokenService.getToken();
-      console.log('Token obtenido del localStorage:', token);
-      if (!token) {
-        console.error('No se encontró un token en el almacenamiento local.');
-        return new Observable(observer => {
-          observer.error({ message: 'No se encontró un token.' });
-        });
-      }
-    
-      const headers = new HttpHeaders({
-        Authorization: `Bearer ${token}`
+  getUserProfile(): Observable<any> {
+    const token = this.tokenService.getToken();
+    console.log('Token obtenido del localStorage:', token);
+    if (!token) {
+      console.error('No se encontró un token en el almacenamiento local.');
+      return new Observable(observer => {
+        observer.error({ message: 'No se encontró un token.' });
       });
-    
-      return this.http.get(`${this.API_URL}/user-profile`, { headers });
     }
+    
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+    
+    return this.http.get(`${this.API_URL}/user-profile`, { headers });
+  }
   
   logout(): Observable<any> {
     const token = this.tokenService.getToken();
@@ -65,8 +68,14 @@ export class AuthService {
       Authorization: `Bearer ${token}`
     });
   
-    return this.http.delete(`${this.API_URL}/logout`, { headers });
+    return this.http.delete(`${this.API_URL}/logout`, { headers }).pipe(
+      tap(() => {
+        // Emite un evento para indicar que el estado de autenticación ha cambiado
+        this.authStateChanged.next(false);
+      })
+    );
   }
+
   cargarUsuarioActual(): Observable<Usuari> {
     return new Observable((observer) => {
       if (this.usuarioActual) {
@@ -97,21 +106,63 @@ export class AuthService {
   getNombreUsuarioActual(): string {
     return this.usuarioActual?.nom || 'Usuari desconegut';
   }
+
+  isAdmin(): Observable<boolean> {
+    const userId = this.getUsuarioActualId();
+    if (!userId) {
+      return of(false);
+    }
+    
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.tokenService.getToken()}`
+    });
+    
+    return this.http.get<{isAdmin: boolean}>(`${environment.apiURL2}/usuario/${userId}/is-admin`, { headers })
+      .pipe(
+        map(response => response.isAdmin),
+        catchError(error => {
+          console.error('Error al verificar si el usuario es administrador:', error);
+          return of(false);
+        })
+      );
+  }
+  
   getUserType(): Observable<string> {
     return this.getUserProfile().pipe(
-      map(userData => {
-        // Verificar si el usuario está asociado a una protectora
-        return this.protectoraService.getProtectoraByUsuario(userData.id).pipe(
-          map(protectoraData => {
-            return protectoraData ? 'protectora' : 'usuario';
-          }),
-          catchError(err => {
-            console.error('Error al determinar el tipo de usuario:', err);
-            return of('usuario'); // Por defecto, considerar como usuario estándar
+      mergeMap(userData => {
+        const userId = userData.id;
+        
+        return forkJoin({
+          isAdmin: this.http.get<{isAdmin: boolean}>(`${environment.apiURL2}/usuario/${userId}/is-admin`, {
+            headers: new HttpHeaders({
+              Authorization: `Bearer ${this.tokenService.getToken()}`
+            })
+          }).pipe(
+            map(response => response.isAdmin),
+            catchError(() => of(false))
+          ),
+          
+          hasProtectora: this.protectoraService.getProtectoraByUsuario(userId).pipe(
+            map(protectora => !!protectora),
+            catchError(() => of(false))
+          )
+        }).pipe(
+          map(result => {
+            console.log('Resultado de verificación de tipo de usuario:', result);
+            if (result.isAdmin) {
+              return 'admin';
+            } else if (result.hasProtectora) {
+              return 'protectora';
+            } else {
+              return 'usuario';
+            }
           })
         );
       }),
-      mergeMap(result => result) // Aplanar el Observable anidado
+      catchError(error => {
+        console.error('Error al determinar el tipo de usuario:', error);
+        return of('usuario');
+      })
     );
   }
 
@@ -126,11 +177,17 @@ export class AuthService {
   
     return this.http.post(url, body);
   }
+
   generatePasswordResetToken(email: string): Observable<any> {
     const url = `${this.API_URL}/password-reset`; // Endpoint del backend
     const body = { email };
   
     return this.http.post(url, body);
+  }
+
+  // Método para actualizar manualmente el estado de autenticación
+  updateAuthState(): void {
+    this.authStateChanged.next(this.tokenService.isLoggedIn());
   }
 }
 

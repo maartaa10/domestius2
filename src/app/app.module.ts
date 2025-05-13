@@ -35,6 +35,7 @@ import { GraciesComponent } from './gracies/gracies.component';
 import { MapaAnimalsPerdutsComponent } from './mapa-animals-perduts/mapa-animals-perduts.component';
 import { RegenerarContrasenyaComponent } from './regenerar-contrasenya/regenerar-contrasenya.component';
 import { ChatComponent } from './chat/chat.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCyePW5xWgzy4RHS7p6TmPJHlCgRSr8vWE",
@@ -75,7 +76,8 @@ const firebaseConfig = {
     GraciesComponent,
     MapaAnimalsPerdutsComponent,
     RegenerarContrasenyaComponent,
-    ChatComponent
+    ChatComponent,
+    AdminDashboardComponent
   ],
   imports: [
     BrowserModule,

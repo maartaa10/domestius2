@@ -40,6 +40,14 @@
               <i class="fas fa-comments"></i>
               <span>Xat</span>
             </a>
+          </li>
+          <!-- Enlace al dashboard de admin (solo visible para admins) -->
+          <li class="nav-item" *ngIf="isUserLoggedIn && isUserAdmin">
+            <a class="nav-link admin-link" [routerLink]="['/admin-dashboard']" routerLinkActive="active">
+              <i class="fas fa-shield-alt"></i>
+              <span>Admin</span>
+            </a>
+          </li>
           <li class="nav-item user-item">
             <a class="nav-link user-button" (click)="navigateToDashboardOrLogin()">
               <div class="user-icon-container">

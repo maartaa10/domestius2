@@ -27,6 +27,8 @@ import { GraciesComponent } from './gracies/gracies.component';
 import { MapaAnimalsPerdutsComponent } from './mapa-animals-perduts/mapa-animals-perduts.component';
 import { RegenerarContrasenyaComponent } from './regenerar-contrasenya/regenerar-contrasenya.component';
 import { ChatComponent } from './chat/chat.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+
 
 const routes: Routes = [ 
   { path: '', component: IniciComponent },
@@ -50,6 +52,8 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'user-dashboard', component: UserDashboardComponent },
   { path: 'detall-animal-publicacio/:id', component: DetallAnimalPublicacioComponent },
+  { path: 'admin-dashboard', component: AdminDashboardComponent },
+
 
   { path: 'animal-llista', component: AnimalLlistaComponent },
   { path: 'inici', component: IniciComponent },
