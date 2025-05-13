@@ -69,12 +69,10 @@ export class ChatComponent implements OnInit {
       );
       console.log('Usuario conectado al cliente de Stream Chat.');
 
-      // Listener para cambios en la conexión
       this.chatClient.on('connection.changed', (event) => {
         console.log('Estado de la conexión:', event.online ? 'Conectado' : 'Desconectado');
       });
 
-      // Listener para errores de conexión
       this.chatClient.on('connection.error', (event) => {
         console.error('Error en la conexión de WebSocket:', event);
       });
@@ -117,7 +115,6 @@ export class ChatComponent implements OnInit {
       });
       console.log('Usuario sincronizado con Stream Chat.');
   
-      // Generar un ID único para el canal basado en los IDs de los usuarios
       const userIds = [this.chatClient.userID?.toString(), user.id.toString()].sort();
       const channelId = `chat-${userIds.join('-')}`;
   
@@ -127,16 +124,13 @@ export class ChatComponent implements OnInit {
       await this.channel.watch();
       console.log('Canal inicializado:', this.channel.id);
   
-      // Verificar los miembros del canal
       console.log('Miembros del canal:', this.channel.state.members);
   
-      // Listener para mensajes nuevos
       this.channel.on('message.new', (event: any) => {
         console.log('Mensaje recibido en tiempo real:', event.message);
         this.messages.push(event.message);
       });
   
-      // Listener para eventos de usuario
       this.channel.on('member.updated', (event: any) => {
         console.log('Estado de un miembro actualizado:', event.member);
       });
@@ -160,7 +154,6 @@ export class ChatComponent implements OnInit {
       const response = await this.channel.sendMessage({ text: this.newMessage });
       console.log('Mensaje enviado:', response);
 
-      // Verificar si el mensaje aparece en el canal
       console.log('Estado actual del canal después de enviar el mensaje:', this.channel.state.messages);
 
       this.newMessage = '';
