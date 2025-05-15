@@ -1,0 +1,147 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
+
+.terms-container {
+  min-height: calc(100vh - var(--navbar-height) - var(--footer-height));
+  background-color: #bfe3c0;
+  padding: 40px 20px;
+  margin-top: var(--navbar-height);
+}
+
+.terms-content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.terms-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.terms-title {
+  font-size: 2.2rem;
+  color: #333;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.terms-title i {
+  color: #4b83e5;
+}
+
+.terms-subtitle {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.terms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.terms-card {
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  animation: fadeIn 0.5s ease;
+}
+
+.terms-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.terms-section-title {
+  font-size: 1.4rem;
+  color: #333;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.terms-section-title i {
+  color: #4b83e5;
+  font-size: 1.5rem;
+}
+
+.terms-text {
+  color: #555;
+  line-height: 1.6;
+}
+
+.terms-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.terms-list li {
+  margin-bottom: 15px;
+  padding-left: 25px;
+  position: relative;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.terms-list li i {
+  color: #4b83e5;
+  font-size: 1rem;
+  margin-top: 3px;
+}
+
+.terms-footer {
+  text-align: center;
+  margin-top: 40px;
+  padding: 20px;
+  color: #666;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #4b83e5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  gap: 8px;
+}
+
+.back-button:hover {
+  background-color: #3a6bb5;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .terms-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .terms-title {
+    font-size: 1.8rem;
+  }
+  
+  .terms-container {
+    padding: 30px 15px;
+  }
+}

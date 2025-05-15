@@ -40,6 +40,10 @@ import { WebgrafiaComponent } from './webgrafia/webgrafia.component';
 import { PoliticaPrivacidadComponent } from './politica-privacidad/politica-privacidad.component';
 import { SobreNosotrosComponent } from './sobre-nosotros/sobre-nosotros.component';
 import { FAQComponent } from './faq/faq.component';
+import { TermesICondicionsComponent } from './termes-i-condicions/termes-i-condicions.component';
+import { UsDeCookiesComponent } from './us-de-cookies/us-de-cookies.component';
+import { ModeracioDeContingutComponent } from './moderacio-de-contingut/moderacio-de-contingut.component';
+import { PoliticaDeCookiesComponent } from './politica-de-cookies/politica-de-cookies.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCyePW5xWgzy4RHS7p6TmPJHlCgRSr8vWE",
@@ -84,8 +88,7 @@ const firebaseConfig = {
     AdminDashboardComponent,
     WebgrafiaComponent,
     PoliticaPrivacidadComponent,
-    SobreNosotrosComponent,
-    FAQComponent
+    SobreNosotrosComponent
   ],
   imports: [
     BrowserModule,
