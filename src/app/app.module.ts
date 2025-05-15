@@ -43,6 +43,7 @@ import { TermesICondicionsComponent } from './termes-i-condicions/termes-i-condi
 import { UsDeCookiesComponent } from './us-de-cookies/us-de-cookies.component';
 import { ModeracioDeContingutComponent } from './moderacio-de-contingut/moderacio-de-contingut.component';
 import { PoliticaDeCookiesComponent } from './politica-de-cookies/politica-de-cookies.component';
+import { QueFerAnimalPerdutComponent } from './que-fer-animal-perdut/que-fer-animal-perdut.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCyePW5xWgzy4RHS7p6TmPJHlCgRSr8vWE",
@@ -91,7 +92,8 @@ const firebaseConfig = {
     TermesICondicionsComponent,
     UsDeCookiesComponent,
     ModeracioDeContingutComponent,
-    PoliticaDeCookiesComponent
+    PoliticaDeCookiesComponent,
+    QueFerAnimalPerdutComponent
   ],
   imports: [
     BrowserModule,

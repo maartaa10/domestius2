@@ -35,6 +35,7 @@ import { TermesICondicionsComponent } from './termes-i-condicions/termes-i-condi
 import { UsDeCookiesComponent } from './us-de-cookies/us-de-cookies.component';
 import { ModeracioDeContingutComponent } from './moderacio-de-contingut/moderacio-de-contingut.component';
 import { PoliticaDeCookiesComponent } from './politica-de-cookies/politica-de-cookies.component';
+import { QueFerAnimalPerdutComponent } from './que-fer-animal-perdut/que-fer-animal-perdut.component';
 
 const routes: Routes = [ 
   { path: '', component: IniciComponent },
@@ -77,6 +78,7 @@ const routes: Routes = [
   { path: 'us-de-cookies', component: UsDeCookiesComponent },
   { path: 'politica-de-cookies', component: PoliticaDeCookiesComponent },
   { path: 'moderacio-de-contingut', component: ModeracioDeContingutComponent },
+  { path: 'que-fer-animal-perdut', component: QueFerAnimalPerdutComponent },
   { path: 'mapa-animals-perduts', component: MapaAnimalsPerdutsComponent },
 { path: 'footer', component: FooterComponent },
 { path: 'perfil', component: PerfilComponent },
