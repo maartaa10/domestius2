@@ -31,6 +31,8 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { WebgrafiaComponent } from './webgrafia/webgrafia.component';
 import { PoliticaPrivacidadComponent } from './politica-privacidad/politica-privacidad.component';
 import { SobreNosotrosComponent } from './sobre-nosotros/sobre-nosotros.component';
+import { FAQComponent } from './faq/faq.component';
+
 import { TermesICondicionsComponent } from './termes-i-condicions/termes-i-condicions.component';
 import { UsDeCookiesComponent } from './us-de-cookies/us-de-cookies.component';
 import { ModeracioDeContingutComponent } from './moderacio-de-contingut/moderacio-de-contingut.component';
@@ -85,7 +87,9 @@ const routes: Routes = [
 
 { path: 'webgrafia', component: WebgrafiaComponent },
 { path: 'politica-privacidad', component: PoliticaPrivacidadComponent },
-{ path: 'sobre-nosotros', component: SobreNosotrosComponent }
+{ path: 'sobre-nosotros', component: SobreNosotrosComponent },
+{ path: 'faq', component: FAQComponent },
+
 
 ];
 
