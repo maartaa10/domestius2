@@ -1,0 +1,139 @@
+.cookies-policy-container {
+    min-height: calc(100vh - var(--navbar-height) - var(--footer-height));
+   /*  background-color: #f8f9fa; */
+    padding: 40px 20px;
+    margin-top: var(--navbar-height);
+  }
+  
+  .cookies-policy-content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .cookies-policy-header {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .cookies-policy-title {
+    font-size: 2.2rem;
+    color: #333;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .cookies-policy-title i {
+    color: #4b83e5;
+  }
+  
+  .cookies-policy-subtitle {
+    color: #666;
+    font-size: 1.1rem;
+  }
+  
+  .cookies-policy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+  }
+  
+  .cookies-policy-card {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+  }
+  
+  .cookies-policy-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+  
+  .cookies-policy-section-title {
+    font-size: 1.4rem;
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .cookies-policy-section-title i {
+    color: #4b83e5;
+    font-size: 1.5rem;
+  }
+  
+  .cookies-policy-text {
+    color: #555;
+    line-height: 1.6;
+  }
+  
+  .cookies-policy-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .cookies-policy-list li {
+    margin-bottom: 15px;
+    padding-left: 25px;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .cookies-policy-list li i {
+    color: #4b83e5;
+    font-size: 1rem;
+  }
+  
+  .cookies-link {
+    color: #4b83e5;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  
+  .cookies-link:hover {
+    color: #2c5aa0;
+    text-decoration: underline;
+  }
+  
+  .cookies-policy-footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    color: #666;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .back-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #4b83e5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .back-button:hover {
+    background-color: #3a6bb5;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  }

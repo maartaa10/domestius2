@@ -30,4 +30,12 @@ export class ChatService {
       })
     );
   }
+getRecentChats(userId: string): Observable<any[]> {
+  return this.http.get<any[]>(`${this.apiUrl}/recent-chats`, { params: { user_id: userId } }).pipe(
+    catchError(err => {
+      console.error('Error al obtener los chats recientes:', err);
+      return of([]); 
+    })
+  );
+}
 }

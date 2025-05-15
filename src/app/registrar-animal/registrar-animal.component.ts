@@ -70,7 +70,6 @@ selectedFileName: string | null = null;
         console.log('Dades de l\'usuari loguejat:', userData);
         this.userId = userData.id;
   
-        // Comprobar si el usuario es una protectora
         this.authService.getUserType().pipe(debounceTime(500)).subscribe(userType => {
           this.isProtectora = userType === 'protectora';
   
@@ -132,7 +131,6 @@ selectedFileName: string | null = null;
     formData.append('descripcio', this.animal.descripcio || '');
     formData.append('estat', this.animal.estat);
     
-    // Usamos protectora_id si es una protectora, o el id de usuario si es usuario normal
     if (this.isProtectora) {
       formData.append('protectora_id', this.animal.protectora_id.toString());
     } else {
@@ -154,7 +152,6 @@ selectedFileName: string | null = null;
           this.crearPublicacion(animal);
         }
         
-        // Redirección según el tipo de usuario
         if (this.isProtectora) {
           this.router.navigate(['/dashboard']);
         } else {
@@ -257,6 +254,6 @@ selectedFileName: string | null = null;
     this.ubicacion.nombre = `${sugerencia.nombre}, ${sugerencia.direccion}`;
     this.ubicacion.latitud = sugerencia.latitud;
     this.ubicacion.longitud = sugerencia.longitud;
-    this.sugerencias = []; // Limpiar las sugerencias después de seleccionar
+    this.sugerencias = [];
   }
 }

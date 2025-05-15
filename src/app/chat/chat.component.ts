@@ -191,4 +191,5 @@ export class ChatComponent implements OnInit {
 
     return 'No hay actividad reciente';
   }
+  
 }

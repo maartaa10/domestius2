@@ -35,6 +35,10 @@ import { GraciesComponent } from './gracies/gracies.component';
 import { MapaAnimalsPerdutsComponent } from './mapa-animals-perduts/mapa-animals-perduts.component';
 import { RegenerarContrasenyaComponent } from './regenerar-contrasenya/regenerar-contrasenya.component';
 import { ChatComponent } from './chat/chat.component';
+import { TermesICondicionsComponent } from './termes-i-condicions/termes-i-condicions.component';
+import { UsDeCookiesComponent } from './us-de-cookies/us-de-cookies.component';
+import { ModeracioDeContingutComponent } from './moderacio-de-contingut/moderacio-de-contingut.component';
+import { PoliticaDeCookiesComponent } from './politica-de-cookies/politica-de-cookies.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCyePW5xWgzy4RHS7p6TmPJHlCgRSr8vWE",
@@ -75,7 +79,11 @@ const firebaseConfig = {
     GraciesComponent,
     MapaAnimalsPerdutsComponent,
     RegenerarContrasenyaComponent,
-    ChatComponent
+    ChatComponent,
+    TermesICondicionsComponent,
+    UsDeCookiesComponent,
+    ModeracioDeContingutComponent,
+    PoliticaDeCookiesComponent
   ],
   imports: [
     BrowserModule,

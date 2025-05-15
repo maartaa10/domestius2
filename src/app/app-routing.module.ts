@@ -27,6 +27,10 @@ import { GraciesComponent } from './gracies/gracies.component';
 import { MapaAnimalsPerdutsComponent } from './mapa-animals-perduts/mapa-animals-perduts.component';
 import { RegenerarContrasenyaComponent } from './regenerar-contrasenya/regenerar-contrasenya.component';
 import { ChatComponent } from './chat/chat.component';
+import { TermesICondicionsComponent } from './termes-i-condicions/termes-i-condicions.component';
+import { UsDeCookiesComponent } from './us-de-cookies/us-de-cookies.component';
+import { ModeracioDeContingutComponent } from './moderacio-de-contingut/moderacio-de-contingut.component';
+import { PoliticaDeCookiesComponent } from './politica-de-cookies/politica-de-cookies.component';
 
 const routes: Routes = [ 
   { path: '', component: IniciComponent },
@@ -58,12 +62,13 @@ const routes: Routes = [
 
   { path: 'afegir-publicacio', component: AfegirPublicacioComponent },
   { path: 'editar-publicacio/:id', component: EditarPublicacioComponent },
- 
+  { path: 'moderacio-de-contingut', component: ModeracioDeContingutComponent },
   { path: 'chat', component: ChatComponent },
-
+  { path: 'us-de-cookies', component: UsDeCookiesComponent },
   { path: 'gracies', component: GraciesComponent },
   { path: 'reset-password', component: RegenerarContrasenyaComponent }, // Ruta para el componente
-
+  { path: 'termes-i-condicions', component: TermesICondicionsComponent },
+  { path: 'politica-de-cookies', component: PoliticaDeCookiesComponent },
   { path: 'mapa-animals-perduts', component: MapaAnimalsPerdutsComponent },
 { path: 'footer', component: FooterComponent },
 { path: 'perfil', component: PerfilComponent },
