@@ -31,6 +31,10 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { WebgrafiaComponent } from './webgrafia/webgrafia.component';
 import { PoliticaPrivacidadComponent } from './politica-privacidad/politica-privacidad.component';
 import { SobreNosotrosComponent } from './sobre-nosotros/sobre-nosotros.component';
+import { TermesICondicionsComponent } from './termes-i-condicions/termes-i-condicions.component';
+import { UsDeCookiesComponent } from './us-de-cookies/us-de-cookies.component';
+import { ModeracioDeContingutComponent } from './moderacio-de-contingut/moderacio-de-contingut.component';
+import { PoliticaDeCookiesComponent } from './politica-de-cookies/politica-de-cookies.component';
 
 const routes: Routes = [ 
   { path: '', component: IniciComponent },
@@ -69,7 +73,10 @@ const routes: Routes = [
 
   { path: 'gracies', component: GraciesComponent },
   { path: 'reset-password', component: RegenerarContrasenyaComponent }, // Ruta para el componente
-
+  { path: 'termes-i-condicions', component: TermesICondicionsComponent },
+  { path: 'us-de-cookies', component: UsDeCookiesComponent },
+  { path: 'politica-de-cookies', component: PoliticaDeCookiesComponent },
+  { path: 'moderacio-de-contingut', component: ModeracioDeContingutComponent },
   { path: 'mapa-animals-perduts', component: MapaAnimalsPerdutsComponent },
 { path: 'footer', component: FooterComponent },
 { path: 'perfil', component: PerfilComponent },
