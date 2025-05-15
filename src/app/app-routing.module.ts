@@ -28,7 +28,9 @@ import { MapaAnimalsPerdutsComponent } from './mapa-animals-perduts/mapa-animals
 import { RegenerarContrasenyaComponent } from './regenerar-contrasenya/regenerar-contrasenya.component';
 import { ChatComponent } from './chat/chat.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
-
+import { WebgrafiaComponent } from './webgrafia/webgrafia.component';
+import { PoliticaPrivacidadComponent } from './politica-privacidad/politica-privacidad.component';
+import { SobreNosotrosComponent } from './sobre-nosotros/sobre-nosotros.component';
 
 const routes: Routes = [ 
   { path: '', component: IniciComponent },
@@ -71,6 +73,11 @@ const routes: Routes = [
   { path: 'mapa-animals-perduts', component: MapaAnimalsPerdutsComponent },
 { path: 'footer', component: FooterComponent },
 { path: 'perfil', component: PerfilComponent },
+
+{ path: 'webgrafia', component: WebgrafiaComponent },
+{ path: 'politica-privacidad', component: PoliticaPrivacidadComponent },
+{ path: 'sobre-nosotros', component: SobreNosotrosComponent }
+
 ];
 
 @NgModule({

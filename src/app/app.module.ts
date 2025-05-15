@@ -36,6 +36,9 @@ import { MapaAnimalsPerdutsComponent } from './mapa-animals-perduts/mapa-animals
 import { RegenerarContrasenyaComponent } from './regenerar-contrasenya/regenerar-contrasenya.component';
 import { ChatComponent } from './chat/chat.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { WebgrafiaComponent } from './webgrafia/webgrafia.component';
+import { PoliticaPrivacidadComponent } from './politica-privacidad/politica-privacidad.component';
+import { SobreNosotrosComponent } from './sobre-nosotros/sobre-nosotros.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCyePW5xWgzy4RHS7p6TmPJHlCgRSr8vWE",
@@ -77,7 +80,10 @@ const firebaseConfig = {
     MapaAnimalsPerdutsComponent,
     RegenerarContrasenyaComponent,
     ChatComponent,
-    AdminDashboardComponent
+    AdminDashboardComponent,
+    WebgrafiaComponent,
+    PoliticaPrivacidadComponent,
+    SobreNosotrosComponent
   ],
   imports: [
     BrowserModule,

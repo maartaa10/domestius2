@@ -18,7 +18,7 @@ export class AuthService {
   private usuarioActual: Usuari | null = null;
 
   // Añadir este BehaviorSubject para emitir eventos de autenticación
-  private authStateChanged = new BehaviorSubject<boolean>(false);
+  public authStateChanged = new BehaviorSubject<boolean>(false);
   
   // Observable público que otros componentes pueden escuchar
   authState$ = this.authStateChanged.asObservable();

@@ -11,7 +11,7 @@
         <h3>Doméstius</h3>
       </div>
       <ul class="footer-links">
-        <li><a href="#"><i class="fas fa-info-circle"></i> Sobre nosaltres</a></li>
+        <li><a [routerLink]="['/sobre-nosotros']"><i class="fas fa-info-circle"></i> Sobre nosaltres</a></li>
         <li><a href="#"><i class="fas fa-envelope"></i> Contacte</a></li>
         <li><a href="#"><i class="fas fa-phone"></i> Telèfon</a></li>
         <li><a href="#"><i class="fas fa-map-marker-alt"></i> On som</a></li>
@@ -32,17 +32,17 @@
     </div>
 
     <div class="footer-column">
-      <div class="column-header">
-        <i class="fas fa-shield-alt"></i>
-        <h3>Privacitat</h3>
-      </div>
-      <ul class="footer-links">
-        <li><a href="#"><i class="fas fa-file-contract"></i> Termes i condicions</a></li>
-        <li><a href="#"><i class="fas fa-cookie"></i> Ús de cookies</a></li>
-        <li><a href="#"><i class="fas fa-user-shield"></i> Política de privacitat</a></li>
-        <li><a href="#"><i class="fas fa-balance-scale"></i> Moderació de Contingut</a></li>
-      </ul>
-    </div>
+  <div class="column-header">
+    <i class="fas fa-shield-alt"></i>
+    <h3>Privacitat</h3>
+  </div>
+  <ul class="footer-links">
+    <li><a href="#"><i class="fas fa-file-contract"></i> Termes i condicions</a></li>
+    <li><a href="#"><i class="fas fa-cookie"></i> Ús de cookies</a></li>
+    <li><a [routerLink]="['/politica-privacidad']"><i class="fas fa-user-shield"></i> Política de privacitat</a></li>
+    <li><a href="#"><i class="fas fa-balance-scale"></i> Moderació de Contingut</a></li>
+  </ul>
+</div>
 
     <div class="footer-column">
       <div class="column-header">
@@ -61,9 +61,9 @@
   <div class="footer-bottom">
     <p>Copyright © 2025 Doméstius <span class="heart-icon">❤️</span> Fet amb amor per ajudar a trobar animals perduts.</p>
     <div class="footer-nav">
-      <a href="#">Inici</a>
+      <a [routerLink]="['/inici']">Inici</a>
       <a href="#">FAQ</a>
-      <a href="#">Mapa del lloc</a>
+      <a [routerLink]="['/webgrafia']">Mapa del lloc</a>
     </div>
   </div>
 </footer>

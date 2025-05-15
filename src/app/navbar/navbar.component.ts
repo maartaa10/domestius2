@@ -22,16 +22,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ) {}
   
   ngOnInit(): void {
-    this.checkUserStatus();
+    this.checkUserStatus(); // Verificar estado inicial
     
-    // Suscribirse a cambios en el estado de autenticación
-    this.authSubscription = this.authService.authState$.subscribe(() => {
+    // Suscribirse a eventos de autenticación
+    this.authSubscription = this.authService.authStateChanged.subscribe(() => {
+      // Actualizar cuando cambie el estado de autenticación
       this.checkUserStatus();
     });
   }
   
   ngOnDestroy(): void {
-    // Asegurarse de cancelar la suscripción al destruir el componente
     if (this.authSubscription) {
       this.authSubscription.unsubscribe();
     }
@@ -51,7 +51,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   navigateToDashboardOrLogin(): void {
     if (this.tokenService.isLoggedIn()) {
-      // Determinar el tipo de usuario y redireccionar al dashboard correspondiente
       this.authService.getUserType().subscribe(userType => {
         if (userType === 'protectora') {
           this.router.navigate(['/dashboard']);
@@ -60,7 +59,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
         }
       }, error => {
         console.error('Error al obtener el tipo de usuario:', error);
-        // Si hay un error, redirigir al dashboard general
         this.router.navigate(['/dashboard']);
       });
     } else {

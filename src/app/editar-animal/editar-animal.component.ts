@@ -76,7 +76,7 @@ export class EditarAnimalComponent implements OnInit {
     this.animalPerdutService.updateAnimal(this.animal.id, formData).subscribe({
       next: () => {
         alert('Animal actualitzat amb éxit.');
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/user-dashboard']);
       },
       error: (err) => {
         console.error("Error al actualitzar l'animal:", err);

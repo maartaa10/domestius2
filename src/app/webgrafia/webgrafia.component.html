@@ -1,0 +1,122 @@
+<div class="sitemap-container">
+    <div class="sitemap-content-wrapper">
+      <header class="sitemap-header animate__animated animate__fadeIn">
+        <h1 class="sitemap-title">
+          <i class="fas fa-sitemap"></i>
+          Mapa del lloc web
+        </h1>
+        <p class="sitemap-subtitle">Explora totes les seccions de Doméstius</p>
+      </header>
+  
+      <div class="sitemap-grid">
+        <!-- Navegación principal -->
+        <div class="sitemap-card animate__animated animate__fadeIn">
+          <h2 class="sitemap-section-title">
+            <i class="fas fa-home"></i> Navegació principal
+          </h2>
+          <ul class="sitemap-list">
+            <li>
+              <a [routerLink]="['/inici']">Inici</a>
+              <p class="sitemap-description">Pàgina principal del lloc</p>
+            </li>
+            <li>
+              <a [routerLink]="['/protectora']">Protectores</a>
+              <p class="sitemap-description">Directori de protectores d'animals</p>
+            </li>
+            <li>
+              <a [routerLink]="['/animal-publicacio']">Animals Perduts</a>
+              <p class="sitemap-description">Llistat d'animals perduts</p>
+            </li>
+            <li>
+              <a [routerLink]="['/mapa-animals-perduts']">Mapa</a>
+              <p class="sitemap-description">Visualització geogràfica d'animals perduts</p>
+            </li>
+            <li>
+              <a [routerLink]="['/chat']">Xat</a>
+              <p class="sitemap-description">Sistema de comunicació entre usuaris</p>
+            </li>
+          </ul>
+        </div>
+  
+        <!-- Área de usuario -->
+        <div class="sitemap-card animate__animated animate__fadeIn">
+          <h2 class="sitemap-section-title">
+            <i class="fas fa-user"></i> Àrea de l'usuari
+          </h2>
+          <ul class="sitemap-list">
+            <li>
+              <a [routerLink]="['/login']">Iniciar sessió</a>
+              <p class="sitemap-description">Accés a usuaris registrats</p>
+            </li>
+            <li>
+              <a [routerLink]="['/signup']">Registrar-se</a>
+              <p class="sitemap-description">Creació de nous comptes d'usuari</p>
+            </li>
+            <li>
+              <a [routerLink]="['/user-dashboard']">Panell d'usuari</a>
+              <p class="sitemap-description">Gestió del compte d'usuari</p>
+            </li>
+            <li>
+              <a [routerLink]="['/registrar-protectora']">Registrar protectora</a>
+              <p class="sitemap-description">Formulari per a noves protectores</p>
+            </li>
+          </ul>
+        </div>
+  
+        <!-- Gestión de animales -->
+        <div class="sitemap-card animate__animated animate__fadeIn">
+          <h2 class="sitemap-section-title">
+            <i class="fas fa-paw"></i> Gestió d'animals
+          </h2>
+          <ul class="sitemap-list">
+            <li>
+              <a [routerLink]="['/registrar-animal']">Registrar animal</a>
+              <p class="sitemap-description">Afegir un nou animal</p>
+            </li>
+            <li>
+              <a [routerLink]="['/afegir-publicacio']">Crear publicació</a>
+              <p class="sitemap-description">Publicar informació sobre un animal perdut</p>
+            </li>
+          </ul>
+        </div>
+  
+        <!-- Información y contacto -->
+        <div class="sitemap-card animate__animated animate__fadeIn">
+          <h2 class="sitemap-section-title">
+            <i class="fas fa-info-circle"></i> Informació i contacte
+          </h2>
+          <ul class="sitemap-list">
+            <li>
+              <a [routerLink]="['/webgrafia']">Mapa del lloc</a>
+              <p class="sitemap-description">Aquesta pàgina</p>
+            </li>
+            <li>
+              <a href="#">Sobre nosaltres</a>
+              <p class="sitemap-description">Informació del projecte Doméstius</p>
+            </li>
+            <li>
+              <a href="#">Termes i condicions</a>
+              <p class="sitemap-description">Normes d'ús del servei</p>
+            </li>
+            <li>
+              <a href="#">Política de privacitat</a>
+              <p class="sitemap-description">Com tractem les teves dades</p>
+            </li>
+          </ul>
+        </div>
+  
+        <!-- Secciones auxiliares -->
+        <div class="sitemap-card animate__animated animate__fadeIn">
+          <h2 class="sitemap-section-title">
+            <i class="fas fa-map-signs"></i> Altres seccions
+          </h2>
+          <ul class="sitemap-list">
+            <li>
+              <a [routerLink]="['/gracies']">Pàgina d'agraïment</a>
+              <p class="sitemap-description">Confirmació de formularis enviats</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>

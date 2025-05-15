@@ -85,7 +85,7 @@ export class EditarPublicacioComponent {
       next: () => {
         alert('Publicació actualitzada amb èxit.');
         
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/user-dashboard']);
       },
       error: (err) => {
         console.error('Error al actualitzar la publicació:', err);
