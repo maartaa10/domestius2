@@ -3,7 +3,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100" preserveAspectRatio="none">
     </svg>
   </div>
-  
+
   <div class="footer-content">
     <div class="footer-column">
       <div class="column-header">
@@ -11,10 +11,10 @@
         <h3>Doméstius</h3>
       </div>
       <ul class="footer-links">
-        <li><a [routerLink]="['/sobre-nosotros']"><i class="fas fa-info-circle"></i> Sobre nosaltres</a></li>
-        <li><a href="#"><i class="fas fa-envelope"></i> Contacte</a></li>
-        <li><a href="#"><i class="fas fa-phone"></i> Telèfon</a></li>
-        <li><a href="#"><i class="fas fa-map-marker-alt"></i> On som</a></li>
+        <li><a [routerLink]="['/sobre-nosotros']" ><i class="fas fa-info-circle"></i> Sobre nosaltres</a></li>
+        <li><a href="mailto:contacto@domestius.com" ><i class="fas fa-envelope"></i> Contacte</a></li>
+        <li><a href="tel:666666666" ><i class="fas fa-phone"></i> Telèfon</a></li>
+        <li><a href="https://maps.app.goo.gl/na5uRSQigzE9KSFV6" target="_blank" ><i class="fas fa-map-marker-alt"></i> On som</a></li>
       </ul>
     </div>
 
@@ -24,25 +24,25 @@
         <h3>El teu impacte</h3>
       </div>
       <ul class="footer-links">
-        <li><a href="#"><i class="fas fa-bullhorn"></i> Publicar Animal Perdut</a></li>
-        <li><a href="#"><i class="fas fa-search"></i> Veure animals trobats</a></li>
-        <li><a href="#"><i class="fas fa-hands-helping"></i> Col·labora amb Protectores</a></li>
-        <li><a href="#"><i class="fas fa-question-circle"></i> Com funciona</a></li>
+        <li><a [routerLink]="['/afegir-publicacio']" [queryParams]="{ tipo: 'perdido' }" (click)="scrollToTop()"><i class="fas fa-bullhorn"></i> Publicar Animal Perdut</a></li>
+        <li><a href="#" (click)="scrollToTop()"><i class="fas fa-search"></i> Veure animals trobats</a></li>
+        <li><a [routerLink]="['/protectora']" (click)="scrollToTop()"><i class="fas fa-hands-helping"></i> Col·labora amb Protectores</a></li>
+        <li><a href="#" (click)="scrollToTop()"><i class="fas fa-question-circle"></i> Com funciona</a></li>
       </ul>
     </div>
 
     <div class="footer-column">
-  <div class="column-header">
-    <i class="fas fa-shield-alt"></i>
-    <h3>Privacitat</h3>
-  </div>
-  <ul class="footer-links">
-    <li><a [routerLink]="['/termes-i-condicions']"><i class="fas fa-file-contract"></i> Termes i condicions</a></li>
-    <li><a [routerLink]="['/us-de-cookies']"><i class="fas fa-cookie"></i> Ús de cookies</a></li>
-    <li><a [routerLink]="['/politica-privacidad']"><i class="fas fa-user-shield"></i> Política de privacitat</a></li>
-    <li><a [routerLink]="['/moderacio-de-contingut']"><i class="fas fa-balance-scale"></i> Moderació de Contingut</a></li>
-  </ul>
-</div>
+      <div class="column-header">
+        <i class="fas fa-shield-alt"></i>
+        <h3>Privacitat</h3>
+      </div>
+      <ul class="footer-links">
+        <li><a [routerLink]="['/termes-i-condicions']" (click)="scrollToTop()"><i class="fas fa-file-contract"></i> Termes i condicions</a></li>
+        <li><a [routerLink]="['/us-de-cookies']" (click)="scrollToTop()"><i class="fas fa-cookie"></i> Ús de cookies</a></li>
+        <li><a [routerLink]="['/politica-privacidad']" (click)="scrollToTop()"><i class="fas fa-user-shield"></i> Política de privacitat</a></li>
+        <li><a [routerLink]="['/moderacio-de-contingut']" (click)="scrollToTop()"><i class="fas fa-balance-scale"></i> Moderació de Contingut</a></li>
+      </ul>
+    </div>
 
     <div class="footer-column">
       <div class="column-header">
@@ -50,20 +50,21 @@
         <h3>Segueix-nos</h3>
       </div>
       <div class="social-icons">
-        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+        <a href="#" class="social-icon" (click)="scrollToTop()"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-icon" (click)="scrollToTop()"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-icon" (click)="scrollToTop()"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-icon" (click)="scrollToTop()"><i class="fab fa-youtube"></i></a>
       </div>
     </div>
   </div>
 
   <div class="footer-bottom">
-    <p>Copyright © 2025 Doméstius <span class="heart-icon">❤️</span> Fet amb amor per ajudar a trobar animals perduts.</p>
+    <p>Copyright © 2025 Doméstius <span class="heart-icon">❤️</span> Fet amb amor per ajudar a trobar animals perduts.
+    </p>
     <div class="footer-nav">
-      <a [routerLink]="['/inici']">Inici</a>
-      <a [routerLink]="['/faq']">FAQ</a>
-      <a [routerLink]="['/webgrafia']">Mapa del lloc</a>
+      <a [routerLink]="['/inici']" (click)="scrollToTop()">Inici</a>
+      <a [routerLink]="['/faq']" (click)="scrollToTop()">FAQ</a>
+      <a [routerLink]="['/webgrafia']" (click)="scrollToTop()">Mapa del lloc</a>
     </div>
   </div>
 </footer>
