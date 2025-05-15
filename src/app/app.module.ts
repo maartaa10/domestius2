@@ -39,6 +39,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { WebgrafiaComponent } from './webgrafia/webgrafia.component';
 import { PoliticaPrivacidadComponent } from './politica-privacidad/politica-privacidad.component';
 import { SobreNosotrosComponent } from './sobre-nosotros/sobre-nosotros.component';
+import { FAQComponent } from './faq/faq.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCyePW5xWgzy4RHS7p6TmPJHlCgRSr8vWE",
@@ -83,7 +84,8 @@ const firebaseConfig = {
     AdminDashboardComponent,
     WebgrafiaComponent,
     PoliticaPrivacidadComponent,
-    SobreNosotrosComponent
+    SobreNosotrosComponent,
+    FAQComponent
   ],
   imports: [
     BrowserModule,

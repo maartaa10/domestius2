@@ -31,6 +31,8 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { WebgrafiaComponent } from './webgrafia/webgrafia.component';
 import { PoliticaPrivacidadComponent } from './politica-privacidad/politica-privacidad.component';
 import { SobreNosotrosComponent } from './sobre-nosotros/sobre-nosotros.component';
+import { FAQComponent } from './faq/faq.component';
+
 
 const routes: Routes = [ 
   { path: '', component: IniciComponent },
@@ -76,7 +78,9 @@ const routes: Routes = [
 
 { path: 'webgrafia', component: WebgrafiaComponent },
 { path: 'politica-privacidad', component: PoliticaPrivacidadComponent },
-{ path: 'sobre-nosotros', component: SobreNosotrosComponent }
+{ path: 'sobre-nosotros', component: SobreNosotrosComponent },
+{ path: 'faq', component: FAQComponent },
+
 
 ];
 

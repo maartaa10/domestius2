@@ -1,0 +1,231 @@
+<div class="faq-container">
+    <div class="faq-content-wrapper">
+      <header class="faq-header animate__animated animate__fadeIn">
+        <h1 class="faq-title">
+          <i class="fas fa-question-circle"></i>
+          Preguntes Freqüents
+        </h1>
+        <p class="faq-subtitle">Troba respostes ràpides a les consultes més habituals sobre Doméstius</p>
+      </header>
+  
+      <div class="faq-grid">
+        <!-- Sección Sobre Doméstius -->
+        <div class="faq-card animate__animated animate__fadeIn">
+          <h2 class="faq-section-title">
+            <i class="fas fa-info-circle"></i> Sobre Doméstius
+          </h2>
+          
+          <div class="accordion-container">
+            <div class="accordion-item">
+              <div class="accordion-header" (click)="toggleAccordion($event)">
+                <h3>Què és Doméstius?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="accordion-content">
+                <p>Doméstius és una plataforma digital dedicada a reunir animals perduts amb les seves famílies i facilitar el procés d'adopció d'animals abandonats. Connectem usuaris amb protectores d'animals i oferim eines per publicar i cercar animals perduts o disponibles per a l'adopció.</p>
+              </div>
+            </div>
+  
+            <div class="accordion-item">
+              <div class="accordion-header" (click)="toggleAccordion($event)">
+                <h3>Quins serveis ofereix Doméstius?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="accordion-content">
+                <p>Els nostres serveis principals inclouen:</p>
+                <ul>
+                  <li>Publicació d'animals perduts</li>
+                  <li>Directori de protectores d'animals</li>
+                  <li>Mapa interactiu d'animals trobats/perduts</li>
+                  <li>Sistema de xat per a la comunicació entre usuaris</li>
+                  <li>Gestió de perfil d'animals per a protectores</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Sección Reportar Animales -->
+        <div class="faq-card animate__animated animate__fadeIn">
+          <h2 class="faq-section-title">
+            <i class="fas fa-bullhorn"></i> Reportar Animals Perduts
+          </h2>
+          
+          <div class="accordion-container">
+            <div class="accordion-item">
+              <div class="accordion-header" (click)="toggleAccordion($event)">
+                <h3>Com puc reportar un animal perdut?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="accordion-content">
+                <p>Per reportar un animal perdut:</p>
+                <ol>
+                  <li>Inicia sessió al teu compte</li>
+                  <li>Dirigeix-te al teu dashboard d'usuari</li>
+                  <li>Fes clic a "Reportar animal perdut"</li>
+                  <li>Completa el formulari amb tota la informació possible</li>
+                  <li>Afegeix una imatge clara de l'animal</li>
+                  <li>Indica la ubicació on es va veure per última vegada</li>
+                  <li>Fes clic a "Publicar"</li>
+                </ol>
+                <p>La publicació estarà visible per a tots els usuaris de la plataforma immediatament.</p>
+              </div>
+            </div>
+  
+            <div class="accordion-item">
+              <div class="accordion-header" (click)="toggleAccordion($event)">
+                <h3>És necessari estar registrat per publicar un animal perdut?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="accordion-content">
+                <p>Sí, és necessari tenir un compte a Doméstius per poder publicar informació sobre animals perduts. Això garanteix la qualitat de la informació i permet el seguiment de les publicacions.</p>
+                <p>El registre és gratuït i només requereix un email vàlid.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Sección Protectoras -->
+        <div class="faq-card animate__animated animate__fadeIn">
+          <h2 class="faq-section-title">
+            <i class="fas fa-home"></i> Protectores
+          </h2>
+          
+          <div class="accordion-container">
+            <div class="accordion-item">
+              <div class="accordion-header" (click)="toggleAccordion($event)">
+                <h3>Com registrar la meva protectora?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="accordion-content">
+                <p>Per registrar una protectora:</p>
+                <ol>
+                  <li>Accedeix a "Registrar protectora" des de la pantalla d'inici de sessió</li>
+                  <li>Completa el formulari amb les dades de la teva associació</li>
+                  <li>Afegeix la documentació legal necessària</li>
+                  <li>Espera la verificació per part dels nostres administradors</li>
+                  <li>Una vegada aprovada, rebràs un correu de confirmació</li>
+                </ol>
+                <p>El procés de verificació sol trigar uns 2-3 dies hàbils.</p>
+              </div>
+            </div>
+  
+            <div class="accordion-item">
+              <div class="accordion-header" (click)="toggleAccordion($event)">
+                <h3>Quins beneficis tenen les protectores registrades?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="accordion-content">
+                <p>Les protectores registrades a Doméstius gaudeixen de diversos avantatges:</p>
+                <ul>
+                  <li>Perfil verificat amb distintiu especial</li>
+                  <li>Gestió il·limitada d'animals disponibles per a adopció</li>
+                  <li>Més visibilitat en les cerques dels usuaris</li>
+                  <li>Dashboard personalitzat per administrar animals i publicacions</li>
+                  <li>Sistema de missatgeria directa amb possibles adoptants</li>
+                  <li>Estadístiques sobre visites i interès en els animals publicats</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Sección Usuarios -->
+        <div class="faq-card animate__animated animate__fadeIn">
+          <h2 class="faq-section-title">
+            <i class="fas fa-users"></i> Usuaris i Comptes
+          </h2>
+          
+          <div class="accordion-container">
+            <div class="accordion-item">
+              <div class="accordion-header" (click)="toggleAccordion($event)">
+                <h3>Com puc recuperar la meva contrasenya?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="accordion-content">
+                <p>Si has oblidat la teva contrasenya:</p>
+                <ol>
+                  <li>Fes clic a "Has oblidat la contrasenya?" a la pantalla d'inici de sessió</li>
+                  <li>Introdueix l'adreça de correu electrònic associada al teu compte</li>
+                  <li>Rebràs un correu amb un enllaç per restablir la contrasenya</li>
+                  <li>Segueix l'enllaç i crea una nova contrasenya</li>
+                </ol>
+                <p>L'enllaç per restablir la contrasenya és vàlid només durant 24 hores.</p>
+              </div>
+            </div>
+  
+            <div class="accordion-item">
+              <div class="accordion-header" (click)="toggleAccordion($event)">
+                <h3>Puc tenir més d'un compte?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="accordion-content">
+                <p>No recomanem tenir múltiples comptes personals. Cada usuari hauria de tenir un únic compte per evitar confusions i garantir la traçabilitat de les publicacions.</p>
+                <p>Si ets responsable d'una protectora, pots tenir un compte personal i administrar també el compte de la protectora.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Sección de Adopciones -->
+        <div class="faq-card animate__animated animate__fadeIn">
+          <h2 class="faq-section-title">
+            <i class="fas fa-hand-holding-heart"></i> Adopcions
+          </h2>
+          
+          <div class="accordion-container">
+            <div class="accordion-item">
+              <div class="accordion-header" (click)="toggleAccordion($event)">
+                <h3>Quins són els requisits per adoptar un animal?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="accordion-content">
+                <p>Els requisits específics poden variar segons la protectora, però generalment inclouen:</p>
+                <ul>
+                  <li>Ser major d'edat</li>
+                  <li>Identificació vàlida (DNI/NIE)</li>
+                  <li>Comprovant de domicili</li>
+                  <li>Entrevista amb la protectora</li>
+                  <li>Signar un contracte d'adopció</li>
+                  <li>En alguns casos, una visita al domicili per verificar condicions</li>
+                </ul>
+                <p>La plataforma només connecta usuaris amb protectores; cada protectora estableix els seus propis protocols d'adopció.</p>
+              </div>
+            </div>
+  
+            <div class="accordion-item">
+              <div class="accordion-header" (click)="toggleAccordion($event)">
+                <h3>Com funciona el procés d'adopció a través de Doméstius?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="accordion-content">
+                <p>El procés general d'adopció segueix aquests passos:</p>
+                <ol>
+                  <li>Navega pel llistat d'animals disponibles per adoptar</li>
+                  <li>Selecciona l'animal que t'interessa</li>
+                  <li>Contacta amb la protectora a través del xat de la plataforma</li>
+                  <li>Concerta una visita per conèixer l'animal</li>
+                  <li>Completa el procés d'adopció específic de la protectora</li>
+                </ol>
+                <p>Doméstius facilita la comunicació inicial, però no intervé directament en el procés d'adopció.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    <div class="faq-contact-section animate__animated animate__fadeIn">
+      <h3>No has trobat resposta a la teva pregunta?</h3>
+      <p>Posa't en contacte amb el nostre equip i t'ajudarem el més aviat possible</p>
+      <a href="mailto:contacto@domestius.com" class="contact-button">
+        <i class="fas fa-envelope"></i> Contacta'ns
+      </a>
+    </div>
+  
+      <div class="faq-footer animate__animated animate__fadeIn">
+        <a [routerLink]="['/inici']" class="back-button">
+          <i class="fas fa-arrow-left"></i> Tornar a l'inici
+        </a>
+      </div>
+    </div>
+  </div>
