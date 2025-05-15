@@ -25,8 +25,11 @@
       </div>
       <ul class="footer-links">
         <li><a href="#"><i class="fas fa-bullhorn"></i> Publicar Animal Perdut</a></li>
-        <li><a href="#"><i class="fas fa-search"></i> Veure animals trobats</a></li>
-        <li><a href="#"><i class="fas fa-hands-helping"></i> Col·labora amb Protectores</a></li>
+        <li>
+          <a [routerLink]="['/que-fer-animal-perdut']">
+            <i class="fas fa-question-circle"></i> Que fer si trobes un animal perdut?
+          </a>
+        </li>        <li><a href="#"><i class="fas fa-hands-helping"></i> Col·labora amb Protectores</a></li>
         <li><a href="#"><i class="fas fa-question-circle"></i> Com funciona</a></li>
       </ul>
     </div>
