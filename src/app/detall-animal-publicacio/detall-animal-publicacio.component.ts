@@ -8,8 +8,8 @@ import { AnimalPerdutService } from '../services/animal-perdut.service';
   styleUrls: ['./detall-animal-publicacio.component.css']
 })
 export class DetallAnimalPublicacioComponent implements OnChanges {
-  @Input() animalId: number | null = null; // Recibe el ID del animal
-  @Output() back = new EventEmitter<void>(); // Emite un evento para volver a la lista
+  @Input() animalId: number | null = null; // Rep l'ID de l'animal
+  @Output() back = new EventEmitter<void>(); // Emet un esdeveniment per tornar a la llista
   animal: any;
   currentImageIndex: number = 0;
   showContactForm: boolean = false;
@@ -39,7 +39,7 @@ export class DetallAnimalPublicacioComponent implements OnChanges {
         this.animal.fraseDivertida = this.generateFunnyPhrase(this.animal);
       },
       error: (err) => {
-        console.error('Error al cargar los detalles del animal:', err);
+        console.error('Error en carregar els detalls de l\'animal:', err);
       }
     });
   }
@@ -56,7 +56,7 @@ export class DetallAnimalPublicacioComponent implements OnChanges {
   }
 
   goBack(): void {
-    this.back.emit(); // Emite el evento para volver a la lista
+    this.back.emit(); // Emet l'esdeveniment per tornar a la llista
   }
    nextImage(): void {
     if (this.animal && this.animal.imatges.length > 0) {
@@ -65,10 +65,10 @@ export class DetallAnimalPublicacioComponent implements OnChanges {
         (this.currentImageIndex + 1) % this.animal.imatges.length;
 
       if (this.animal.imatges.length === 1) {
-        console.log('Esto funciona: al hacer clic pasaría a la siguiente foto, pero solo hay una.');
-        alert('Esto funciona: al hacer clic pasaría a la siguiente foto, pero solo hay una.');
+        console.log('Això funciona: en fer clic passaria a la següent foto, però només n\'hi ha una.');
+        alert('Això funciona: en fer clic passaria a la següent foto, però només n\'hi ha una.');
       } else {
-        console.log(`Índice actual (next): ${this.currentImageIndex}, Índice anterior: ${previousIndex}`);
+        console.log(`Índex actual (next): ${this.currentImageIndex}, Índex anterior: ${previousIndex}`);
       }
     }
   }
@@ -81,10 +81,10 @@ export class DetallAnimalPublicacioComponent implements OnChanges {
         this.animal.imatges.length;
 
       if (this.animal.imatges.length === 1) {
-        console.log('Esto funciona: al hacer clic pasaría a la foto anterior, pero solo hay una.');
-        alert('Esto funciona: al hacer clic pasaría a la foto anterior, pero solo hay una.');
+        console.log('Això funciona: en fer clic passaria a la foto anterior, però només n\'hi ha una.');
+        alert('Això funciona: en fer clic passaria a la foto anterior, però només n\'hi ha una.');
       } else {
-        console.log(`Índice actual (prev): ${this.currentImageIndex}, Índice anterior: ${previousIndex}`);
+        console.log(`Índex actual (prev): ${this.currentImageIndex}, Índex anterior: ${previousIndex}`);
       }
     }
   }
@@ -93,8 +93,8 @@ export class DetallAnimalPublicacioComponent implements OnChanges {
     this.showContactForm = !this.showContactForm;
   }
  /*   onSubmit(): void {
-    console.log('Formulario enviado:', this.contactForm);
-    alert('Gracias por interesarte, en breves nos comunicaremos contigo.');
+    console.log('Formulari enviat:', this.contactForm);
+    alert('Gràcies per interessar-te, en breu ens posarem en contacte amb tu.');
     this.contactForm = {
       name: '',
       email: '',
@@ -103,19 +103,19 @@ export class DetallAnimalPublicacioComponent implements OnChanges {
     this.showContactForm = false;
   } */
     onFormSubmit(event: Event): void {
-      event.preventDefault(); // Evita el comportamiento predeterminado para depuración
+      event.preventDefault(); // Evita el comportament predeterminat per depuració
       const form = event.target as HTMLFormElement;
     
-      // Captura los datos del formulario
+      // Captura les dades del formulari
       const formData = new FormData(form);
       const data: { [key: string]: string } = {};
       formData.forEach((value, key) => {
         data[key] = value.toString();
       });
     
-      console.log('Formulario enviado con los siguientes datos:', data);
+      console.log('Formulari enviat amb les següents dades:', data);
     
-      // Permite que el formulario se envíe después de la depuración
+      // Permet que el formulari s'enviï després de la depuració
       form.submit();
     }
 }

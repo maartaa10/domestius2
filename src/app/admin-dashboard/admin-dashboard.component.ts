@@ -14,31 +14,31 @@ import { Animal } from '../interfaces/animal';
   styleUrl: './admin-dashboard.component.css'
 })
 export class AdminDashboardComponent implements OnInit {
-  // Datos del usuario
+  // Dades de l'usuari
   userName: string = '';
   userEmail: string = '';
   userId: number = 0;
   isAdmin: boolean = false;
   
-  // Estados del componente
+  // Estats del component
   loading: boolean = true;
   error: string = '';
   sidebarCollapsed: boolean = false;
   activeSection: 'dashboard' | 'animals' = 'dashboard';
   
-  // Datos de animales
+  // Dades dels animals
   animals: Animal[] = [];
   loadingAnimals: boolean = false;
   animalsError: string = '';
   searchQuery: string = '';
   filteredAnimals: Animal[] = [];
   
-  // Paginación
+  // Paginació
   page: number = 1;
   pageSize: number = 10;
   totalPages: number = 1;
   
-  // Datos para edición en modal
+  // Dades per a l'edició al modal
   showEditModal: boolean = false;
   selectedAnimal: Animal | null = null;
   editingAnimal: Animal | null = null;
@@ -76,16 +76,16 @@ export class AdminDashboardComponent implements OnInit {
         this.userEmail = userData.email;
         this.userId = userData.id;
         
-        // Verificar si el usuario es admin
+        // Verificar si l'usuari és admin
         this.checkIsAdmin(userData.id);
       },
       error: (err) => {
-        console.error('Error al cargar los datos del usuario:', err);
-        if (err.message === 'No se ha encontrado un token.') {
-          this.error = 'No estás autenticado. Por favor, inicia sesión.';
+        console.error('Error en carregar les dades de l\'usuari:', err);
+        if (err.message === 'No s\'ha trobat un token.') {
+          this.error = 'No estàs autenticat. Si us plau, inicia sessió.';
           this.router.navigate(['/login']); 
         } else {
-          this.error = 'No se ha podido cargar la información del usuario.';
+          this.error = 'No s\'ha pogut carregar la informació de l\'usuari.';
         }
         this.loading = false;
       }
@@ -104,16 +104,16 @@ export class AdminDashboardComponent implements OnInit {
           this.loading = false;
           
           if (!this.isAdmin) {
-            this.error = 'No tienes permisos de administrador.';
-            // Redireccionar después de 3 segundos
+            this.error = 'No tens permisos d\'administrador.';
+            // Redirigir després de 3 segons
             setTimeout(() => {
               this.router.navigate(['/dashboard']);
             }, 3000);
           }
         },
         error: (err) => {
-          console.error('Error al verificar si el usuario es administrador:', err);
-          this.error = 'Error al verificar permisos de administrador.';
+          console.error('Error en verificar si l\'usuari és administrador:', err);
+          this.error = 'Error en verificar permisos d\'administrador.';
           this.loading = false;
         }
       });
@@ -131,8 +131,8 @@ export class AdminDashboardComponent implements OnInit {
         this.loadingAnimals = false;
       },
       error: (err) => {
-        console.error('Error al cargar los animales:', err);
-        this.animalsError = 'No se han podido cargar los animales. Por favor, inténtalo más tarde.';
+        console.error('Error en carregar els animals:', err);
+        this.animalsError = 'No s\'han pogut carregar els animals. Si us plau, intenta-ho més tard.';
         this.loadingAnimals = false;
       }
     });
@@ -153,7 +153,7 @@ export class AdminDashboardComponent implements OnInit {
   
   getEstadoClass(estado: string): string {
     if (!estado) return '';
-    return 'estado-' + estado.toLowerCase().replace(' ', '-');
+    return 'estat-' + estado.toLowerCase().replace(' ', '-');
   }
   
   filterAnimals(): void {
@@ -172,7 +172,7 @@ export class AdminDashboardComponent implements OnInit {
     this.page = 1;
   }
   
-  verDetalles(animalId: number): void {
+  veureDetalls(animalId: number): void {
     this.router.navigate(['/animal-detall', animalId]);
   }
   
@@ -180,26 +180,26 @@ export class AdminDashboardComponent implements OnInit {
     const animal = this.animals.find(a => a.id === animalId);
     if (animal) {
       this.selectedAnimal = animal;
-      // Crear una copia para editar (para no modificar el original directamente)
+      // Crear una còpia per editar (per no modificar l'original directament)
       this.editingAnimal = {...animal};
       this.selectedFileName = '';
       this.selectedFile = null;
       this.showEditModal = true;
     } else {
-      console.error('No se encontró el animal con ID:', animalId);
+      console.error('No s\'ha trobat l\'animal amb ID:', animalId);
     }
   }
   
   confirmarEliminar(animalId: number): void {
-    if (confirm('¿Estás seguro que deseas eliminar este animal? Esta acción no se puede deshacer.')) {
+    if (confirm('Estàs segur que vols eliminar aquest animal? Aquesta acció no es pot desfer.')) {
       this.animalPerdutService.deleteAnimal(animalId).subscribe({
         next: () => {
-          alert('Animal eliminado con éxito.');
-          this.loadAnimals(); // Recargar la lista
+          alert('Animal eliminat amb èxit.');
+          this.loadAnimals(); // Tornar a carregar la llista
         },
         error: (err) => {
-          console.error('Error al eliminar el animal:', err);
-          alert('Ha ocurrido un error al eliminar el animal. Por favor, inténtalo de nuevo.');
+          console.error('Error en eliminar l\'animal:', err);
+          alert('Hi ha hagut un error en eliminar l\'animal. Si us plau, intenta-ho de nou.');
         }
       });
     }
@@ -208,12 +208,12 @@ export class AdminDashboardComponent implements OnInit {
   logout(): void {
     this.authService.logout().subscribe({
       next: () => {
-        console.log('Sesión cerrada en el servidor');
+        console.log('Sessió tancada al servidor');
         this.tokenService.revokeToken(); 
         this.router.navigate(['/login']);
       },
       error: (err) => {
-        console.error('Error al cerrar sesión:', err);
+        console.error('Error en tancar sessió:', err);
         this.tokenService.revokeToken();
         this.router.navigate(['/login']); 
       }
@@ -227,7 +227,7 @@ export class AdminDashboardComponent implements OnInit {
     this.selectedFileName = '';
   }
   
-  // Método para manejar la selección de archivos
+  // Mètode per gestionar la selecció d'arxius
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     
@@ -240,7 +240,7 @@ export class AdminDashboardComponent implements OnInit {
     }
   }
   
-  // Método para guardar los cambios
+  // Mètode per desar els canvis
   saveChanges(): void {
     if (!this.editingAnimal) return;
     
@@ -259,20 +259,20 @@ export class AdminDashboardComponent implements OnInit {
     
     this.animalPerdutService.updateAnimal(this.editingAnimal.id, formData).subscribe({
       next: () => {
-        alert('Animal actualizado con éxito.');
-        this.loadAnimals(); // Recargar la lista de animales
+        alert('Animal actualitzat amb èxit.');
+        this.loadAnimals(); // Tornar a carregar la llista d'animals
         this.closeEditModal();
       },
       error: (err) => {
-        console.error('Error al actualizar el animal:', err);
-        alert('Ha ocurrido un error al actualizar el animal. Por favor, inténtalo de nuevo.');
+        console.error('Error en actualitzar l\'animal:', err);
+        alert('Hi ha hagut un error en actualitzar l\'animal. Si us plau, intenta-ho de nou.');
       }
     });
   }
   
-  // Método para obtener el nombre de la imagen
+  // Mètode per obtenir el nom de la imatge
   getImageName(imagePath: string): string {
-    if (!imagePath) return 'Sin imagen';
-    return imagePath.split('/').pop() || 'imagen.jpg';
+    if (!imagePath) return 'Sense imatge';
+    return imagePath.split('/').pop() || 'imatge.jpg';
   }
 }

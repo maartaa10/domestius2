@@ -13,7 +13,7 @@ import { Animal } from '../interfaces/animal';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  // Datos del usuario y protectora
+  // Dades de l'usuari i protectora
   userName: string = '';
   userEmail: string = '';
   direccion: string = '';
@@ -23,18 +23,18 @@ export class DashboardComponent implements OnInit {
   imatge: string = '';
   protectoraId: number = 0;
   
-  // Estados del componente
+  // Estats del component
   loading: boolean = true;
   error: string = '';
   sidebarCollapsed: boolean = false;
   activeSection: 'profile' | 'mis-animales' = 'profile';
   
-  // Datos para la sección de animales
+  // Dades per a la secció d'animals
   userAnimals: Animal[] = [];
   loadingAnimals: boolean = false;
   animalsError: string = '';
   page: number = 1;
-  pageSize: number = 6; // Número de animales por página
+  pageSize: number = 6; // Nombre d'animals per pàgina
   totalPages: number = 1;
 
   constructor(
@@ -50,14 +50,14 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Alterna el estado del sidebar entre colapsado y expandido
+   * Alterna l'estat del sidebar entre col·lapsat i expandit
    */
   toggleSidebar(): void {
     this.sidebarCollapsed = !this.sidebarCollapsed;
   }
 
   /**
-   * Cambia la sección activa del dashboard
+   * Canvia la secció activa del dashboard
    */
   changeSection(section: 'profile' | 'mis-animales'): void {
     this.activeSection = section;
@@ -67,18 +67,18 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Carga la información del usuario y la protectora asociada
+   * Carrega la informació de l'usuari i la protectora associada
    */
   loadUserInfo(): void {
     this.authService.getUserProfile().subscribe({
       next: (userData) => {
-        console.log('Datos del usuario:', userData);
+        console.log('Dades de l\'usuari:', userData);
         this.userName = userData.nom;
         this.userEmail = userData.email;
 
         this.protectoraService.getProtectoraByUsuario(userData.id).subscribe({
           next: (protectoraData) => {
-            console.log('Datos de la protectora:', protectoraData);
+            console.log('Dades de la protectora:', protectoraData);
             this.protectoraId = protectoraData.id;
             this.direccion = protectoraData.direccion || 'No disponible';
             this.telefono = protectoraData.telefono || 'No disponible';
@@ -88,19 +88,19 @@ export class DashboardComponent implements OnInit {
             this.loading = false;
           },
           error: (err) => {
-            console.error('Error al cargar los datos de la protectora:', err);
-            this.error = 'No se ha podido cargar la información de la protectora.';
+            console.error('Error en carregar les dades de la protectora:', err);
+            this.error = 'No s\'ha pogut carregar la informació de la protectora.';
             this.loading = false;
           }
         });
       },
       error: (err) => {
-        console.error('Error al cargar los datos del usuario:', err);
-        if (err.message === 'No se ha encontrado un token.') {
-          this.error = 'No estás autenticado. Por favor, inicia sesión.';
+        console.error('Error en carregar les dades de l\'usuari:', err);
+        if (err.message === 'No s\'ha trobat un token.') {
+          this.error = 'No estàs autenticat. Si us plau, inicia sessió.';
           this.router.navigate(['/login']); 
         } else {
-          this.error = 'No se ha podido cargar la información del usuario.';
+          this.error = 'No s\'ha pogut carregar la informació de l\'usuari.';
         }
         this.loading = false;
       }
@@ -108,20 +108,20 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Carga los animales asociados al usuario
+   * Carrega els animals associats a l'usuari
    */
   loadAnimals(): void {
     this.loadingAnimals = true;
     this.animalsError = '';
     
-    // Verificar si la protectora tiene ID
+    // Verificar si la protectora té ID
     if (!this.protectoraId) {
       this.animalsError = 'No s\'ha pogut obtenir l\'ID de la protectora.';
       this.loadingAnimals = false;
       return;
     }
   
-    // Usar getAnimals() y filtrar, igual que en protectora-detall
+    // Usar getAnimals() i filtrar, igual que en protectora-detall
     this.animalPerdutService.getAnimals().subscribe({
       next: (data) => {
         this.userAnimals = data.filter(animal => animal.protectora_id === this.protectoraId);
@@ -129,7 +129,7 @@ export class DashboardComponent implements OnInit {
         this.loadingAnimals = false;
       },
       error: (err) => {
-        console.error('Error al cargar los animales de la protectora:', err);
+        console.error('Error en carregar els animals de la protectora:', err);
         this.animalsError = 'No s\'han pogut carregar els teus animals. Si us plau, intenta-ho més tard.';
         this.loadingAnimals = false;
       }
@@ -137,7 +137,7 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Cambia la página actual en la paginación de animales
+   * Canvia la pàgina actual en la paginació d'animals
    */
   changePage(delta: number): void {
     const newPage = this.page + delta;
@@ -147,7 +147,7 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Obtiene los animales para la página actual
+   * Obté els animals per a la pàgina actual
    */
   get paginatedAnimals(): Animal[] {
     const start = (this.page - 1) * this.pageSize;
@@ -156,78 +156,78 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Navega a la página de registro de un nuevo animal
+   * Navega a la pàgina de registre d'un nou animal
    */
   navigateToRegistrarAnimal(): void {
     this.router.navigate(['/registrar-animal'], { queryParams: { protectoraId: this.protectoraId } });
   }
 
   /**
-   * Muestra la lista de animales del usuario
+   * Mostra la llista d'animals de l'usuari
    */
   verMisAnimales(): void {
     this.changeSection('mis-animales');
   }
 
   /**
-   * Navega a la página de edición de un animal
+   * Navega a la pàgina d'edició d'un animal
    */
   editarAnimal(animalId: number): void {
     this.router.navigate(['/editar-animal', animalId]);
   }
 
   /**
-   * Confirma y elimina un animal
+   * Confirma i elimina un animal
    */
   confirmDeleteAnimal(animalId: number): void {
-    if (confirm('¿Estás seguro que quieres eliminar este animal?')) {
+    if (confirm('Estàs segur que vols eliminar aquest animal?')) {
       this.animalPerdutService.deleteAnimal(animalId).subscribe({
         next: () => {
-          alert('Animal eliminado con éxito.');
-          this.loadAnimals(); // Recargar la lista de animales
+          alert('Animal eliminat amb èxit.');
+          this.loadAnimals(); // Tornar a carregar la llista d'animals
         },
         error: (err) => {
-          console.error('Error al eliminar el animal:', err);
-          alert('Ha habido un error al eliminar el animal.');
+          console.error('Error en eliminar l\'animal:', err);
+          alert('Hi ha hagut un error en eliminar l\'animal.');
         }
       });
     }
   }
 
   /**
-   * Navega a la página de creación de publicación para un animal
+   * Navega a la pàgina de creació de publicació per a un animal
    */
   crearPublicacion(animalId: number): void {
     this.router.navigate(['/afegir-publicacio'], { queryParams: { animalId: animalId } });
   }
 
   /**
-   * Navega a la vista detallada de un animal
+   * Navega a la vista detallada d'un animal
    */
   verDetalleAnimal(animalId: number): void {
     this.router.navigate(['/animal-detall', animalId]);
   }
 
   /**
-   * Futura implementación para editar el perfil de la protectora
+   * Futura implementació per editar el perfil de la protectora
    */
   editProfile(): void {
-    alert('Funcionalidad en desarrollo');
-    // Implementación futura: this.router.navigate(['/editar-perfil']);
+    alert('Funcionalitat en desenvolupament');
+    // Implementació futura: this.router.navigate(['/editar-perfil']);
   }
 
   /**
-   * Cierra la sesión del usuario
+   * Tanca la sessió de l'usuari
    */
   logout(): void {
     this.authService.logout().subscribe({
       next: () => {
-        console.log('Sesión cerrada en el servidor');
+        console.log('Sessió tancada al servidor');
         this.tokenService.revokeToken(); 
         this.router.navigate(['/login']);
       },
       error: (err) => {
-        console.error('Error al cerrar sesión:', err);
+        console.error('Error en tancar sessió:', err);
         this.tokenService.revokeToken();
         this.router.navigate(['/login']); 
       }

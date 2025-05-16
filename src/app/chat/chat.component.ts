@@ -32,33 +32,33 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('Inicializando el componente de chat...');
+    console.log('Inicialitzant el component de xat...');
     this.initializeChat();
 
     const lastUser = localStorage.getItem('lastUser');
     if (lastUser) {
       this.selectedUser = JSON.parse(lastUser);
       this.searchResults = [this.selectedUser];
-      console.log('Último usuario cargado desde localStorage:', this.selectedUser);
+      console.log('Últim usuari carregat des de localStorage:', this.selectedUser);
     }
   }
 
   async initializeChat(): Promise<void> {
     try {
-      console.log('Inicializando el cliente de Stream Chat...');
+      console.log('Inicialitzant el client de Stream Chat...');
       const userData = await this.authService.getUserProfile().toPromise();
 
       if (!userData) {
-        throw new Error('No se pudo obtener el perfil del usuario.');
+        throw new Error('No s\'ha pogut obtenir el perfil de l\'usuari.');
       }
-      console.log('Perfil del usuario obtenido:', userData);
+      console.log('Perfil de l\'usuari obtingut:', userData);
 
       const tokenResponse = await this.chatService.getUserToken(userData.id).toPromise();
 
       if (!tokenResponse || !tokenResponse.token) {
-        throw new Error('No se pudo obtener el token del usuario.');
+        throw new Error('No s\'ha pogut obtenir el token de l\'usuari.');
       }
-      console.log('Token obtenido:', tokenResponse.token);
+      console.log('Token obtingut:', tokenResponse.token);
 
       await this.chatClient.connectUser(
         {
@@ -67,17 +67,17 @@ export class ChatComponent implements OnInit {
         },
         tokenResponse.token
       );
-      console.log('Usuario conectado al cliente de Stream Chat.');
+      console.log('Usuari connectat al client de Stream Chat.');
 
       this.chatClient.on('connection.changed', (event) => {
-        console.log('Estado de la conexión:', event.online ? 'Conectado' : 'Desconectado');
+        console.log('Estat de la connexió:', event.online ? 'Connectat' : 'Desconnectat');
       });
 
       this.chatClient.on('connection.error', (event) => {
-        console.error('Error en la conexión de WebSocket:', event);
+        console.error('Error en la connexió de WebSocket:', event);
       });
     } catch (error) {
-      console.error('Error al inicializar el chat:', error);
+      console.error('Error en inicialitzar el xat:', error);
     }
   }
 
@@ -85,35 +85,35 @@ export class ChatComponent implements OnInit {
     if (this.searchQuery.trim() === '') {
       const lastUser = localStorage.getItem('lastUser');
       this.searchResults = lastUser ? [JSON.parse(lastUser)] : [];
-      console.log('Búsqueda vacía. Último usuario cargado:', this.searchResults);
+      console.log('Cerca buida. Últim usuari carregat:', this.searchResults);
       return;
     }
 
     try {
-      console.log('Buscando usuarios con el término:', this.searchQuery);
+      console.log('Cercant usuaris amb el terme:', this.searchQuery);
       const results = await this.chatService.searchUsers(this.searchQuery).toPromise();
       this.searchResults = results ?? [];
-      console.log('Resultados de búsqueda:', this.searchResults);
+      console.log('Resultats de la cerca:', this.searchResults);
     } catch (error) {
-      console.error('Error al buscar usuarios:', error);
-      alert('No se pudo realizar la búsqueda. Inténtalo de nuevo.');
+      console.error('Error en cercar usuaris:', error);
+      alert('No s\'ha pogut realitzar la cerca. Torna-ho a intentar.');
       this.searchResults = [];
     }
   }
 
   async startChat(user: any): Promise<void> {
     try {
-      console.log('Iniciando chat con el usuario:', user);
+      console.log('Iniciant xat amb l\'usuari:', user);
       this.selectedUser = user;
   
       localStorage.setItem('lastUser', JSON.stringify(user));
-      console.log('Usuario guardado en localStorage:', user);
+      console.log('Usuari desat a localStorage:', user);
   
       await this.chatClient.upsertUser({
         id: user.id.toString(),
-        name: user.nom || 'Usuario desconocido',
+        name: user.nom || 'Usuari desconegut',
       });
-      console.log('Usuario sincronizado con Stream Chat.');
+      console.log('Usuari sincronitzat amb Stream Chat.');
   
       const userIds = [this.chatClient.userID?.toString(), user.id.toString()].sort();
       const channelId = `chat-${userIds.join('-')}`;
@@ -122,43 +122,44 @@ export class ChatComponent implements OnInit {
         members: userIds,
       });
       await this.channel.watch();
-      console.log('Canal inicializado:', this.channel.id);
+      console.log('Canal inicialitzat:', this.channel.id);
   
-      console.log('Miembros del canal:', this.channel.state.members);
+      console.log('Membres del canal:', this.channel.state.members);
   
       this.channel.on('message.new', (event: any) => {
-        console.log('Mensaje recibido en tiempo real:', event.message);
+        console.log('Missatge rebut en temps real:', event.message);
         this.messages.push(event.message);
       });
   
       this.channel.on('member.updated', (event: any) => {
-        console.log('Estado de un miembro actualizado:', event.member);
+        console.log('Estat d\'un membre actualitzat:', event.member);
       });
   
       this.channel.on('member.added', (event: any) => {
-        console.log('Nuevo miembro añadido al canal:', event.member);
+        console.log('Nou membre afegit al canal:', event.member);
       });
   
       const response = await this.channel.query({ messages: { limit: 20 } });
-      console.log('Mensajes cargados del canal:', response.messages);
+      console.log('Missatges carregats del canal:', response.messages);
       this.messages = response?.messages ?? [];
     } catch (error) {
-      console.error('Error al iniciar el chat:', error);
+      console.error('Error en iniciar el xat:', error);
     }
   }
+
   async sendMessage(): Promise<void> {
     if (this.newMessage.trim() === '') return;
 
     try {
-      console.log('Enviando mensaje:', this.newMessage);
+      console.log('Enviant missatge:', this.newMessage);
       const response = await this.channel.sendMessage({ text: this.newMessage });
-      console.log('Mensaje enviado:', response);
+      console.log('Missatge enviat:', response);
 
-      console.log('Estado actual del canal después de enviar el mensaje:', this.channel.state.messages);
+      console.log('Estat actual del canal després d\'enviar el missatge:', this.channel.state.messages);
 
       this.newMessage = '';
     } catch (error) {
-      console.error('Error al enviar el mensaje:', error);
+      console.error('Error en enviar el missatge:', error);
     }
   }
 
@@ -181,7 +182,7 @@ export class ChatComponent implements OnInit {
 
   getUltimaConexio(): string {
     if (!this.selectedUser) {
-      return 'Desconocida';
+      return 'Desconeguda';
     }
 
     if (this.messages && this.messages.length > 0) {
@@ -189,6 +190,6 @@ export class ChatComponent implements OnInit {
       return new Date(ultimoMensaje.created_at).toLocaleString();
     }
 
-    return 'No hay actividad reciente';
+    return 'No hi ha activitat recent';
   }
 }

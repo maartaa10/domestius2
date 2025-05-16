@@ -29,11 +29,11 @@ export class AnimalDetallComponent {
       next: (animals) => {
         this.animal = animals.find(animal => animal.id === id);
         if (!this.animal) {
-          console.error('Animal no encontrado con el ID:', id);
+          console.error('Animal no trobat amb l\'ID:', id);
         }
       },
       error: (err) => {
-        console.error('Error al cargar los detalles del animal:', err);
+        console.error('Error en carregar els detalls de l\'animal:', err);
       }
     });
   }
