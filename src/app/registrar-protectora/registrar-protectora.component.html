@@ -35,28 +35,41 @@
     </div>
     <div class="form-group">
       <label for="password">Contrasenya</label>
-      <input
-        type="password"
-        id="password"
-        [(ngModel)]="usuari.password"
-        name="password"
-        (keyup)="validatePassword()"
-        (change)="validatePassword()"
-      />
+      <div class="password-field">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          id="password"
+          [(ngModel)]="usuari.password"
+          name="password"
+          (keyup)="validatePassword()"
+          (change)="validatePassword()"
+          placeholder="La teva contrasenya"
+        />
+        <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+          <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+        </button>
+      </div>
       <div *ngIf="showPasswordError" class="error-message">
         La contrasenya ha de tenir almenys 8 caràcters, incloent una majúscula, una minúscula i un número.
       </div>
     </div>
+    
     <div class="form-group">
       <label for="password_confirmation">Confirmar Contrasenya</label>
-      <input
-        type="password"
-        id="password_confirmation"
-        [(ngModel)]="usuari.password_confirmation"
-        name="password_confirmation"
-        (keyup)="validatePassword()"
-        (change)="validatePassword()"
-      />
+      <div class="password-field">
+        <input
+          [type]="showPasswordConfirmation ? 'text' : 'password'"
+          id="password_confirmation"
+          [(ngModel)]="usuari.password_confirmation"
+          name="password_confirmation"
+          (keyup)="validatePassword()"
+          (change)="validatePassword()"
+          placeholder="Confirma la teva contrasenya"
+        />
+        <button type="button" class="toggle-password" (click)="togglePasswordConfirmationVisibility()">
+          <i class="fas" [ngClass]="showPasswordConfirmation ? 'fa-eye-slash' : 'fa-eye'"></i>
+        </button>
+      </div>
       <div *ngIf="showPasswordMatchError" class="error-message">
         Les contrasenyes no coincideixen.
       </div>
@@ -131,4 +144,12 @@
     </div>
     <button type="submit" class="action-button">Registrar Protectora</button>
   </form>
+  <div class="registrar-protectora-footer">
+    <a routerLink="/login" class="login-link">
+      <i class="fas fa-sign-in-alt"></i> Ja tinc un compte
+    </a>
+    <a routerLink="/inici" class="back-link">
+      <i class="fas fa-arrow-left"></i> Tornar a l'inici
+    </a>
+  </div>
 </div>

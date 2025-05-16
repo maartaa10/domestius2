@@ -161,6 +161,35 @@ form {
   font-size: 0.9rem;
   margin-top: 5px;
 }
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  width: 100%;
+  padding-right: 40px; /* Espacio para el botón del ojo */
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 0;
+  font-size: 1.2rem; /* Tamaño del ícono */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%; /* Asegura que esté alineado verticalmente */
+}
+
+.toggle-password:hover {
+  color: #4b83e5;
+}
 
 /* Responsive */
 @media (max-width: 576px) {

@@ -45,6 +45,9 @@ export class RegistrarProtectoraComponent {
   showHorarioAperturaError: boolean = false;
   showHorarioCierreError: boolean = false;
   showImagenError: boolean = false;
+  showPassword: boolean = false;
+  showPasswordConfirmation: boolean = false;
+
 
   constructor(
     private usuariService: UsuariService,
@@ -178,7 +181,13 @@ export class RegistrarProtectoraComponent {
       }
     });
   }
-  
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  togglePasswordConfirmationVisibility(): void {
+    this.showPasswordConfirmation = !this.showPasswordConfirmation;
+  }
   crearProtectora(usuarioId: number): void {
     const formDataProtectora = new FormData();
     formDataProtectora.append('direccion', this.protectora.direccion || '');
