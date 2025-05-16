@@ -1,119 +1,134 @@
 <div class="registrar-protectora-container">
   <h2>Registrar Protectora</h2>
   <div *ngIf="loading" class="loading-spinner">
-      Registrant protectora, si us plau espera...
-    </div>
-  <form (ngSubmit)="onSubmit()" #protectoraForm="ngForm">
-  
-      <h3>Dades de l'Usuari</h3>
-      <div class="form-group">
-        <label for="nom">Nom</label>
-        <input
-          type="text"
-          id="nom"
-          name="nom"
-          [(ngModel)]="usuari.nom"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="email">Correu electrònic</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          [(ngModel)]="usuari.email"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="password">Contrasenya</label>
-        <input
-          type="password"
-          id="password"
-          [(ngModel)]="usuari.password"
-          name="password"
-          class="form-control"
-          placeholder="Introdueix la teva contrasenya"
-          required
-        />
-      </div>
-      
-      <div class="form-group">
-        <label for="password_confirmation">Confirmar Contrasenya</label>
-        <input
-          type="password"
-          id="password_confirmation"
-          [(ngModel)]="usuari.password_confirmation"
-          name="password_confirmation"
-          class="form-control"
-          placeholder="Confirma la teva contrasenya"
-          required
-        />
-      </div>
-
-      <h3>Dades de la Protectora</h3>
-      <div class="form-group">
-        <label for="direccion">Adreça</label>
-        <input
-          type="text"
-          id="direccion"
-          name="direccion"
-          [(ngModel)]="protectora.direccion"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="telefono">Telèfon</label>
-        <input
-          type="text"
-          id="telefono"
-          name="telefono"
-          [(ngModel)]="protectora.telefono"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="horario_apertura">Horari d'Obertura</label>
-        <input
-          type="time"
-          id="horario_apertura"
-          name="horario_apertura"
-          [(ngModel)]="protectora.horario_apertura"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="horario_cierre">Horari de Tancament</label>
-        <input
-          type="time"
-          id="horario_cierre"
-          name="horario_cierre"
-          [(ngModel)]="protectora.horario_cierre"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="imatge">Imatge</label>
-        <input
-          type="file"
-          id="imatge"
-          name="imatge"
-          (change)="onFileSelected($event)"
-          accept="image/*"
-        />
-      </div>
-  
-      <button type="submit" class="action-button">Registrar Protectora</button>
-    </form>
-
-    <!-- Enlaces de navegación -->
-    <div class="registrar-protectora-footer">
-      <a routerLink="/login" class="login-link">
-        <i class="fas fa-sign-in-alt"></i> Ja tinc un compte
-      </a>
-      <a routerLink="/inici" class="back-link">
-        <i class="fas fa-arrow-left"></i> Tornar a l'inici
-      </a>
-    </div>
+    Registrant protectora, si us plau espera...
   </div>
+  <form (ngSubmit)="onSubmit()" #protectoraForm="ngForm">
+    <h3>Dades de l'Usuari</h3>
+    <div class="form-group">
+      <label for="nom">Nom</label>
+      <input
+        type="text"
+        id="nom"
+        name="nom"
+        [(ngModel)]="usuari.nom"
+        (keyup)="validateNom()"
+        (change)="validateNom()"
+      />
+      <div *ngIf="showNomError" class="error-message">
+        El nom és obligatori i ha de tenir almenys 3 caràcters.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="email">Correu electrònic</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        [(ngModel)]="usuari.email"
+        (keyup)="validateEmail()"
+        (change)="validateEmail()"
+      />
+      <div *ngIf="showEmailError" class="error-message">
+        Introdueix un correu electrònic vàlid (exemple: nom&#64;domini.com).
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password">Contrasenya</label>
+      <input
+        type="password"
+        id="password"
+        [(ngModel)]="usuari.password"
+        name="password"
+        (keyup)="validatePassword()"
+        (change)="validatePassword()"
+      />
+      <div *ngIf="showPasswordError" class="error-message">
+        La contrasenya ha de tenir almenys 8 caràcters, incloent una majúscula, una minúscula i un número.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password_confirmation">Confirmar Contrasenya</label>
+      <input
+        type="password"
+        id="password_confirmation"
+        [(ngModel)]="usuari.password_confirmation"
+        name="password_confirmation"
+        (keyup)="validatePassword()"
+        (change)="validatePassword()"
+      />
+      <div *ngIf="showPasswordMatchError" class="error-message">
+        Les contrasenyes no coincideixen.
+      </div>
+    </div>
+    <h3>Dades de la Protectora</h3>
+    <div class="form-group">
+      <label for="direccion">Adreça</label>
+      <input
+        type="text"
+        id="direccion"
+        name="direccion"
+        [(ngModel)]="protectora.direccion"
+        (keyup)="validateDireccion()"
+        (change)="validateDireccion()"
+      />
+      <div *ngIf="showDireccionError" class="error-message">
+        L'adreça és obligatòria.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="telefono">Telèfon</label>
+      <input
+        type="text"
+        id="telefono"
+        name="telefono"
+        [(ngModel)]="protectora.telefono"
+        (keyup)="validateTelefono()"
+        (change)="validateTelefono()"
+      />
+      <div *ngIf="showTelefonoError" class="error-message">
+        El telèfon ha de tenir almenys 6 dígits i només números.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="horario_apertura">Horari d'Obertura</label>
+      <input
+        type="time"
+        id="horario_apertura"
+        name="horario_apertura"
+        [(ngModel)]="protectora.horario_apertura"
+        (change)="validateHorarioApertura()"
+      />
+      <div *ngIf="showHorarioAperturaError" class="error-message">
+        L'horari d'obertura és obligatori.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="horario_cierre">Horari de Tancament</label>
+      <input
+        type="time"
+        id="horario_cierre"
+        name="horario_cierre"
+        [(ngModel)]="protectora.horario_cierre"
+        (change)="validateHorarioCierre()"
+      />
+      <div *ngIf="showHorarioCierreError" class="error-message">
+        L'horari de tancament és obligatori.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="imatge">Imatge</label>
+      <input
+        type="file"
+        id="imatge"
+        name="imatge"
+        (change)="onFileSelected($event)"
+        accept="image/*"
+      />
+      <div *ngIf="showImagenError" class="error-message">
+        La imatge ha de ser un arxiu vàlid (jpeg, png, jpg).
+      </div>
+    </div>
+    <button type="submit" class="action-button">Registrar Protectora</button>
+  </form>
+</div>

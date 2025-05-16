@@ -156,6 +156,12 @@ form {
   font-size: 0.9rem;
 }
 
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
 /* Responsive */
 @media (max-width: 576px) {
   .registrar-protectora-container {

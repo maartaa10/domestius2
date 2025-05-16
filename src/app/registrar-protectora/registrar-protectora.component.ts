@@ -36,6 +36,16 @@ export class RegistrarProtectoraComponent {
 
   selectedFile: File | null = null;
 
+  showNomError: boolean = false;
+  showEmailError: boolean = false;
+  showPasswordError: boolean = false;
+  showPasswordMatchError: boolean = false;
+  showDireccionError: boolean = false;
+  showTelefonoError: boolean = false;
+  showHorarioAperturaError: boolean = false;
+  showHorarioCierreError: boolean = false;
+  showImagenError: boolean = false;
+
   constructor(
     private usuariService: UsuariService,
     private protectoraService: ProtectoraService,
@@ -48,11 +58,76 @@ export class RegistrarProtectoraComponent {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
+      this.validateImagen();
+    }
+  }
+
+  validateNom(): void {
+    this.showNomError = this.usuari.nom.trim().length < 3;
+  }
+
+  validatePassword(): void {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/; 
+    this.showPasswordError = !passwordRegex.test(this.usuari.password);
+    this.showPasswordMatchError = this.usuari.password !== this.usuari.password_confirmation;
+  }
+
+  validateEmail(): void {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+    this.showEmailError = !emailRegex.test(this.usuari.email);
+  }
+
+  validateTelefono(): void {
+    const telefonoRegex = /^[0-9]{6,}$/; 
+    this.showTelefonoError = !telefonoRegex.test(this.protectora.telefono);
+  }
+
+  validateDireccion(): void {
+    this.showDireccionError = this.protectora.direccion.trim().length === 0;
+  }
+
+  validateHorarioApertura(): void {
+    this.showHorarioAperturaError = !this.protectora.horario_apertura;
+  }
+
+  validateHorarioCierre(): void {
+    this.showHorarioCierreError = !this.protectora.horario_cierre;
+  }
+
+  validateImagen(): void {
+    if (this.selectedFile) {
+      const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      this.showImagenError = !validImageTypes.includes(this.selectedFile.type);
+    } else {
+      this.showImagenError = true;
     }
   }
 
   onSubmit(): void {
-    this.loading = true; // Activar l'estat de càrrega
+    this.validateNom();
+    this.validatePassword();
+    this.validateEmail();
+    this.validateTelefono();
+    this.validateDireccion();
+    this.validateHorarioApertura();
+    this.validateHorarioCierre();
+    this.validateImagen();
+
+    if (
+      this.showNomError ||
+      this.showPasswordError ||
+      this.showPasswordMatchError ||
+      this.showEmailError ||
+      this.showTelefonoError ||
+      this.showDireccionError ||
+      this.showHorarioAperturaError ||
+      this.showHorarioCierreError ||
+      this.showImagenError
+    ) {
+      return;
+    }
+
+    this.loading = true;
   
     const usuariCreate: UsuariCreate = {
       nom: this.usuari.nom,
@@ -76,31 +151,30 @@ export class RegistrarProtectoraComponent {
         if (!response || !response.id) {
           console.warn('No s\'ha pogut obtenir l\'ID de l\'usuari registrat.');
           alert('Error: No s\'ha pogut registrar la protectora perquè no s\'ha obtingut l\'ID de l\'usuari.');
-          this.loading = false; // Desactivar l'estat de càrrega
+          this.loading = false;
           return;
         }
   
         console.log('ID de l\'usuari registrat:', response.id);
   
-        // Iniciar sessió automàticament després de registrar l'usuari
         this.authService.login({ email: usuariCreate.email, password: usuariCreate.password }).subscribe({
           next: (loginResponse) => {
             console.log('Inici de sessió amb èxit:', loginResponse);
             this.tokenService.handleToken(loginResponse.token);
             console.log('Token guardat a localStorage:', this.tokenService.getToken());
-            this.crearProtectora(response.id); // Registrar la protectora després d'iniciar sessió
+            this.crearProtectora(response.id); 
           },
           error: (err) => {
             console.error('Error en iniciar sessió automàticament:', err);
             alert('Error en iniciar sessió automàticament. Si us plau, inicia sessió manualment.');
-            this.loading = false; // Desactivar l'estat de càrrega
+            this.loading = false;
           }
         });
       },
       error: (err) => {
         console.error('Error en registrar l\'usuari:', err);
         alert('Error en registrar l\'usuari: ' + (err.error?.mensaje || 'Error desconegut.'));
-        this.loading = false; // Desactivar l'estat de càrrega
+        this.loading = false; 
       }
     });
   }
@@ -123,12 +197,12 @@ export class RegistrarProtectoraComponent {
         console.log('Protectora registrada amb èxit:', newProtectora);
         alert('Protectora registrada amb èxit.');
         this.router.navigate(['/dashboard']);
-        this.loading = false; // Desactivar l'estat de càrrega
+        this.loading = false;
       },
       error: (err) => {
         console.error('Error en registrar la protectora:', err);
         alert('Error en registrar la protectora: ' + (err.error?.mensaje || 'Error desconegut.'));
-        this.loading = false; // Desactivar l'estat de càrrega
+        this.loading = false;
       }
     });
   }
