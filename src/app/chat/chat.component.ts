@@ -45,10 +45,9 @@ export class ChatComponent implements OnInit {
       console.log('Últim usuari carregat des de localStorage:', this.selectedUser);
     }
   
-    // Obtener el perfil del usuario actual
     this.authService.getUserProfile().subscribe({
       next: (userData) => {
-        const userKey = `recentChats_${userData.id}`; // Clave única para el usuario actual
+        const userKey = `recentChats_${userData.id}`; 
         const storedChats = localStorage.getItem(userKey);
         this.recentChats = storedChats ? JSON.parse(storedChats) : [];
       },
@@ -68,7 +67,6 @@ export class ChatComponent implements OnInit {
       }
       console.log('Perfil de l\'usuari obtingut:', userData);
   
-      // Guardar el ID del usuario autenticado en localStorage
       localStorage.setItem('currentUserId', userData.id.toString());
   
       const tokenResponse = await this.chatService.getUserToken(userData.id).toPromise();
@@ -96,7 +94,7 @@ export class ChatComponent implements OnInit {
       });
     } catch (error) {
       console.error('Error en inicialitzar el xat:', error);
-      throw error; // Lanzar el error para manejarlo en `ngOnInit`
+      throw error;
     }
   }
 
@@ -125,11 +123,9 @@ export class ChatComponent implements OnInit {
       console.log('Iniciant xat amb l\'usuari:', user);
       this.selectedUser = user;
   
-      // Obtener el perfil del usuario actual
       const userData = await this.authService.getUserProfile().toPromise();
-      const userKey = `recentChats_${userData.id}`; // Clave única para el usuario actual
+      const userKey = `recentChats_${userData.id}`; 
   
-      // Guardar el usuario en recentChats si no está ya
       if (!this.recentChats.some(chat => chat.id === user.id)) {
         this.recentChats.push(user);
         localStorage.setItem(userKey, JSON.stringify(this.recentChats));
@@ -232,13 +228,13 @@ export class ChatComponent implements OnInit {
     this.authService.logout().subscribe({
       next: () => {
         console.log('Sessió tancada al servidor');
-        localStorage.removeItem('lastUser'); // Eliminar el último usuario
+        localStorage.removeItem('lastUser'); 
         this.tokenService.revokeToken();
         this.router.navigate(['/login']);
       },
       error: (err) => {
         console.error('Error en tancar sessió:', err);
-        localStorage.removeItem('lastUser'); // Eliminar el último usuario
+        localStorage.removeItem('lastUser'); 
         this.tokenService.revokeToken();
         this.router.navigate(['/login']);
       }
