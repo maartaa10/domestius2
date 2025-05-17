@@ -15,14 +15,41 @@
               (input)="searchUsers()"
             />
           </div>
+        
+          <!-- Mostrar chats recents -->
           <ul class="list-unstyled chat-list mt-2 mb-0">
+            <li
+              class="clearfix"
+              *ngFor="let user of recentChats"
+              [class.active]="selectedUser?.id === user.id"
+              (click)="startChat(user)"
+            >
+              <img [src]="getRandomAvatar(user)" alt="Avatar">
+              <div class="about">
+                <div class="name">{{ user.nom }}</div>
+                <div class="status">
+                  <i
+                    class="fa"
+                    [ngClass]="{
+                      'fa-circle online': user.online,
+                      'fa-circle offline': !user.online
+                    }"
+                  ></i>
+                  {{ user.online ? 'en línia' : 'offline' }}
+                </div>
+              </div>
+            </li>
+          </ul>
+        
+          <!-- Mostrar resultats de cerca -->
+          <ul class="list-unstyled chat-list mt-2 mb-0" *ngIf="searchQuery.trim()">
             <li
               class="clearfix"
               *ngFor="let user of searchResults"
               [class.active]="selectedUser?.id === user.id"
               (click)="startChat(user)"
             >
-            <img [src]="getRandomAvatar(selectedUser)" alt="Avatar">
+              <img [src]="getRandomAvatar(user)" alt="Avatar">
               <div class="about">
                 <div class="name">{{ user.nom }}</div>
                 <div class="status">
