@@ -7,7 +7,7 @@ import { Geolocalitzacio } from '../../interfaces/geolocalitzacio';
   providedIn: 'root'
 })
 export class GeolocalitzacioService {
-  private apiUrl = 'http://domestius2.vercel.app/api/geolocalitzacions'; 
+  private apiUrl = 'https://apidomestius-production.up.railway.app/api/geolocalitzacions'; 
 
   constructor(private http: HttpClient) {}
 

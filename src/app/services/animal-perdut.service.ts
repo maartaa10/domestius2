@@ -9,7 +9,7 @@ import { Animal } from '../interfaces/animal';
 export class AnimalPerdutService {
 
   constructor(private http: HttpClient) {}
-  private apiUrl = 'http://domestius2.vercel.app/api'; 
+  private apiUrl = 'https://apidomestius-production.up.railway.app/api'; 
 
  
   getAnimals(): Observable<Animal[]> {
