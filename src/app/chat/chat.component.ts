@@ -5,6 +5,7 @@ import { ChatService } from '../services/chat.service';
 import { ChannelMember } from '../interfaces/channel-member';
 import { TokenService } from '../services/token.service';
 import { Router } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-chat',
@@ -30,7 +31,7 @@ export class ChatComponent implements OnInit {
   ];
   avatarMap: Map<string, string> = new Map();
   groupedMessages: { date: string; messages: any[] }[] = [];
-  constructor(private authService: AuthService, private chatService: ChatService, private tokenService: TokenService, private router: Router) {
+  constructor(private authService: AuthService, private chatService: ChatService, private tokenService: TokenService, private router: Router,  private cdr: ChangeDetectorRef) {
     this.chatClient = new StreamChat('wc2s9br829f9');
   }
 
@@ -117,57 +118,51 @@ export class ChatComponent implements OnInit {
       this.searchResults = [];
     }
   }
-
   async startChat(user: any): Promise<void> {
     try {
       console.log('Iniciant xat amb l\'usuari:', user);
       this.selectedUser = user;
-  
+
       const userData = await this.authService.getUserProfile().toPromise();
-      const userKey = `recentChats_${userData.id}`; 
-  
+      const userKey = `recentChats_${userData.id}`;
+
       if (!this.recentChats.some(chat => chat.id === user.id)) {
         this.recentChats.push(user);
         localStorage.setItem(userKey, JSON.stringify(this.recentChats));
       }
-  
+
       localStorage.setItem('lastUser', JSON.stringify(user));
       console.log('Usuari desat a localStorage:', user);
-  
+
       await this.chatClient.upsertUser({
         id: user.id.toString(),
         name: user.nom || 'Usuari desconegut',
       });
       console.log('Usuari sincronitzat amb Stream Chat.');
-  
+
       const userIds = [this.chatClient.userID?.toString(), user.id.toString()].sort();
       const channelId = `chat-${userIds.join('-')}`;
-  
+
       this.channel = this.chatClient.channel('messaging', channelId, {
         members: userIds,
       });
       await this.channel.watch();
       console.log('Canal inicialitzat:', this.channel.id);
-  
+
       console.log('Membres del canal:', this.channel.state.members);
-  
+
+      // Escucha los mensajes nuevos
       this.channel.on('message.new', (event: any) => {
         console.log('Missatge rebut en temps real:', event.message);
-        this.messages.push(event.message);
+        this.messages.push(event.message); // Agrega el mensaje al array
+        this.groupMessagesByDate(this.messages); // Agrupa los mensajes por fecha
+        this.cdr.detectChanges(); // Fuerza la detección de cambios
       });
-  
-      this.channel.on('member.updated', (event: any) => {
-        console.log('Estat d\'un membre actualitzat:', event.member);
-      });
-  
-      this.channel.on('member.added', (event: any) => {
-        console.log('Nou membre afegit al canal:', event.member);
-      });
-  
+
       const response = await this.channel.query({ messages: { limit: 20 } });
       console.log('Missatges carregats del canal:', response.messages);
       this.messages = response?.messages ?? [];
-      this.groupMessagesByDate(this.messages); // Agrupar mensajes por fecha
+      this.groupMessagesByDate(this.messages); // Agrupa los mensajes por fecha
     } catch (error) {
       console.error('Error en iniciar el xat:', error);
     }
