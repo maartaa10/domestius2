@@ -96,17 +96,17 @@ export class ChatComponent implements OnInit {
       this.chatClient.on('user.presence.changed', (event) => {
         console.log('Canvi de presència:', event);
       
-        // Verifica que event.user esté definido
+        
         if (event.user) {
-          // Actualiza el estado del usuario en recentChats
+      
           this.recentChats = this.recentChats.map((user) => {
-            if (user.id === event.user!.id) { // Usa el operador de aserción no nula (!)
+            if (user.id === event.user!.id) {
               return { ...user, online: event.user!.online };
             }
             return user;
           });
       
-          // Actualiza el estado del usuario en searchResults
+         
           this.searchResults = this.searchResults.map((user) => {
             if (user.id === event.user!.id) {
               return { ...user, online: event.user!.online };
