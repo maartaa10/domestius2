@@ -13,7 +13,7 @@ export class EmailService {
 
   sendPasswordResetEmail(toEmail: string, token: string): Promise<EmailJSResponseStatus> {
     // Generar el enlace de recuperación que apunta al componente `RegenerarContrasenyaComponent`
-    const resetLink = `http://localhost:4200/reset-password?email=${toEmail}&token=${token}`;
+    const resetLink = `https://domestius2.vercel.app/reset-password?email=${toEmail}&token=${token}`;
 
     // Parámetros para la plantilla de EmailJS
     const templateParams = {
