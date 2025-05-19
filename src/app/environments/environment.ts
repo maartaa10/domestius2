@@ -1,4 +1,4 @@
 export const environment = {
-  apiURL: 'http://localhost:8000/api/v1',
-  apiURL2: 'http://localhost:8000/api'
+  apiURL: 'https://apidomestius-production.up.railway.app//api/v1',
+  apiURL2: 'https://apidomestius-production.up.railway.app//api'
 };
