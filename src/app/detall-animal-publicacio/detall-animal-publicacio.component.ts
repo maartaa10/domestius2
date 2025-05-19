@@ -32,7 +32,7 @@ export class DetallAnimalPublicacioComponent implements OnChanges {
         this.animal = animal;
 
         if (this.animal.imatge && !this.animal.imatge.startsWith('http')) {
-          this.animal.imatge = `https://apidomestius-production.up.railway.app/uploads/${this.animal.imatge}`;
+          this.animal.imatge = `http://127.0.0.1:8000/uploads/${this.animal.imatge}`;
         }
 
         this.animal.imatges = [this.animal.imatge];

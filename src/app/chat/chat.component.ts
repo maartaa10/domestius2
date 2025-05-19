@@ -196,7 +196,7 @@ export class ChatComponent implements OnInit {
 
     if (user.imatge) {
       if (!user.imatge.startsWith('http')) {
-        return `https://apidomestius-production.up.railway.app/${user.imatge}`;
+        return `http://127.0.0.1:8000/${user.imatge}`;
       }
       return user.imatge;
     }
@@ -256,27 +256,28 @@ export class ChatComponent implements OnInit {
       messages: grouped[date],
     }));
   }
-  
   private formatDate(date: string): string {
-    const today = new Date().toLocaleDateString();
-    const yesterday = new Date(Date.now() - 86400000).toLocaleDateString();
+    const today = new Date().toLocaleDateString('ca-ES');
+    const yesterday = new Date(Date.now() - 86400000).toLocaleDateString('ca-ES');
   
     if (date === today) {
-      return 'Today';
+      return 'Avui';
     } else if (date === yesterday) {
-      return 'Yesterday';
+      return 'Ahir';
     } else {
-      const parsedDate = new Date(date);
+      const [day, month, year] = date.split('/').map(Number);
+      const parsedDate = new Date(year, month - 1, day); 
+  
       if (!isNaN(parsedDate.getTime())) {
-        return parsedDate.toLocaleDateString('en-US', {
+        return new Intl.DateTimeFormat('ca-ES', {
           weekday: 'long',
           year: 'numeric',
           month: 'long',
           day: 'numeric',
-        });
+        }).format(parsedDate);
       } else {
         console.error('Invalid date:', date);
-        return 'Unknown Date';
+        return 'Data desconeguda';
       }
     }
   }

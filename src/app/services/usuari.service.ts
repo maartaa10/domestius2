@@ -8,7 +8,7 @@ import { UsuariCreate } from '../interfaces/usuari-create';
   providedIn: 'root'
 })
 export class UsuariService {
-  private apiUrl = 'https://apidomestius-production.up.railway.app/api/v1';
+  private apiUrl = 'https://apidomestius-production.up.railway.app/v1';
 
   constructor(private http: HttpClient) {}
 
