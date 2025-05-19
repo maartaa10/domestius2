@@ -8,7 +8,7 @@ import { Interaccio } from '../interfaces/interaccio';
 })
 export class InteraccionsService {
 
-  private apiUrl = 'https://apidomestius-production.up.railway.app/api';
+  private apiUrl = 'http://127.0.0.1:8000/api';
 
   constructor(private http: HttpClient) {}
 

@@ -301,20 +301,25 @@ body {
 
 .date-separator {
   text-align: center;
-  margin: 20px 0;
+  margin: 10px 0;
   position: relative;
 }
 
 .date-separator span {
-  background: #007bff;
-  color: #fff;
-  padding: 8px 15px;
-  border-radius: 25px;
-  font-size: 14px;
-  font-weight: bold;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #555; 
+  font-size: 12px; 
+  font-weight: normal; 
+  background: none; 
+  padding: 0; 
+  border: none; 
+  box-shadow: none; 
 }
 
+.date-separator span::before {
+  content: '🐾';
+  margin-right: 8px;
+  font-size: 14px;
+}
 @media (max-width: 991.98px) {
   .chat-app {
     margin-top: 60px; 
