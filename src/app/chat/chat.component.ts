@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { StreamChat } from 'stream-chat';
 import { AuthService } from '../services/auth.service';
 import { ChatService } from '../services/chat.service';
@@ -14,6 +14,8 @@ import { ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
+  @ViewChild('chatHistory') chatHistory!: ElementRef; // Referencia al contenedor del historial del chat
+
   chatClient: StreamChat;
   channel: any;
   messages: any[] = [];
@@ -157,14 +159,23 @@ export class ChatComponent implements OnInit {
         this.messages.push(event.message); // Agrega el mensaje al array
         this.groupMessagesByDate(this.messages); // Agrupa los mensajes por fecha
         this.cdr.detectChanges(); // Fuerza la detección de cambios
+        this.scrollToBottom(); // Hace scroll hacia abajo
       });
 
       const response = await this.channel.query({ messages: { limit: 20 } });
       console.log('Missatges carregats del canal:', response.messages);
       this.messages = response?.messages ?? [];
       this.groupMessagesByDate(this.messages); // Agrupa los mensajes por fecha
+      this.scrollToBottom(); // Hace scroll hacia abajo al cargar los mensajes
     } catch (error) {
       console.error('Error en iniciar el xat:', error);
+    }
+  }
+  private scrollToBottom(): void {
+    try {
+      this.chatHistory.nativeElement.scrollTop = this.chatHistory.nativeElement.scrollHeight;
+    } catch (err) {
+      console.error('Error al hacer scroll hacia abajo:', err);
     }
   }
 
