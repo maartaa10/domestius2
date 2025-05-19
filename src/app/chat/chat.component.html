@@ -128,13 +128,18 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fa fa-send"></i></span>
               </div>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Escriu un missatge..."
-                [(ngModel)]="newMessage"
-                (keyup.enter)="sendMessage()"
-              />
+              <div class="input-group mb-0 chat-input-group">
+                <input
+                  type="text"
+                  class="form-control chat-input"
+                  placeholder="Escriu un missatge..."
+                  [(ngModel)]="newMessage"
+                  (keyup.enter)="sendMessage()"
+                />
+                <button class="btn btn-icon" (click)="sendMessage()">
+                  <i class="fas fa-paper-plane"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>
