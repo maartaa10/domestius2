@@ -29,7 +29,7 @@ export class ChatComponent implements OnInit {
     'https://bootdey.com/img/Content/avatar/avatar5.png'
   ];
   avatarMap: Map<string, string> = new Map();
-
+  groupedMessages: { date: string; messages: any[] }[] = [];
   constructor(private authService: AuthService, private chatService: ChatService, private tokenService: TokenService, private router: Router) {
     this.chatClient = new StreamChat('wc2s9br829f9');
   }
@@ -167,6 +167,7 @@ export class ChatComponent implements OnInit {
       const response = await this.channel.query({ messages: { limit: 20 } });
       console.log('Missatges carregats del canal:', response.messages);
       this.messages = response?.messages ?? [];
+      this.groupMessagesByDate(this.messages); // Agrupar mensajes por fecha
     } catch (error) {
       console.error('Error en iniciar el xat:', error);
     }
@@ -195,7 +196,7 @@ export class ChatComponent implements OnInit {
 
     if (user.imatge) {
       if (!user.imatge.startsWith('http')) {
-        return `http://127.0.0.1:8000/${user.imatge}`;
+        return `https://apidomestius-production.up.railway.app/${user.imatge}`;
       }
       return user.imatge;
     }
@@ -240,5 +241,43 @@ export class ChatComponent implements OnInit {
       }
     });
   }
+  private groupMessagesByDate(messages: any[]): void {
+    const grouped = messages.reduce((acc, message) => {
+      const messageDate = new Date(message.created_at).toLocaleDateString();
+      if (!acc[messageDate]) {
+        acc[messageDate] = [];
+      }
+      acc[messageDate].push(message);
+      return acc;
+    }, {} as { [key: string]: any[] });
   
+    this.groupedMessages = Object.keys(grouped).map((date) => ({
+      date: this.formatDate(date),
+      messages: grouped[date],
+    }));
+  }
+  
+  private formatDate(date: string): string {
+    const today = new Date().toLocaleDateString();
+    const yesterday = new Date(Date.now() - 86400000).toLocaleDateString();
+  
+    if (date === today) {
+      return 'Today';
+    } else if (date === yesterday) {
+      return 'Yesterday';
+    } else {
+      const parsedDate = new Date(date);
+      if (!isNaN(parsedDate.getTime())) {
+        return parsedDate.toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
+      } else {
+        console.error('Invalid date:', date);
+        return 'Unknown Date';
+      }
+    }
+  }
 }

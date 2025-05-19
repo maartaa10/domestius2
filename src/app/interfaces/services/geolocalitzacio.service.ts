@@ -7,7 +7,7 @@ import { Geolocalitzacio } from '../../interfaces/geolocalitzacio';
   providedIn: 'root'
 })
 export class GeolocalitzacioService {
-  private apiUrl = 'http://127.0.0.1:8000/api/geolocalitzacions'; // Ajusta la URL según tu backend
+  private apiUrl = 'https://apidomestius-production.up.railway.app/api/geolocalitzacions'; // Ajusta la URL según tu backend
 
   constructor(private http: HttpClient) {}
 

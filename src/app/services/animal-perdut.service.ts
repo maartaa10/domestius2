@@ -9,7 +9,7 @@ import { Animal } from '../interfaces/animal';
 export class AnimalPerdutService {
 
   constructor(private http: HttpClient) {}
-  private apiUrl = 'http://127.0.0.1:8000/api'; 
+  private apiUrl = 'https://apidomestius-production.up.railway.app/api'; 
 
  
   getAnimals(): Observable<Animal[]> {

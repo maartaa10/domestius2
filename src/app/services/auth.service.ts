@@ -14,7 +14,7 @@ import { ProtectoraService } from './protectora.service';
 })
 export class AuthService {
   private readonly API_URL = environment.apiURL;
-  private apiUrl = 'http://127.0.0.1:8000/api/v1/user-profile';
+  private apiUrl = 'https://apidomestius-production.up.railway.app/api/v1/user-profile';
   private usuarioActual: Usuari | null = null;
 
   // Añadir este BehaviorSubject para emitir eventos de autenticación

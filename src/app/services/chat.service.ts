@@ -6,7 +6,7 @@ import { catchError, Observable, of } from 'rxjs';
   providedIn: 'root'
 })
 export class ChatService {
-  private apiUrl = 'http://127.0.0.1:8000/api/chat'; 
+  private apiUrl = 'https://apidomestius-production.up.railway.app/api/chat'; 
 
   constructor(private http: HttpClient) {}
 

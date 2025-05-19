@@ -48,7 +48,7 @@ export class AnimalPublicacioComponent implements OnInit, OnDestroy {
       return 'assets/default-animal.jpg'; 
     }
     if (!imagePath.startsWith('http')) {
-      return encodeURI(`http://127.0.0.1:8000/uploads/${imagePath}`);
+      return encodeURI(`https://apidomestius-production.up.railway.app/uploads/${imagePath}`);
     }
     return encodeURI(imagePath); 
   }
