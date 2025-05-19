@@ -202,7 +202,7 @@ export class ChatComponent implements OnInit {
 
     if (user.imatge) {
       if (!user.imatge.startsWith('http')) {
-        return `http://127.0.0.1:8000/${user.imatge}`;
+        return `http://domestius2.vercel.app/${user.imatge}`;
       }
       return user.imatge;
     }
