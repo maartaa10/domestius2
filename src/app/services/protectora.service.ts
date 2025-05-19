@@ -19,7 +19,7 @@ export class ProtectoraService {
   }
   getProtectoraByUsuario(usuarioId: number): Observable<Protectora> {
     console.log('Llamando al endpoint /api/protectora/usuario con ID:', usuarioId);
-    return this.http.get<Protectora>(`http://domestius2.vercel.app/api/protectora/usuario/${usuarioId}`).pipe(
+    return this.http.get<Protectora>(`https://apidomestius-production.up.railway.app/api/protectora/usuario/${usuarioId}`).pipe(
       tap((response) => console.log('Respuesta del endpoint /api/protectora/usuario:', response)),
       catchError((error) => {
         console.error('Error al obtener la protectora:', error);

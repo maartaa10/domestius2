@@ -8,7 +8,7 @@ import { Publicacio } from '../interfaces/publicacio';
 })
 export class PublicacioService {
 
-  private apiUrl = 'http://domestius2.vercel.app/api';
+  private apiUrl = 'https://apidomestius-production.up.railway.app/api';
 
   constructor(private http: HttpClient) {}
   getPublicacions(): Observable<Publicacio[]> {

@@ -8,7 +8,7 @@ import { Interaccio } from '../interfaces/interaccio';
 })
 export class InteraccionsService {
 
-  private apiUrl = 'http://domestius2.vercel.app/api';
+  private apiUrl = 'https://apidomestius-production.up.railway.app/api';
 
   constructor(private http: HttpClient) {}
 
