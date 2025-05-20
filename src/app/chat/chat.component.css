@@ -368,6 +368,16 @@ body {
   background-color: #004494;
 }
 
+.btn-outline-danger {
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: #fff;
+}
+
 @media (max-width: 991.98px) {
   .chat-app {
     margin-top: 60px; 

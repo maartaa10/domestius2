@@ -324,4 +324,12 @@ this.chatClient.on('user.presence.changed', (event) => {
       }
     }
   }
+  clearChat(): void {
+    if (confirm('Estàs segur que vols eliminar tots els missatges del xat?')) {
+      this.messages = [];
+      this.groupedMessages = [];
+      console.log('Missatges eliminats.');
+      this.cdr.detectChanges(); 
+    }
+  }
 }
