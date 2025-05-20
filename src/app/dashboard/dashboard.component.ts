@@ -162,6 +162,10 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/registrar-animal'], { queryParams: { protectoraId: this.protectoraId } });
   }
 
+  navigateToUserDashboard(): void {
+    this.router.navigate(['/user-dashboard']);
+  }
+
   /**
    * Mostra la llista d'animals de l'usuari
    */
