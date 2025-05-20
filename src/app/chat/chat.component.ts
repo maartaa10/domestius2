@@ -88,7 +88,7 @@ export class ChatComponent implements OnInit {
       );
       console.log('Usuari connectat al client de Stream Chat.');
   
-      // Actualizar el estado del usuario a "online"
+      // Actualizar el estado del usuario actual a "online"
       this.recentChats = this.recentChats.map((user) => {
         if (user.id === userData.id) {
           console.log(`Actualitzant estat de l'usuari ${user.nom} a online`);
@@ -141,54 +141,41 @@ export class ChatComponent implements OnInit {
           // Actualizar el estado de los usuarios en searchResults
           this.searchResults = this.searchResults.map((user) => {
             if (user.id === event.user!.id) {
+              console.log(`Actualitzant estat de l'usuari ${user.nom} a ${event.user!.online ? 'online' : 'offline'}`);
               return { ...user, online: event.user!.online };
             }
             return user;
           });
   
           this.cdr.detectChanges();
-        }
-      });
-  
-      // Escuchar mensajes nuevos
-      this.chatClient.on('message.new', (event) => {
-        console.log('Nuevo mensaje recibido:', event);
-  
-        const senderId = event.user?.id;
-        const senderName = event.user?.name || 'Usuario desconocido';
-  
-        if (!senderId) {
-          console.warn('El mensaje recibido no tiene un usuario válido:', event);
-          return;
-        }
-  
-        // Verificar si el remitente ya está en `recentChats`
-        const existingChat = this.recentChats.find(chat => chat.id === senderId);
-  
-        if (!existingChat) {
-          console.log(`Agregando el chat con el usuario ${senderName} a chats recientes.`);
-          const newChat = {
-            id: senderId,
-            name: senderName,
-            avatar: this.getRandomAvatar({ id: senderId }),
-            online: this.chatClient.state.users[senderId]?.online || false,
-            unreadCount: 1, // Indica que hay un mensaje no leído
-            pinned: true, // Marca el chat como fijado
-          };
-  
-          this.recentChats.unshift(newChat); // Agregar al inicio de la lista
         } else {
-          // Incrementar el contador de mensajes no leídos si el chat ya existe
-          existingChat.unreadCount = (existingChat.unreadCount || 0) + 1;
+          console.warn('El evento user.presence.changed no contiene un usuario válido:', event);
         }
-  
-        this.cdr.detectChanges();
-  
-        // Guardar en localStorage
-        const userKey = `recentChats_${this.chatClient.userID}`;
-        localStorage.setItem(userKey, JSON.stringify(this.recentChats));
       });
   
+      // Verificar el estado inicial de los usuarios en los canales
+      const channels = await this.chatClient.queryChannels({});
+      channels.forEach((channel) => {
+        Object.values(channel.state.members).forEach((member: any) => {
+          const user = member.user;
+          if (user) {
+            console.log(`Usuari ${user.id} inicialment ${user.online ? 'online' : 'offline'}`);
+            this.recentChats = this.recentChats.map((chat) => {
+              if (chat.id === user.id) {
+                return { ...chat, online: user.online };
+              }
+              return chat;
+            });
+  
+            this.searchResults = this.searchResults.map((searchUser) => {
+              if (searchUser.id === user.id) {
+                return { ...searchUser, online: user.online };
+              }
+              return searchUser;
+            });
+          }
+        });
+      });
       this.cdr.detectChanges();
     } catch (error) {
       console.error('Error en inicialitzar el xat:', error);
@@ -232,7 +219,10 @@ export class ChatComponent implements OnInit {
       const userKey = `recentChats_${userData.id}`;
   
       if (!this.recentChats.some(chat => chat.id === user.id)) {
-        this.recentChats.push(user);
+        this.recentChats.push({
+          ...user,
+          online: this.chatClient.state.users[user.id]?.online || false, // Verificar el estado online
+        });
         localStorage.setItem(userKey, JSON.stringify(this.recentChats));
       }
   
@@ -245,7 +235,7 @@ export class ChatComponent implements OnInit {
       });
       console.log('Usuari sincronitzat amb Stream Chat.');
   
-      const userIds = Array.from(new Set([this.chatClient.userID?.toString(), user.id.toString()]));
+      const userIds = [this.chatClient.userID?.toString(), user.id.toString()].sort();
       const channelId = `chat-${userIds.join('-')}`;
   
       this.channel = this.chatClient.channel('messaging', channelId, {
