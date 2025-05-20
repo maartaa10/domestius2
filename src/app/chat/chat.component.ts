@@ -88,7 +88,7 @@ export class ChatComponent implements OnInit {
       );
       console.log('Usuari connectat al client de Stream Chat.');
   
-      // Actualizar el estado del usuario actual a "online"
+      // Actualizar el estado del usuario a "online"
       this.recentChats = this.recentChats.map((user) => {
         if (user.id === userData.id) {
           console.log(`Actualitzant estat de l'usuari ${user.nom} a online`);
@@ -122,13 +122,12 @@ export class ChatComponent implements OnInit {
         }
       });
   
-      // Escuchar cambios en la presencia de usuarios
       this.chatClient.on('user.presence.changed', (event) => {
         console.log('Canvi de presència:', event);
-  
+      
         if (event.user) {
           console.log(`Usuari afectat: ${event.user.id}, Estat: ${event.user.online ? 'online' : 'offline'}`);
-  
+      
           // Actualizar el estado de los usuarios en recentChats
           this.recentChats = this.recentChats.map((user) => {
             if (user.id === event.user!.id) {
@@ -137,7 +136,7 @@ export class ChatComponent implements OnInit {
             }
             return user;
           });
-  
+      
           // Actualizar el estado de los usuarios en searchResults
           this.searchResults = this.searchResults.map((user) => {
             if (user.id === event.user!.id) {
@@ -146,39 +145,12 @@ export class ChatComponent implements OnInit {
             }
             return user;
           });
-  
+      
           this.cdr.detectChanges();
         } else {
           console.warn('El evento user.presence.changed no contiene un usuario válido:', event);
         }
       });
-  
-      // Verificar el estado inicial de los usuarios en los canales
-      const filter = { members: { $in: [userData.id.toString()] } }; // Filtrar canales donde el usuario es miembro
-      const channels = await this.chatClient.queryChannels(filter);
-  
-      channels.forEach((channel) => {
-        Object.values(channel.state.members).forEach((member: any) => {
-          const user = member.user;
-          if (user) {
-            console.log(`Usuari ${user.id} inicialment ${user.online ? 'online' : 'offline'}`);
-            this.recentChats = this.recentChats.map((chat) => {
-              if (chat.id === user.id) {
-                return { ...chat, online: user.online };
-              }
-              return chat;
-            });
-  
-            this.searchResults = this.searchResults.map((searchUser) => {
-              if (searchUser.id === user.id) {
-                return { ...searchUser, online: user.online };
-              }
-              return searchUser;
-            });
-          }
-        });
-      });
-      this.cdr.detectChanges();
     } catch (error) {
       console.error('Error en inicialitzar el xat:', error);
       throw error;
@@ -275,14 +247,14 @@ export class ChatComponent implements OnInit {
 
   async sendMessage(): Promise<void> {
     if (this.newMessage.trim() === '') return;
-  
+
     try {
       console.log('Enviant missatge:', this.newMessage);
       const response = await this.channel.sendMessage({ text: this.newMessage });
       console.log('Missatge enviat:', response);
-  
+
       console.log('Estat actual del canal després d\'enviar el missatge:', this.channel.state.messages);
-  
+
       this.newMessage = '';
     } catch (error) {
       console.error('Error en enviar el missatge:', error);
