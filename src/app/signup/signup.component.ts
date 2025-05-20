@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
-// Validador personalizado para coincidencia de contraseñas
 export function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
   const password = control.get('password')?.value;
   const confirmPassword = control.get('password_confirmation')?.value;
@@ -27,7 +26,6 @@ export class SignupComponent {
   showPassword: boolean = false;
   showPasswordConfirmation: boolean = false;
 
-  // Variables para mostrar errores personalizados
   showNomError: boolean = false;
   showEmailError: boolean = false;
   showPasswordError: boolean = false;
@@ -46,7 +44,6 @@ export class SignupComponent {
     }, { validators: passwordMatchValidator });
   }
 
-  // Validaciones personalizadas
   validateNom(): void {
     const nom = this.registerForm.get('nom')?.value || '';
     this.showNomError = nom.trim().length < 3;
@@ -78,12 +75,10 @@ export class SignupComponent {
   onSubmit(): void {
     this.cleanErrors();
 
-    // Ejecutar validaciones personalizadas
     this.validateNom();
     this.validatePassword();
     this.validateEmail();
 
-    // Si hay errores, detener el envío del formulario
     if (this.showNomError || this.showPasswordError || this.showPasswordMatchError || this.showEmailError) {
       return;
     }
