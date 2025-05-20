@@ -88,37 +88,56 @@ export class ChatComponent implements OnInit {
       );
       console.log('Usuari connectat al client de Stream Chat.');
   
+      // Actualiza el estado del usuario en recentChats y searchResults
+      this.recentChats = this.recentChats.map((user) => {
+        if (user.id === userData.id) {
+          return { ...user, online: true };
+        }
+        return user;
+      });
+  
+      this.searchResults = this.searchResults.map((user) => {
+        if (user.id === userData.id) {
+          return { ...user, online: true };
+        }
+        return user;
+      });
+  
+      this.cdr.detectChanges(); // Fuerza la detección de cambios
+  
       // Escucha cambios en la conexión del cliente
       this.chatClient.on('connection.changed', (event) => {
         console.log('Estat de la connexió:', event.online ? 'Connectat' : 'Desconnectat');
       });
   
-      this.chatClient.on('user.presence.changed', (event) => {
-        console.log('Canvi de presència:', event);
-      
-        // Verifica que event.user esté definido
-        if (event.user) {
-          // Actualiza el estado del usuario en recentChats
-          this.recentChats = this.recentChats.map((user) => {
-            if (user.id === event.user!.id) { // Usa el operador de aserción no nula (!)
-              return { ...user, online: event.user!.online };
-            }
-            return user;
-          });
-      
-          // Actualiza el estado del usuario en searchResults
-          this.searchResults = this.searchResults.map((user) => {
-            if (user.id === event.user!.id) {
-              return { ...user, online: event.user!.online };
-            }
-            return user;
-          });
-      
-          this.cdr.detectChanges(); // Fuerza la detección de cambios
-        } else {
-          console.warn('El evento user.presence.changed no contiene un usuario válido:', event);
-        }
-      });
+      // Escucha cambios en la presencia de los usuarios
+     // Escucha cambios en la presencia de los usuarios
+this.chatClient.on('user.presence.changed', (event) => {
+  console.log('Canvi de presència:', event);
+
+  // Verifica que event.user esté definido
+  if (event.user) {
+    // Actualiza el estado del usuario en recentChats
+    this.recentChats = this.recentChats.map((user) => {
+      if (user.id === event.user!.id) { // Usa el operador de aserción no nula (!)
+        return { ...user, online: event.user!.online };
+      }
+      return user;
+    });
+
+    // Actualiza el estado del usuario en searchResults
+    this.searchResults = this.searchResults.map((user) => {
+      if (user.id === event.user!.id) {
+        return { ...user, online: event.user!.online };
+      }
+      return user;
+    });
+
+    this.cdr.detectChanges(); // Fuerza la detección de cambios
+  } else {
+    console.warn('El evento user.presence.changed no contiene un usuario válido:', event);
+  }
+});
     } catch (error) {
       console.error('Error en inicialitzar el xat:', error);
       throw error;
