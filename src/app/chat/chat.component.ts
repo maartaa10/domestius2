@@ -62,22 +62,22 @@ export class ChatComponent implements OnInit {
 
   async initializeChat(): Promise<void> {
     try {
-      console.log('Inicialitzant el client de Stream Chat...');
+      console.log('Inicializando el cliente de Stream Chat...');
       const userData = await this.authService.getUserProfile().toPromise();
   
       if (!userData) {
-        throw new Error('No s\'ha pogut obtenir el perfil de l\'usuari.');
+        throw new Error('No se pudo obtener el perfil del usuario.');
       }
-      console.log('Perfil de l\'usuari obtingut:', userData);
+      console.log('Perfil del usuario obtenido:', userData);
   
       localStorage.setItem('currentUserId', userData.id.toString());
   
       const tokenResponse = await this.chatService.getUserToken(userData.id).toPromise();
   
       if (!tokenResponse || !tokenResponse.token) {
-        throw new Error('No s\'ha pogut obtenir el token de l\'usuari.');
+        throw new Error('No se pudo obtener el token del usuario.');
       }
-      console.log('Token obtingut:', tokenResponse.token);
+      console.log('Token obtenido:', tokenResponse.token);
   
       // Conectar el usuario al cliente de Stream Chat
       await this.chatClient.connectUser(
@@ -87,53 +87,19 @@ export class ChatComponent implements OnInit {
         },
         tokenResponse.token
       );
-      console.log('Usuari connectat al client de Stream Chat.');
-  
-      // Actualizar el estado del usuario a "online"
-      this.recentChats = this.recentChats.map((user) => {
-        if (user.id === userData.id) {
-          console.log(`Actualitzant estat de l'usuari ${user.nom} a online`);
-          return { ...user, online: true };
-        }
-        return user;
-      });
-  
-      this.searchResults = this.searchResults.map((user) => {
-        if (user.id === userData.id) {
-          console.log(`Actualitzant estat de l'usuari ${user.nom} a online`);
-          return { ...user, online: true };
-        }
-        return user;
-      });
-  
-      this.cdr.detectChanges();
-  
-      // Escuchar cambios en la conexión
-      this.chatClient.on('connection.changed', (event) => {
-        console.log('Estat de la connexió:', event.online ? 'Connectat' : 'Desconnectat');
-        if (event.online) {
-          this.recentChats = this.recentChats.map((user) => {
-            if (user.id === userData.id) {
-              console.log(`Usuari ${user.nom} connectat`);
-              return { ...user, online: true };
-            }
-            return user;
-          });
-          this.cdr.detectChanges();
-        }
-      });
+      console.log('Usuario conectado al cliente de Stream Chat.');
   
       // Escuchar cambios en la presencia de usuarios
       this.chatClient.on('user.presence.changed', (event) => {
-        console.log('Canvi de presència:', event);
+        console.log('Evento de presencia recibido:', event);
   
         if (event.user) {
-          console.log(`Usuari afectat: ${event.user.id}, Estat: ${event.user.online ? 'online' : 'offline'}`);
+          console.log(`Usuario afectado: ${event.user.id}, Estado: ${event.user.online ? 'online' : 'offline'}`);
   
           // Actualizar el estado de los usuarios en recentChats
           this.recentChats = this.recentChats.map((user) => {
             if (user.id === event.user!.id) {
-              console.log(`Actualitzant estat de l'usuari ${user.nom} a ${event.user!.online ? 'online' : 'offline'}`);
+              console.log(`Actualizando estado del usuario ${user.nom} a ${event.user!.online ? 'online' : 'offline'}`);
               return { ...user, online: event.user!.online };
             }
             return user;
@@ -142,7 +108,7 @@ export class ChatComponent implements OnInit {
           // Actualizar el estado de los usuarios en searchResults
           this.searchResults = this.searchResults.map((user) => {
             if (user.id === event.user!.id) {
-              console.log(`Actualitzant estat de l'usuari ${user.nom} a ${event.user!.online ? 'online' : 'offline'}`);
+              console.log(`Actualizando estado del usuario ${user.nom} a ${event.user!.online ? 'online' : 'offline'}`);
               return { ...user, online: event.user!.online };
             }
             return user;
@@ -153,8 +119,10 @@ export class ChatComponent implements OnInit {
           console.warn('El evento user.presence.changed no contiene un usuario válido:', event);
         }
       });
+  
+      console.log('Estado actual de los usuarios:', this.chatClient.state.users);
     } catch (error) {
-      console.error('Error en inicialitzar el xat:', error);
+      console.error('Error al inicializar el chat:', error);
       throw error;
     }
   }
