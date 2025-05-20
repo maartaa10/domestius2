@@ -88,6 +88,7 @@ export class ChatComponent implements OnInit {
       );
       console.log('Usuari connectat al client de Stream Chat.');
   
+      // Actualizar el estado del usuario a "online"
       this.recentChats = this.recentChats.map((user) => {
         if (user.id === userData.id) {
           return { ...user, online: true };
@@ -102,42 +103,50 @@ export class ChatComponent implements OnInit {
         return user;
       });
   
-      this.cdr.detectChanges(); 
+      this.cdr.detectChanges();
   
+      // Escuchar cambios en la conexión
       this.chatClient.on('connection.changed', (event) => {
         console.log('Estat de la connexió:', event.online ? 'Connectat' : 'Desconnectat');
+        if (event.online) {
+          this.recentChats = this.recentChats.map((user) => {
+            if (user.id === userData.id) {
+              return { ...user, online: true };
+            }
+            return user;
+          });
+          this.cdr.detectChanges();
+        }
       });
   
-    
-this.chatClient.on('user.presence.changed', (event) => {
-  console.log('Canvi de presència:', event);
-
-  if (event.user) {
-    this.recentChats = this.recentChats.map((user) => {
-      if (user.id === event.user!.id) { 
-        return { ...user, online: event.user!.online };
-      }
-      return user;
-    });
-
-    this.searchResults = this.searchResults.map((user) => {
-      if (user.id === event.user!.id) {
-        return { ...user, online: event.user!.online };
-      }
-      return user;
-    });
-
-    this.cdr.detectChanges(); 
-  } else {
-    console.warn('El evento user.presence.changed no contiene un usuario válido:', event);
-  }
-});
+      // Escuchar cambios en la presencia de usuarios
+      this.chatClient.on('user.presence.changed', (event) => {
+        console.log('Canvi de presència:', event);
+  
+        if (event.user) {
+          this.recentChats = this.recentChats.map((user) => {
+            if (user.id === event.user!.id) {
+              return { ...user, online: event.user!.online };
+            }
+            return user;
+          });
+  
+          this.searchResults = this.searchResults.map((user) => {
+            if (user.id === event.user!.id) {
+              return { ...user, online: event.user!.online };
+            }
+            return user;
+          });
+  
+          this.cdr.detectChanges();
+        } else {
+          console.warn('El evento user.presence.changed no contiene un usuario válido:', event);
+        }
+      });
     } catch (error) {
       console.error('Error en inicialitzar el xat:', error);
       throw error;
     }
-    
-    
   }
   async searchUsers(): Promise<void> {
     if (this.searchQuery.trim() === '') {
