@@ -137,6 +137,7 @@ this.chatClient.on('user.presence.changed', (event) => {
       throw error;
     }
     
+    
   }
   async searchUsers(): Promise<void> {
     if (this.searchQuery.trim() === '') {
