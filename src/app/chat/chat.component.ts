@@ -136,6 +136,7 @@ this.chatClient.on('user.presence.changed', (event) => {
       console.error('Error en inicialitzar el xat:', error);
       throw error;
     }
+    
   }
   async searchUsers(): Promise<void> {
     if (this.searchQuery.trim() === '') {
