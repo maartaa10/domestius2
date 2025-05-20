@@ -55,7 +55,7 @@
               <img [src]="getRandomAvatar(user)" alt="Avatar">
               <div class="about">
                 <div class="name">{{ user.nom }}</div>
-                <div class="status">
+                <div class="status" [title]="'ID: ' + user.id + ', Online: ' + user.online">
                   <i
                     class="fa"
                     [ngClass]="{

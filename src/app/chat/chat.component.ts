@@ -91,6 +91,7 @@ export class ChatComponent implements OnInit {
       // Actualizar el estado del usuario a "online"
       this.recentChats = this.recentChats.map((user) => {
         if (user.id === userData.id) {
+          console.log(`Actualitzant estat de l'usuari ${user.nom} a online`);
           return { ...user, online: true };
         }
         return user;
@@ -98,6 +99,7 @@ export class ChatComponent implements OnInit {
   
       this.searchResults = this.searchResults.map((user) => {
         if (user.id === userData.id) {
+          console.log(`Actualitzant estat de l'usuari ${user.nom} a online`);
           return { ...user, online: true };
         }
         return user;
@@ -111,6 +113,7 @@ export class ChatComponent implements OnInit {
         if (event.online) {
           this.recentChats = this.recentChats.map((user) => {
             if (user.id === userData.id) {
+              console.log(`Usuari ${user.nom} connectat`);
               return { ...user, online: true };
             }
             return user;
@@ -126,6 +129,7 @@ export class ChatComponent implements OnInit {
         if (event.user) {
           this.recentChats = this.recentChats.map((user) => {
             if (user.id === event.user!.id) {
+              console.log(`Actualitzant estat de l'usuari ${user.nom} a ${event.user!.online ? 'online' : 'offline'}`);
               return { ...user, online: event.user!.online };
             }
             return user;
@@ -133,6 +137,7 @@ export class ChatComponent implements OnInit {
   
           this.searchResults = this.searchResults.map((user) => {
             if (user.id === event.user!.id) {
+              console.log(`Actualitzant estat de l'usuari ${user.nom} a ${event.user!.online ? 'online' : 'offline'}`);
               return { ...user, online: event.user!.online };
             }
             return user;
@@ -155,12 +160,21 @@ export class ChatComponent implements OnInit {
       console.log('Cerca buida. Últim usuari carregat:', this.searchResults);
       return;
     }
-
+  
     try {
       console.log('Cercant usuaris amb el terme:', this.searchQuery);
       const results = await this.chatService.searchUsers(this.searchQuery).toPromise();
-      this.searchResults = results ?? [];
-      console.log('Resultats de la cerca:', this.searchResults);
+  
+      if (results && results.length > 0) {
+        this.searchResults = results.map((user) => ({
+          ...user,
+          online: this.chatClient.state.users[user.id]?.online || false,
+        }));
+        console.log('Resultats de la cerca amb estat actualitzat:', this.searchResults);
+      } else {
+        console.log('No s\'han trobat resultats per a la cerca.');
+        this.searchResults = [];
+      }
     } catch (error) {
       console.error('Error en cercar usuaris:', error);
       alert('No s\'ha pogut realitzar la cerca. Torna-ho a intentar.');
