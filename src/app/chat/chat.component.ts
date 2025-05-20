@@ -154,7 +154,9 @@ export class ChatComponent implements OnInit {
       });
   
       // Verificar el estado inicial de los usuarios en los canales
-      const channels = await this.chatClient.queryChannels({});
+      const filter = { members: { $in: [userData.id.toString()] } }; // Filtrar canales donde el usuario es miembro
+      const channels = await this.chatClient.queryChannels(filter);
+  
       channels.forEach((channel) => {
         Object.values(channel.state.members).forEach((member: any) => {
           const user = member.user;
