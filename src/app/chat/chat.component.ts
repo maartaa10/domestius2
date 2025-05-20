@@ -158,35 +158,36 @@ export class ChatComponent implements OnInit {
     try {
       console.log('Iniciant xat amb l\'usuari:', user);
       this.selectedUser = user;
-
+  
       const userData = await this.authService.getUserProfile().toPromise();
       const userKey = `recentChats_${userData.id}`;
-
+  
       if (!this.recentChats.some(chat => chat.id === user.id)) {
         this.recentChats.push(user);
         localStorage.setItem(userKey, JSON.stringify(this.recentChats));
       }
-
+  
       localStorage.setItem('lastUser', JSON.stringify(user));
       console.log('Usuari desat a localStorage:', user);
-
+  
       await this.chatClient.upsertUser({
         id: user.id.toString(),
         name: user.nom || 'Usuari desconegut',
       });
       console.log('Usuari sincronitzat amb Stream Chat.');
-
-      const userIds = [this.chatClient.userID?.toString(), user.id.toString()].sort();
+  
+      // Asegúrate de que no haya IDs duplicados
+      const userIds = Array.from(new Set([this.chatClient.userID?.toString(), user.id.toString()]));
       const channelId = `chat-${userIds.join('-')}`;
-
+  
       this.channel = this.chatClient.channel('messaging', channelId, {
         members: userIds,
       });
       await this.channel.watch();
       console.log('Canal inicialitzat:', this.channel.id);
-
+  
       console.log('Membres del canal:', this.channel.state.members);
-
+  
       this.channel.on('message.new', (event: any) => {
         console.log('Missatge rebut en temps real:', event.message);
         this.messages.push(event.message); 
@@ -194,7 +195,7 @@ export class ChatComponent implements OnInit {
         this.cdr.detectChanges();
         this.scrollToBottom(); 
       });
-
+  
       const response = await this.channel.query({ messages: { limit: 20 } });
       console.log('Missatges carregats del canal:', response.messages);
       this.messages = response?.messages ?? [];
