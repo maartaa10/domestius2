@@ -215,7 +215,6 @@
                 <th>Direcció</th>
                 <th>Telèfon</th>
                 <th>Horari</th>
-                <th>Accions</th>
               </tr>
             </thead>
             <tbody>
@@ -235,17 +234,6 @@
                 <td>{{ protectora.direccion || 'No disponible' }}</td>
                 <td>{{ protectora.telefono || 'No disponible' }}</td>
                 <td>{{ protectora.horario_apertura }} - {{ protectora.horario_cierre }}</td>
-                <td class="actions-cell">
-                  <button class="table-action view-action" title="Veure detalls">
-                    <i class="fas fa-eye"></i>
-                  </button>
-                  <button class="table-action edit-action" title="Editar">
-                    <i class="fas fa-edit"></i>
-                  </button>
-                  <button class="table-action delete-action" title="Eliminar">
-                    <i class="fas fa-trash-alt"></i>
-                  </button>
-                </td>
               </tr>
             </tbody>
           </table>
