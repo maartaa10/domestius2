@@ -27,10 +27,16 @@
         <label for="nom">
           <i class="fas fa-user"></i> Nom
         </label>
-        <input type="text" id="nom" formControlName="nom" placeholder="El teu nom">
-        <div *ngIf="registerForm.get('nom')?.invalid && (registerForm.get('nom')?.touched || registerForm.get('nom')?.dirty)" class="field-error">
-          <small *ngIf="registerForm.get('nom')?.hasError('required')">El camp nom és obligatori.</small>
-          <small *ngIf="registerForm.get('nom')?.hasError('minlength')">El nom ha de tenir almenys 3 caràcters.</small>
+        <input
+          type="text"
+          id="nom"
+          formControlName="nom"
+          placeholder="El teu nom"
+          (keyup)="validateNom()"
+          (change)="validateNom()"
+        >
+        <div *ngIf="showNomError" class="field-error">
+          <small>El nom ha de tenir almenys 3 caràcters.</small>
         </div>
       </div>
       
@@ -39,10 +45,16 @@
         <label for="email">
           <i class="fas fa-envelope"></i> Correu electrònic
         </label>
-        <input type="email" id="email" formControlName="email" placeholder="El teu correu electrònic">
-        <div *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.touched || registerForm.get('email')?.dirty)" class="field-error">
-          <small *ngIf="registerForm.get('email')?.hasError('required')">El camp correu electrònic és obligatori.</small>
-          <small *ngIf="registerForm.get('email')?.hasError('email')">El camp correu electrònic ha de ser vàlid.</small>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="El teu correu electrònic"
+          (keyup)="validateEmail()"
+          (change)="validateEmail()"
+        >
+        <div *ngIf="showEmailError" class="field-error">
+          <small>El camp correu electrònic ha de ser vàlid.</small>
         </div>
       </div>
       
@@ -52,18 +64,20 @@
           <i class="fas fa-lock"></i> Contrasenya
         </label>
         <div class="password-field">
-          <input 
-            [type]="showPassword ? 'text' : 'password'" 
-            id="password" 
-            formControlName="password" 
-            placeholder="La teva contrasenya">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            formControlName="password"
+            placeholder="La teva contrasenya"
+            (keyup)="validatePassword()"
+            (change)="validatePassword()"
+          >
           <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
             <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
           </button>
         </div>
-        <div *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.touched || registerForm.get('password')?.dirty)" class="field-error">
-          <small *ngIf="registerForm.get('password')?.hasError('required')">El camp contrasenya és obligatori.</small>
-          <small *ngIf="registerForm.get('password')?.hasError('minlength')">La contrasenya ha de tenir almenys 6 caràcters.</small>
+        <div *ngIf="showPasswordError" class="field-error">
+          <small>La contrasenya ha de tenir almenys 8 caràcters, incloent una majúscula, una minúscula i un número.</small>
         </div>
       </div>
       
@@ -73,19 +87,19 @@
           <i class="fas fa-check-circle"></i> Confirmació de contrasenya
         </label>
         <div class="password-field">
-          <input 
-            [type]="showPasswordConfirmation ? 'text' : 'password'" 
-            id="password_confirmation" 
-            formControlName="password_confirmation" 
-            placeholder="Confirma la teva contrasenya">
+          <input
+            [type]="showPasswordConfirmation ? 'text' : 'password'"
+            id="password_confirmation"
+            formControlName="password_confirmation"
+            placeholder="Confirma la teva contrasenya"
+            (keyup)="validatePassword()"
+            (change)="validatePassword()"
+          >
           <button type="button" class="toggle-password" (click)="togglePasswordConfirmationVisibility()">
             <i class="fas" [ngClass]="showPasswordConfirmation ? 'fa-eye-slash' : 'fa-eye'"></i>
           </button>
         </div>
-        <div *ngIf="registerForm.get('password_confirmation')?.invalid && (registerForm.get('password_confirmation')?.touched || registerForm.get('password_confirmation')?.dirty)" class="field-error">
-          <small *ngIf="registerForm.get('password_confirmation')?.hasError('required')">El camp confirmació de contrasenya és obligatori.</small>
-        </div>
-        <div *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('password_confirmation')?.touched" class="field-error">
+        <div *ngIf="showPasswordMatchError" class="field-error">
           <small>Les contrasenyes no coincideixen.</small>
         </div>
       </div>
