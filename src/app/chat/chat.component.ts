@@ -275,14 +275,14 @@ export class ChatComponent implements OnInit {
 
   async sendMessage(): Promise<void> {
     if (this.newMessage.trim() === '') return;
-
+  
     try {
       console.log('Enviant missatge:', this.newMessage);
       const response = await this.channel.sendMessage({ text: this.newMessage });
       console.log('Missatge enviat:', response);
-
+  
       console.log('Estat actual del canal després d\'enviar el missatge:', this.channel.state.messages);
-
+  
       this.newMessage = '';
     } catch (error) {
       console.error('Error en enviar el missatge:', error);
