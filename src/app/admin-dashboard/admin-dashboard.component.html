@@ -16,7 +16,8 @@
         <i class="fas fa-paw"></i>
         <span *ngIf="!sidebarCollapsed">Animals</span>
       </a>
-      <a class="menu-item" [ngClass]="{'active': activeSection === 'protectoras'}" (click)="changeSection('protectoras')">
+      <a class="menu-item" [ngClass]="{'active': activeSection === 'protectoras'}"
+        (click)="changeSection('protectoras')">
         <i class="fas fa-home"></i>
         <span *ngIf="!sidebarCollapsed">Protectores</span>
       </a>
@@ -46,14 +47,15 @@
     </div>
 
     <!-- DASHBOARD CONTENT -->
-    <div *ngIf="!loading && !error && isAdmin && activeSection === 'dashboard'" class="dashboard-content animate__animated animate__fadeIn">
+    <div *ngIf="!loading && !error && isAdmin && activeSection === 'dashboard'"
+      class="dashboard-content animate__animated animate__fadeIn">
       <header class="dashboard-header">
         <h1 class="animate__animated animate__fadeIn">Panel d'Administració</h1>
         <div class="user-welcome animate__animated animate__fadeIn animate__delay-1s">
           Benvingut/da, {{ userName || 'Administrador' }}
         </div>
       </header>
-      
+
       <div class="admin-message-card">
         <div class="admin-message-icon">
           <i class="fas fa-check-circle"></i>
@@ -62,16 +64,17 @@
         <p>Aquest és un panel d'administració simple per a la gestió del sistema Domestius.</p>
       </div>
     </div>
-    
+
     <!-- ANIMALS LIST SECTION -->
-    <div *ngIf="!loading && !error && isAdmin && activeSection === 'animals'" class="dashboard-content animate__animated animate__fadeIn">
+    <div *ngIf="!loading && !error && isAdmin && activeSection === 'animals'"
+      class="dashboard-content animate__animated animate__fadeIn">
       <header class="dashboard-header">
         <h1 class="animate__animated animate__fadeIn">Gestió d'Animals</h1>
         <div class="user-welcome animate__animated animate__fadeIn animate__delay-1s">
           Administra tots els animals del sistema
         </div>
       </header>
-      
+
       <!-- Loader específico para los animales -->
       <div *ngIf="loadingAnimals" class="loader-container animate__animated animate__fadeIn">
         <div class="spinner-border text-primary" role="status">
@@ -79,7 +82,7 @@
         </div>
         <p>Carregant el llistat d'animals...</p>
       </div>
-      
+
       <!-- Mensaje de error específico para los animales -->
       <div *ngIf="animalsError" class="error-container animate__animated animate__fadeIn">
         <div class="alert alert-danger">
@@ -87,24 +90,19 @@
           {{ animalsError }}
         </div>
       </div>
-      
+
       <!-- Lista de animales -->
       <div *ngIf="!loadingAnimals && !animalsError" class="admin-table-section">
         <div class="admin-controls">
           <div class="search-container">
-            <input 
-              type="text" 
-              placeholder="Cerca per nom, especie..." 
-              class="admin-search-input"
-              [(ngModel)]="searchQuery"
-              (input)="filterAnimals()"
-            />
+            <input type="text" placeholder="Cerca per nom, especie..." class="admin-search-input"
+              [(ngModel)]="searchQuery" (input)="filterAnimals()" />
             <button class="admin-search-btn">
               <i class="fas fa-search"></i>
             </button>
           </div>
         </div>
-        
+
         <div class="admin-table-container">
           <table class="admin-table">
             <thead>
@@ -129,7 +127,8 @@
               <tr *ngFor="let animal of paginatedAnimals">
                 <td>{{ animal.id }}</td>
                 <td class="animal-image-cell">
-                  <img [src]="animal.imatge || 'assets/default-animal.jpg'" alt="{{ animal.nom }}" class="animal-table-image">
+                  <img [src]="animal.imatge || 'assets/default-animal.jpg'" alt="{{ animal.nom }}"
+                    class="animal-table-image">
                 </td>
                 <td>{{ animal.nom }}</td>
                 <td>{{ animal.especie }}</td>
@@ -152,7 +151,7 @@
             </tbody>
           </table>
         </div>
-        
+
         <div class="admin-pagination">
           <button class="pagination-btn" [disabled]="page === 1" (click)="changePage(-1)">
             <i class="fas fa-chevron-left"></i>
@@ -166,14 +165,15 @@
     </div>
 
     <!-- PROTECTORAS SECTION -->
-    <div *ngIf="!loading && !error && isAdmin && activeSection === 'protectoras'" class="dashboard-content animate__animated animate__fadeIn">
+    <div *ngIf="!loading && !error && isAdmin && activeSection === 'protectoras'"
+      class="dashboard-content animate__animated animate__fadeIn">
       <header class="dashboard-header">
         <h1 class="animate__animated animate__fadeIn">Gestió de Protectores</h1>
         <div class="user-welcome animate__animated animate__fadeIn animate__delay-1s">
           Administra les protectores del sistema
         </div>
       </header>
-      
+
       <!-- Loader específico para las protectoras -->
       <div *ngIf="loadingProtectoras" class="loader-container animate__animated animate__fadeIn">
         <div class="spinner-border text-primary" role="status">
@@ -181,7 +181,7 @@
         </div>
         <p>Carregant el llistat de protectores...</p>
       </div>
-      
+
       <!-- Mensaje de error específico para las protectoras -->
       <div *ngIf="protectorasError" class="error-container animate__animated animate__fadeIn">
         <div class="alert alert-danger">
@@ -189,17 +189,13 @@
           {{ protectorasError }}
         </div>
       </div>
-      
+
       <!-- Lista de protectoras -->
       <div *ngIf="!loadingProtectoras && !protectorasError" class="admin-table-section">
         <div class="admin-controls">
           <div class="search-container">
-            <input 
-              type="text" 
-              placeholder="Cerca per nom, direcció..." 
-              class="admin-search-input"
-              [(ngModel)]="searchQueryProtectora"
-            />
+            <input type="text" placeholder="Cerca per nom, direcció..." class="admin-search-input"
+              [(ngModel)]="searchQueryProtectora" />
             <button class="admin-search-btn">
               <i class="fas fa-search"></i>
             </button>
@@ -208,7 +204,7 @@
             <i class="fas fa-plus-circle"></i> Afegir nova protectora
           </button>
         </div>
-        
+
         <div class="admin-table-container">
           <table class="admin-table">
             <thead>
@@ -232,7 +228,8 @@
               <tr *ngFor="let protectora of protectoras">
                 <td>{{ protectora.id }}</td>
                 <td class="protectora-image-cell">
-                  <img [src]="protectora.imatge || 'assets/default-profile.jpg'" alt="Protectora" class="protectora-table-image">
+                  <img [src]="protectora.imatge || 'assets/default-profile.jpg'" alt="Protectora"
+                    class="protectora-table-image">
                 </td>
                 <td>{{ protectora.usuari?.nom || 'No disponible' }}</td>
                 <td>{{ protectora.direccion || 'No disponible' }}</td>
@@ -255,7 +252,7 @@
         </div>
       </div>
     </div>
-    
+
   </div>
   <div class="modal-overlay" *ngIf="showEditModal" (click)="closeEditModal()">
     <div class="modal-container" (click)="$event.stopPropagation()">
@@ -269,83 +266,51 @@
         <form (ngSubmit)="saveChanges()">
           <div class="form-section">
             <h4><i class="fas fa-info-circle"></i> Informació bàsica</h4>
-            
+
             <div class="form-row">
               <div class="form-group">
                 <label for="nom">
                   <i class="fas fa-tag"></i> Nom
                 </label>
-                <input
-                  type="text"
-                  id="nom"
-                  [(ngModel)]="editingAnimal.nom"
-                  name="nom"
-                  required
-                  class="form-control"
-                  placeholder="Nom de l'animal"
-                />
+                <input type="text" id="nom" [(ngModel)]="editingAnimal.nom" name="nom" required class="form-control"
+                  placeholder="Nom de l'animal" />
               </div>
-              
+
               <div class="form-group">
                 <label for="edat">
                   <i class="fas fa-birthday-cake"></i> Edat
                 </label>
-                <input
-                  type="number"
-                  id="edat"
-                  [(ngModel)]="editingAnimal.edat"
-                  name="edat"
-                  class="form-control"
-                  placeholder="Edat en anys"
-                />
+                <input type="number" id="edat" [(ngModel)]="editingAnimal.edat" name="edat" class="form-control"
+                  placeholder="Edat en anys" />
               </div>
             </div>
-            
+
             <div class="form-row">
               <div class="form-group">
                 <label for="especie">
                   <i class="fas fa-feather-alt"></i> Espècie
                 </label>
-                <input
-                  type="text"
-                  id="especie"
-                  [(ngModel)]="editingAnimal.especie"
-                  name="especie"
-                  required
-                  class="form-control"
-                  placeholder="Espècie de l'animal"
-                />
+                <input type="text" id="especie" [(ngModel)]="editingAnimal.especie" name="especie" required
+                  class="form-control" placeholder="Espècie de l'animal" />
               </div>
-              
+
               <div class="form-group">
                 <label for="raça">
                   <i class="fas fa-dog"></i> Raça
                 </label>
-                <input
-                  type="text"
-                  id="raça"
-                  [(ngModel)]="editingAnimal['raça']"
-                  name="raça"
-                  class="form-control"
-                  placeholder="Raça de l'animal (opcional)"
-                />
+                <input type="text" id="raça" [(ngModel)]="editingAnimal['raça']" name="raça" class="form-control"
+                  placeholder="Raça de l'animal (opcional)" />
               </div>
             </div>
-  
+
             <div class="form-group">
               <label for="descripcio">
                 <i class="fas fa-align-left"></i> Descripció
               </label>
-              <textarea
-                id="descripcio"
-                [(ngModel)]="editingAnimal.descripcio"
-                name="descripcio"
-                class="form-control"
-                placeholder="Descripció detallada de l'animal..."
-                rows="4"
-              ></textarea>
+              <textarea id="descripcio" [(ngModel)]="editingAnimal.descripcio" name="descripcio" class="form-control"
+                placeholder="Descripció detallada de l'animal..." rows="4"></textarea>
             </div>
-            
+
             <div class="form-group">
               <label for="estat">
                 <i class="fas fa-heart"></i> Estat
@@ -359,25 +324,20 @@
               </select>
             </div>
           </div>
-          
+
           <div class="form-section">
             <h4><i class="fas fa-image"></i> Imatge</h4>
-            
+
             <div class="form-group">
               <label for="imatge" class="file-upload-label">
                 <i class="fas fa-upload"></i> Selecciona una nova imatge
               </label>
               <div class="file-upload-container">
-                <input
-                  type="file"
-                  id="imatge"
-                  (change)="onFileSelected($event)"
-                  accept="image/*"
-                  class="file-input"
-                />
+                <input type="file" id="imatge" (change)="onFileSelected($event)" accept="image/*" class="file-input" />
                 <div class="file-upload-preview">
                   <span *ngIf="!selectedFileName" class="upload-text">
-                    {{ editingAnimal.imatge ? 'Imatge actual: ' + getImageName(editingAnimal.imatge) : 'Cap fitxer seleccionat' }}
+                    {{ editingAnimal.imatge ? 'Imatge actual: ' + getImageName(editingAnimal.imatge) : 'Cap fitxer
+                    seleccionat' }}
                   </span>
                   <span *ngIf="selectedFileName" class="selected-file">
                     <i class="fas fa-file-image"></i> {{ selectedFileName }}
@@ -386,7 +346,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="modal-actions">
             <button type="button" class="cancel-button" (click)="closeEditModal()">
               <i class="fas fa-times"></i> Cancel·lar
@@ -412,104 +372,68 @@
         <form (ngSubmit)="createProtectora()">
           <div class="form-section">
             <h4><i class="fas fa-user"></i> Associar Usuari</h4>
-            
+
             <div class="form-group">
               <label for="usuari">
                 Selecciona l'usuari que gestionarà aquesta protectora
               </label>
-              <select 
-                id="usuari" 
-                [(ngModel)]="selectedUsuarioId" 
-                name="usuari" 
-                required 
-                class="form-control">
+              <select id="usuari" [(ngModel)]="selectedUsuarioId" name="usuari" required class="form-control">
                 <option [value]="0" disabled>Selecciona un usuari</option>
+                <option *ngIf="usuarios.length === 0" disabled>Carregant usuaris...</option>
                 <option *ngFor="let usuari of usuarios" [value]="usuari.id">
                   {{ usuari.nom }} ({{ usuari.email }})
                 </option>
               </select>
             </div>
           </div>
-          
+
           <div class="form-section">
             <h4><i class="fas fa-info-circle"></i> Informació bàsica</h4>
-            
+
             <div class="form-group">
               <label for="direccion">
                 <i class="fas fa-map-marker-alt"></i> Direcció
               </label>
-              <input
-                type="text"
-                id="direccion"
-                [(ngModel)]="newProtectora.direccion"
-                name="direccion"
-                required
-                class="form-control"
-                placeholder="Direcció completa de la protectora"
-              />
+              <input type="text" id="direccion" [(ngModel)]="newProtectora.direccion" name="direccion" required
+                class="form-control" placeholder="Direcció completa de la protectora" />
             </div>
-            
+
             <div class="form-group">
               <label for="telefono">
                 <i class="fas fa-phone"></i> Telèfon
               </label>
-              <input
-                type="tel"
-                id="telefono"
-                [(ngModel)]="newProtectora.telefono"
-                name="telefono"
-                required
-                class="form-control"
-                placeholder="Número de telèfon"
-              />
+              <input type="tel" id="telefono" [(ngModel)]="newProtectora.telefono" name="telefono" required
+                class="form-control" placeholder="Número de telèfon" />
             </div>
-            
+
             <div class="form-row">
               <div class="form-group">
                 <label for="horario_apertura">
                   <i class="fas fa-clock"></i> Horari d'obertura
                 </label>
-                <input
-                  type="time"
-                  id="horario_apertura"
-                  [(ngModel)]="newProtectora.horario_apertura"
-                  name="horario_apertura"
-                  required
-                  class="form-control"
-                />
+                <input type="time" id="horario_apertura" [(ngModel)]="newProtectora.horario_apertura"
+                  name="horario_apertura" required class="form-control" />
               </div>
-              
+
               <div class="form-group">
                 <label for="horario_cierre">
                   <i class="fas fa-clock"></i> Horari de tancament
                 </label>
-                <input
-                  type="time"
-                  id="horario_cierre"
-                  [(ngModel)]="newProtectora.horario_cierre"
-                  name="horario_cierre"
-                  required
-                  class="form-control"
-                />
+                <input type="time" id="horario_cierre" [(ngModel)]="newProtectora.horario_cierre" name="horario_cierre"
+                  required class="form-control" />
               </div>
             </div>
           </div>
-          
+
           <div class="form-section">
             <h4><i class="fas fa-image"></i> Imatge</h4>
-            
+
             <div class="form-group">
               <label for="imatge" class="file-upload-label">
                 <i class="fas fa-upload"></i> Selecciona una imatge per a la protectora
               </label>
               <div class="file-upload-container">
-                <input
-                  type="file"
-                  id="imatge"
-                  (change)="onFileSelected($event)"
-                  accept="image/*"
-                  class="file-input"
-                />
+                <input type="file" id="imatge" (change)="onFileSelected($event)" accept="image/*" class="file-input" />
                 <div class="file-upload-preview">
                   <span *ngIf="!selectedFile" class="upload-text">
                     Cap fitxer seleccionat
@@ -521,7 +445,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="modal-actions">
             <button type="button" class="cancel-button" (click)="closeProtectoraModal()">
               <i class="fas fa-times"></i> Cancel·lar
