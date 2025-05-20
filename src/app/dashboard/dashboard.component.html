@@ -2,7 +2,6 @@
   <!-- Sidebar -->
   <div class="sidebar" [ngClass]="{'sidebar-collapsed': sidebarCollapsed}">
     <div class="sidebar-header">
-      <img *ngIf="!sidebarCollapsed" src="assets/logo.png" alt="Domestius" class="sidebar-logo">
       <button class="toggle-sidebar" (click)="toggleSidebar()">
         <i class="fas" [ngClass]="sidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
       </button>
