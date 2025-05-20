@@ -117,7 +117,7 @@ export class ChatComponent implements OnInit {
           this.cdr.detectChanges();
   
           // Guardar en localStorage
-          const userKey = `recentChats_${userData.id}`;
+          const userKey = `recentChats_${this.chatClient.userID}`;
           localStorage.setItem(userKey, JSON.stringify(this.recentChats));
         } else {
           console.log(`El xat amb l'usuari ${senderName} ja existeix a Xats Recents.`);
