@@ -79,6 +79,7 @@ export class ChatComponent implements OnInit {
       }
       console.log('Token obtingut:', tokenResponse.token);
   
+      // Conectar el usuario al cliente de Stream Chat
       await this.chatClient.connectUser(
         {
           id: userData.id.toString(),
@@ -127,6 +128,9 @@ export class ChatComponent implements OnInit {
         console.log('Canvi de presència:', event);
   
         if (event.user) {
+          console.log(`Usuari afectat: ${event.user.id}, Estat: ${event.user.online ? 'online' : 'offline'}`);
+  
+          // Actualizar el estado de los usuarios en recentChats
           this.recentChats = this.recentChats.map((user) => {
             if (user.id === event.user!.id) {
               console.log(`Actualitzant estat de l'usuari ${user.nom} a ${event.user!.online ? 'online' : 'offline'}`);
@@ -135,6 +139,7 @@ export class ChatComponent implements OnInit {
             return user;
           });
   
+          // Actualizar el estado de los usuarios en searchResults
           this.searchResults = this.searchResults.map((user) => {
             if (user.id === event.user!.id) {
               console.log(`Actualitzant estat de l'usuari ${user.nom} a ${event.user!.online ? 'online' : 'offline'}`);
