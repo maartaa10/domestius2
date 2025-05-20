@@ -7,19 +7,23 @@
    
     <h2 class="animal-name">{{ animal.nom }}</h2>
   
-    <div class="carousel-container">
-        <div class="carousel">
-          <div
-            class="carousel-item"
-            *ngFor="let image of animal.imatges; let i = index"
-            [class.active]="i === currentImageIndex"
-          >
-            <img [src]="image" alt="Foto de {{ animal.nom }}" />
-          </div>
-        </div>
-        <button class="carousel-control prev" (click)="prevImage()">&#10094;</button>
-        <button class="carousel-control next" (click)="nextImage()">&#10095;</button>
+    <div class="detall-animal-publicacio-container" *ngIf="animal">
+      <div class="back-link-container">
+        <a class="back-link" (click)="goBack()">← Tornar a la llista</a>
       </div>
+    
+      <h2 class="animal-name">{{ animal.nom }}</h2>
+   
+      <div class="animal-info">
+        <p><strong>Edat:</strong> {{ animal.edat || 'No disponible' }}</p>
+        <p><strong>Espècie:</strong> {{ animal.especie || 'No disponible' }}</p>
+        <p><strong>Raça:</strong> {{ animal['raça'] || 'No disponible' }}</p>
+        <p><strong>Descripció:</strong> {{ animal.descripcio || 'No disponible' }}</p>
+        <p><strong>Estat:</strong> {{ animal.estat || 'No disponible' }}</p>
+        <p><strong>Es porta bé amb gats:</strong> {{ animal.compatibleGats ? 'Sí' : 'No' }}</p>
+        <p><strong>Es porta bé amb gossos:</strong> {{ animal.compatibleGossos ? 'Sí' : 'No' }}</p>
+      </div>
+  </div>
  
     <div class="animal-info">
       <p><strong>Edat:</strong> {{ animal.edat || 'No disponible' }}</p>
