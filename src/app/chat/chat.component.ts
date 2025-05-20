@@ -14,7 +14,7 @@ import { ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
-  @ViewChild('chatHistory') chatHistory!: ElementRef; // Referencia al contenedor del historial del chat
+  @ViewChild('chatHistory') chatHistory!: ElementRef; 
 
   chatClient: StreamChat;
   channel: any;
@@ -88,7 +88,6 @@ export class ChatComponent implements OnInit {
       );
       console.log('Usuari connectat al client de Stream Chat.');
   
-      // Actualiza el estado del usuario en recentChats y searchResults
       this.recentChats = this.recentChats.map((user) => {
         if (user.id === userData.id) {
           return { ...user, online: true };
@@ -103,29 +102,24 @@ export class ChatComponent implements OnInit {
         return user;
       });
   
-      this.cdr.detectChanges(); // Fuerza la detección de cambios
+      this.cdr.detectChanges(); 
   
-      // Escucha cambios en la conexión del cliente
       this.chatClient.on('connection.changed', (event) => {
         console.log('Estat de la connexió:', event.online ? 'Connectat' : 'Desconnectat');
       });
   
-      // Escucha cambios en la presencia de los usuarios
-     // Escucha cambios en la presencia de los usuarios
+    
 this.chatClient.on('user.presence.changed', (event) => {
   console.log('Canvi de presència:', event);
 
-  // Verifica que event.user esté definido
   if (event.user) {
-    // Actualiza el estado del usuario en recentChats
     this.recentChats = this.recentChats.map((user) => {
-      if (user.id === event.user!.id) { // Usa el operador de aserción no nula (!)
+      if (user.id === event.user!.id) { 
         return { ...user, online: event.user!.online };
       }
       return user;
     });
 
-    // Actualiza el estado del usuario en searchResults
     this.searchResults = this.searchResults.map((user) => {
       if (user.id === event.user!.id) {
         return { ...user, online: event.user!.online };
@@ -133,7 +127,7 @@ this.chatClient.on('user.presence.changed', (event) => {
       return user;
     });
 
-    this.cdr.detectChanges(); // Fuerza la detección de cambios
+    this.cdr.detectChanges(); 
   } else {
     console.warn('El evento user.presence.changed no contiene un usuario válido:', event);
   }
@@ -195,20 +189,19 @@ this.chatClient.on('user.presence.changed', (event) => {
 
       console.log('Membres del canal:', this.channel.state.members);
 
-      // Escucha los mensajes nuevos
       this.channel.on('message.new', (event: any) => {
         console.log('Missatge rebut en temps real:', event.message);
-        this.messages.push(event.message); // Agrega el mensaje al array
-        this.groupMessagesByDate(this.messages); // Agrupa los mensajes por fecha
-        this.cdr.detectChanges(); // Fuerza la detección de cambios
-        this.scrollToBottom(); // Hace scroll hacia abajo
+        this.messages.push(event.message); 
+        this.groupMessagesByDate(this.messages); 
+        this.cdr.detectChanges();
+        this.scrollToBottom(); 
       });
 
       const response = await this.channel.query({ messages: { limit: 20 } });
       console.log('Missatges carregats del canal:', response.messages);
       this.messages = response?.messages ?? [];
-      this.groupMessagesByDate(this.messages); // Agrupa los mensajes por fecha
-      this.scrollToBottom(); // Hace scroll hacia abajo al cargar los mensajes
+      this.groupMessagesByDate(this.messages); 
+      this.scrollToBottom(); 
     } catch (error) {
       console.error('Error en iniciar el xat:', error);
     }
