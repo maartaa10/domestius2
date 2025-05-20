@@ -14,7 +14,11 @@
       </a>
       <a class="menu-item" [ngClass]="{'active': activeSection === 'animals'}" (click)="changeSection('animals')">
         <i class="fas fa-paw"></i>
-        <span *ngIf="!sidebarCollapsed">Tots els animals</span>
+        <span *ngIf="!sidebarCollapsed">Animals</span>
+      </a>
+      <a class="menu-item" [ngClass]="{'active': activeSection === 'protectoras'}" (click)="changeSection('protectoras')">
+        <i class="fas fa-home"></i>
+        <span *ngIf="!sidebarCollapsed">Protectores</span>
       </a>
       <a class="menu-item logout" (click)="logout()">
         <i class="fas fa-sign-out-alt"></i>
@@ -161,6 +165,96 @@
       </div>
     </div>
 
+    <!-- PROTECTORAS SECTION -->
+    <div *ngIf="!loading && !error && isAdmin && activeSection === 'protectoras'" class="dashboard-content animate__animated animate__fadeIn">
+      <header class="dashboard-header">
+        <h1 class="animate__animated animate__fadeIn">Gestió de Protectores</h1>
+        <div class="user-welcome animate__animated animate__fadeIn animate__delay-1s">
+          Administra les protectores del sistema
+        </div>
+      </header>
+      
+      <!-- Loader específico para las protectoras -->
+      <div *ngIf="loadingProtectoras" class="loader-container animate__animated animate__fadeIn">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Carregant protectores...</span>
+        </div>
+        <p>Carregant el llistat de protectores...</p>
+      </div>
+      
+      <!-- Mensaje de error específico para las protectoras -->
+      <div *ngIf="protectorasError" class="error-container animate__animated animate__fadeIn">
+        <div class="alert alert-danger">
+          <i class="fas fa-exclamation-triangle"></i>
+          {{ protectorasError }}
+        </div>
+      </div>
+      
+      <!-- Lista de protectoras -->
+      <div *ngIf="!loadingProtectoras && !protectorasError" class="admin-table-section">
+        <div class="admin-controls">
+          <div class="search-container">
+            <input 
+              type="text" 
+              placeholder="Cerca per nom, direcció..." 
+              class="admin-search-input"
+              [(ngModel)]="searchQueryProtectora"
+            />
+            <button class="admin-search-btn">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+          <button class="admin-add-btn" (click)="openNewProtectoraModal()">
+            <i class="fas fa-plus-circle"></i> Afegir nova protectora
+          </button>
+        </div>
+        
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Imatge</th>
+                <th>Usuari</th>
+                <th>Direcció</th>
+                <th>Telèfon</th>
+                <th>Horari</th>
+                <th>Accions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="protectoras.length === 0">
+                <td colspan="7" class="no-data">
+                  <i class="fas fa-home"></i>
+                  <p>No hi ha protectores registrades al sistema</p>
+                </td>
+              </tr>
+              <tr *ngFor="let protectora of protectoras">
+                <td>{{ protectora.id }}</td>
+                <td class="protectora-image-cell">
+                  <img [src]="protectora.imatge || 'assets/default-profile.jpg'" alt="Protectora" class="protectora-table-image">
+                </td>
+                <td>{{ protectora.usuari?.nom || 'No disponible' }}</td>
+                <td>{{ protectora.direccion || 'No disponible' }}</td>
+                <td>{{ protectora.telefono || 'No disponible' }}</td>
+                <td>{{ protectora.horario_apertura }} - {{ protectora.horario_cierre }}</td>
+                <td class="actions-cell">
+                  <button class="table-action view-action" title="Veure detalls">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="table-action edit-action" title="Editar">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="table-action delete-action" title="Eliminar">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
     
   </div>
   <div class="modal-overlay" *ngIf="showEditModal" (click)="closeEditModal()">
@@ -305,3 +399,139 @@
       </div>
     </div>
   </div>
+
+  <div class="modal-overlay" *ngIf="showProtectoraModal" (click)="closeProtectoraModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3><i class="fas fa-plus"></i> Nova Protectora</h3>
+        <button class="modal-close" (click)="closeProtectoraModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="createProtectora()">
+          <div class="form-section">
+            <h4><i class="fas fa-user"></i> Associar Usuari</h4>
+            
+            <div class="form-group">
+              <label for="usuari">
+                Selecciona l'usuari que gestionarà aquesta protectora
+              </label>
+              <select 
+                id="usuari" 
+                [(ngModel)]="selectedUsuarioId" 
+                name="usuari" 
+                required 
+                class="form-control">
+                <option [value]="0" disabled>Selecciona un usuari</option>
+                <option *ngFor="let usuario of usuarios" [value]="usuario.id">
+                  {{ usuario.nom }} ({{ usuario.email }})
+                </option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <h4><i class="fas fa-info-circle"></i> Informació bàsica</h4>
+            
+            <div class="form-group">
+              <label for="direccion">
+                <i class="fas fa-map-marker-alt"></i> Direcció
+              </label>
+              <input
+                type="text"
+                id="direccion"
+                [(ngModel)]="newProtectora.direccion"
+                name="direccion"
+                required
+                class="form-control"
+                placeholder="Direcció completa de la protectora"
+              />
+            </div>
+            
+            <div class="form-group">
+              <label for="telefono">
+                <i class="fas fa-phone"></i> Telèfon
+              </label>
+              <input
+                type="tel"
+                id="telefono"
+                [(ngModel)]="newProtectora.telefono"
+                name="telefono"
+                required
+                class="form-control"
+                placeholder="Número de telèfon"
+              />
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="horario_apertura">
+                  <i class="fas fa-clock"></i> Horari d'obertura
+                </label>
+                <input
+                  type="time"
+                  id="horario_apertura"
+                  [(ngModel)]="newProtectora.horario_apertura"
+                  name="horario_apertura"
+                  required
+                  class="form-control"
+                />
+              </div>
+              
+              <div class="form-group">
+                <label for="horario_cierre">
+                  <i class="fas fa-clock"></i> Horari de tancament
+                </label>
+                <input
+                  type="time"
+                  id="horario_cierre"
+                  [(ngModel)]="newProtectora.horario_cierre"
+                  name="horario_cierre"
+                  required
+                  class="form-control"
+                />
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <h4><i class="fas fa-image"></i> Imatge</h4>
+            
+            <div class="form-group">
+              <label for="imatge" class="file-upload-label">
+                <i class="fas fa-upload"></i> Selecciona una imatge per a la protectora
+              </label>
+              <div class="file-upload-container">
+                <input
+                  type="file"
+                  id="imatge"
+                  (change)="onFileSelected($event)"
+                  accept="image/*"
+                  class="file-input"
+                />
+                <div class="file-upload-preview">
+                  <span *ngIf="!selectedFile" class="upload-text">
+                    Cap fitxer seleccionat
+                  </span>
+                  <span *ngIf="selectedFile" class="selected-file">
+                    <i class="fas fa-file-image"></i> {{ selectedFile.name }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="modal-actions">
+            <button type="button" class="cancel-button" (click)="closeProtectoraModal()">
+              <i class="fas fa-times"></i> Cancel·lar
+            </button>
+            <button type="submit" class="action-button">
+              <i class="fas fa-save"></i> Crear Protectora
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { AnimalPerdutService } from '../services/animal-perdut.service';
 import { Animal } from '../interfaces/animal';
+import { Protectora } from '../interfaces/protectora';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -24,7 +25,7 @@ export class AdminDashboardComponent implements OnInit {
   loading: boolean = true;
   error: string = '';
   sidebarCollapsed: boolean = false;
-  activeSection: 'dashboard' | 'animals' = 'dashboard';
+  activeSection: 'dashboard' | 'animals' | 'protectoras' = 'dashboard';
   
   // Dades dels animals
   animals: Animal[] = [];
@@ -45,6 +46,28 @@ export class AdminDashboardComponent implements OnInit {
   selectedFile: File | null = null;
   selectedFileName: string = '';
   
+  // Dades per protectores
+  protectoras: Protectora[] = [];
+  loadingProtectoras: boolean = false;
+  protectorasError: string = '';
+  searchQueryProtectora: string = '';
+  filteredProtectoras: Protectora[] = [];
+  
+  // Dades per nou formulari de protectora
+  showProtectoraModal: boolean = false;
+  newProtectora: Protectora = {
+    id: 0,
+    direccion: '',
+    telefono: '',
+    imatge: '',
+    horario_apertura: '',
+    horario_cierre: ''
+  };
+  
+  // Per seleccionar usuari
+  usuarios: any[] = [];
+  selectedUsuarioId: number = 0;
+
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -61,11 +84,14 @@ export class AdminDashboardComponent implements OnInit {
     this.sidebarCollapsed = !this.sidebarCollapsed;
   }
   
-  changeSection(section: 'dashboard' | 'animals'): void {
+  changeSection(section: 'dashboard' | 'animals' | 'protectoras'): void {
     this.activeSection = section;
     
     if (section === 'animals') {
       this.loadAnimals();
+    } else if (section === 'protectoras') {
+      this.loadProtectoras();
+      this.loadUsuarios(); // Cargar usuarios para el formulario
     }
   }
 
@@ -274,5 +300,87 @@ export class AdminDashboardComponent implements OnInit {
   getImageName(imagePath: string): string {
     if (!imagePath) return 'Sense imatge';
     return imagePath.split('/').pop() || 'imatge.jpg';
+  }
+
+  // Mètode per carregar les protectores
+  loadProtectoras(): void {
+    this.loadingProtectoras = true;
+    this.protectorasError = '';
+    
+    this.http.get<Protectora[]>(`${environment.apiURL2}/protectoras`).subscribe({
+      next: (data) => {
+        this.protectoras = data;
+        this.filteredProtectoras = data;
+        this.loadingProtectoras = false;
+      },
+      error: (err) => {
+        console.error('Error al carregar les protectores:', err);
+        this.protectorasError = 'No s\'han pogut carregar les protectores.';
+        this.loadingProtectoras = false;
+      }
+    });
+  }
+
+  // Mètode per carregar els usuaris
+  loadUsuarios(): void {
+    this.http.get<any[]>(`${environment.apiURL2}/usuarios`).subscribe({
+      next: (data) => {
+        this.usuarios = data;
+      },
+      error: (err) => {
+        console.error('Error al carregar els usuaris:', err);
+      }
+    });
+  }
+
+  // Mètode per mostrar el modal de nova protectora
+  openNewProtectoraModal(): void {
+    this.newProtectora = {
+      id: 0,
+      direccion: '',
+      telefono: '',
+      imatge: '',
+      horario_apertura: '09:00',
+      horario_cierre: '18:00'
+    };
+    this.selectedUsuarioId = 0;
+    this.selectedFile = null;
+    this.showProtectoraModal = true;
+  }
+
+  // Mètode per tancar el modal
+  closeProtectoraModal(): void {
+    this.showProtectoraModal = false;
+  }
+
+  // Mètode per crear una protectora
+  createProtectora(): void {
+    if (!this.selectedUsuarioId) {
+      alert('Si us plau, selecciona un usuari per associar a la protectora.');
+      return;
+    }
+    
+    const formData = new FormData();
+    formData.append('direccion', this.newProtectora.direccion);
+    formData.append('telefono', this.newProtectora.telefono);
+    formData.append('horario_apertura', this.newProtectora.horario_apertura);
+    formData.append('horario_cierre', this.newProtectora.horario_cierre);
+    formData.append('usuari_id', this.selectedUsuarioId.toString());
+    
+    if (this.selectedFile instanceof File) {
+      formData.append('imatge', this.selectedFile);
+    }
+    
+    this.http.post<any>(`${environment.apiURL2}/protectora/create`, formData).subscribe({
+      next: () => {
+        alert('Protectora creada amb èxit.');
+        this.loadProtectoras();
+        this.closeProtectoraModal();
+      },
+      error: (err) => {
+        console.error('Error al crear la protectora:', err);
+        alert('Hi ha hagut un error en crear la protectora. Si us plau, intenta-ho de nou.');
+      }
+    });
   }
 }

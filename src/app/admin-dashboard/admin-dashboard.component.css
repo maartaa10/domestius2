@@ -767,3 +767,32 @@
     justify-content: center;
   }
 }
+
+/* Estilos para la tabla de protectoras */
+.protectora-table-image {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.protectora-image-cell {
+  text-align: center;
+}
+
+/* Estilos adicionales para el modal de nueva protectora */
+.form-section h4 {
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  color: #4b83e5;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
