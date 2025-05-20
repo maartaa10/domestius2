@@ -88,69 +88,43 @@ export class ChatComponent implements OnInit {
       );
       console.log('Usuari connectat al client de Stream Chat.');
   
-      // Actualizar el estado del usuario a "online"
-      this.recentChats = this.recentChats.map((user) => {
-        if (user.id === userData.id) {
-          console.log(`Actualitzant estat de l'usuari ${user.nom} a online`);
-          return { ...user, online: true };
-        }
-        return user;
-      });
+      // Escuchar el evento `message.new` globalmente
+      this.chatClient.on('message.new', (event) => {
+        console.log('Missatge nou rebut:', event);
   
-      this.searchResults = this.searchResults.map((user) => {
-        if (user.id === userData.id) {
-          console.log(`Actualitzant estat de l'usuari ${user.nom} a online`);
-          return { ...user, online: true };
+        const senderId = event.user?.id;
+        const senderName = event.user?.name || 'Usuari desconegut';
+  
+        if (!senderId) {
+          console.warn('El missatge rebut no té un usuari vàlid:', event);
+          return;
         }
-        return user;
+  
+        // Verificar si el remitente ya está en `recentChats`
+        const existsInRecentChats = this.recentChats.some(chat => chat.id === senderId);
+  
+        if (!existsInRecentChats) {
+          console.log(`Afegint el xat amb l'usuari ${senderName} a Xats Recents.`);
+          const newChat = {
+            id: senderId,
+            name: senderName,
+            avatar: this.getRandomAvatar({ id: senderId }),
+            online: this.chatClient.state.users[senderId]?.online || false,
+            unreadCount: 1, // Puedes incrementar este valor si es necesario
+          };
+  
+          this.recentChats.unshift(newChat); // Agregar al inicio de la lista
+          this.cdr.detectChanges();
+  
+          // Guardar en localStorage
+          const userKey = `recentChats_${userData.id}`;
+          localStorage.setItem(userKey, JSON.stringify(this.recentChats));
+        } else {
+          console.log(`El xat amb l'usuari ${senderName} ja existeix a Xats Recents.`);
+        }
       });
   
       this.cdr.detectChanges();
-  
-      // Escuchar cambios en la conexión
-      this.chatClient.on('connection.changed', (event) => {
-        console.log('Estat de la connexió:', event.online ? 'Connectat' : 'Desconnectat');
-        if (event.online) {
-          this.recentChats = this.recentChats.map((user) => {
-            if (user.id === userData.id) {
-              console.log(`Usuari ${user.nom} connectat`);
-              return { ...user, online: true };
-            }
-            return user;
-          });
-          this.cdr.detectChanges();
-        }
-      });
-  
-      this.chatClient.on('user.presence.changed', (event) => {
-        console.log('Canvi de presència:', event);
-      
-        if (event.user) {
-          console.log(`Usuari afectat: ${event.user.id}, Estat: ${event.user.online ? 'online' : 'offline'}`);
-      
-          // Actualizar el estado de los usuarios en recentChats
-          this.recentChats = this.recentChats.map((user) => {
-            if (user.id === event.user!.id) {
-              console.log(`Actualitzant estat de l'usuari ${user.nom} a ${event.user!.online ? 'online' : 'offline'}`);
-              return { ...user, online: event.user!.online };
-            }
-            return user;
-          });
-      
-          // Actualizar el estado de los usuarios en searchResults
-          this.searchResults = this.searchResults.map((user) => {
-            if (user.id === event.user!.id) {
-              console.log(`Actualitzant estat de l'usuari ${user.nom} a ${event.user!.online ? 'online' : 'offline'}`);
-              return { ...user, online: event.user!.online };
-            }
-            return user;
-          });
-      
-          this.cdr.detectChanges();
-        } else {
-          console.warn('El evento user.presence.changed no contiene un usuario válido:', event);
-        }
-      });
     } catch (error) {
       console.error('Error en inicialitzar el xat:', error);
       throw error;
