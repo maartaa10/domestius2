@@ -163,9 +163,20 @@ export class RegistrarProtectoraComponent {
         this.authService.login({ email: usuariCreate.email, password: usuariCreate.password }).subscribe({
           next: (loginResponse) => {
             console.log('Inici de sessió amb èxit:', loginResponse);
-            this.tokenService.handleToken(loginResponse.token);
-            console.log('Token guardat a localStorage:', this.tokenService.getToken());
-            this.crearProtectora(response.id); 
+            
+            if (loginResponse && loginResponse.token) {
+              this.tokenService.handleToken(loginResponse.token);
+              console.log('Token guardat a localStorage:', this.tokenService.getToken());
+              
+              // Esperar un poco para asegurar que el token se guarda antes de usarlo
+              setTimeout(() => {
+                this.crearProtectora(response.id);
+              }, 500);
+            } else {
+              console.error('No s\'ha rebut cap token en la resposta de login');
+              alert('Error en iniciar sessió: No s\'ha rebut cap token.');
+              this.loading = false;
+            }
           },
           error: (err) => {
             console.error('Error en iniciar sessió automàticament:', err);
@@ -194,11 +205,17 @@ export class RegistrarProtectoraComponent {
     formDataProtectora.append('telefono', this.protectora.telefono || '');
     formDataProtectora.append('horario_apertura', this.protectora.horario_apertura || '');
     formDataProtectora.append('horario_cierre', this.protectora.horario_cierre || '');
-    if (this.selectedFile) {
-      formDataProtectora.append('imatge', this.selectedFile);
+    
+    // Asegúrate de que el archivo es válido
+    if (this.selectedFile instanceof File) {
+      formDataProtectora.append('imatge', this.selectedFile, this.selectedFile.name);
     }
+    
     formDataProtectora.append('usuari_id', usuarioId.toString());
-  
+    
+    // Para Laravel, a veces es necesario indicar el método HTTP real
+    formDataProtectora.append('_method', 'POST');
+    
     console.log('Dades enviades per crear la protectora:', Array.from(formDataProtectora.entries()));
   
     this.protectoraService.createProtectora(formDataProtectora).subscribe({
@@ -210,7 +227,20 @@ export class RegistrarProtectoraComponent {
       },
       error: (err) => {
         console.error('Error en registrar la protectora:', err);
-        alert('Error en registrar la protectora: ' + (err.error?.mensaje || 'Error desconegut.'));
+        // Mostrar detalles del error si están disponibles
+        if (err.error && typeof err.error === 'object') {
+          console.log('Detalls de l\'error:', err.error);
+          
+          // Si hay errores de validación específicos
+          if (err.error.errors) {
+            const errorMessages = Object.values(err.error.errors).flat().join('\n');
+            alert(`Error en registrar la protectora:\n${errorMessages}`);
+          } else {
+            alert('Error en registrar la protectora: ' + (err.error.mensaje || err.error.message || 'Error desconegut.'));
+          }
+        } else {
+          alert('Error en registrar la protectora: Error desconegut.');
+        }
         this.loading = false;
       }
     });
