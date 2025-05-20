@@ -62,24 +62,23 @@ export class ChatComponent implements OnInit {
 
   async initializeChat(): Promise<void> {
     try {
-      console.log('Inicializando el cliente de Stream Chat...');
+      console.log('Inicialitzant el client de Stream Chat...');
       const userData = await this.authService.getUserProfile().toPromise();
   
       if (!userData) {
-        throw new Error('No se pudo obtener el perfil del usuario.');
+        throw new Error('No s\'ha pogut obtenir el perfil de l\'usuari.');
       }
-      console.log('Perfil del usuario obtenido:', userData);
+      console.log('Perfil de l\'usuari obtingut:', userData);
   
       localStorage.setItem('currentUserId', userData.id.toString());
   
       const tokenResponse = await this.chatService.getUserToken(userData.id).toPromise();
   
       if (!tokenResponse || !tokenResponse.token) {
-        throw new Error('No se pudo obtener el token del usuario.');
+        throw new Error('No s\'ha pogut obtenir el token de l\'usuari.');
       }
-      console.log('Token obtenido:', tokenResponse.token);
+      console.log('Token obtingut:', tokenResponse.token);
   
-      // Conectar el usuario al cliente de Stream Chat
       await this.chatClient.connectUser(
         {
           id: userData.id.toString(),
@@ -87,42 +86,73 @@ export class ChatComponent implements OnInit {
         },
         tokenResponse.token
       );
-      console.log('Usuario conectado al cliente de Stream Chat.');
+      console.log('Usuari connectat al client de Stream Chat.');
   
-      // Escuchar cambios en la presencia de usuarios
+      // Actualizar el estado del usuario a "online"
+      this.recentChats = this.recentChats.map((user) => {
+        if (user.id === userData.id) {
+          console.log(`Actualitzant estat de l'usuari ${user.nom} a online`);
+          return { ...user, online: true };
+        }
+        return user;
+      });
+  
+      this.searchResults = this.searchResults.map((user) => {
+        if (user.id === userData.id) {
+          console.log(`Actualitzant estat de l'usuari ${user.nom} a online`);
+          return { ...user, online: true };
+        }
+        return user;
+      });
+  
+      this.cdr.detectChanges();
+  
+      // Escuchar cambios en la conexión
+      this.chatClient.on('connection.changed', (event) => {
+        console.log('Estat de la connexió:', event.online ? 'Connectat' : 'Desconnectat');
+        if (event.online) {
+          this.recentChats = this.recentChats.map((user) => {
+            if (user.id === userData.id) {
+              console.log(`Usuari ${user.nom} connectat`);
+              return { ...user, online: true };
+            }
+            return user;
+          });
+          this.cdr.detectChanges();
+        }
+      });
+  
       this.chatClient.on('user.presence.changed', (event) => {
-        console.log('Evento de presencia recibido:', event);
-  
+        console.log('Canvi de presència:', event);
+      
         if (event.user) {
-          console.log(`Usuario afectado: ${event.user.id}, Estado: ${event.user.online ? 'online' : 'offline'}`);
-  
+          console.log(`Usuari afectat: ${event.user.id}, Estat: ${event.user.online ? 'online' : 'offline'}`);
+      
           // Actualizar el estado de los usuarios en recentChats
           this.recentChats = this.recentChats.map((user) => {
             if (user.id === event.user!.id) {
-              console.log(`Actualizando estado del usuario ${user.nom} a ${event.user!.online ? 'online' : 'offline'}`);
+              console.log(`Actualitzant estat de l'usuari ${user.nom} a ${event.user!.online ? 'online' : 'offline'}`);
               return { ...user, online: event.user!.online };
             }
             return user;
           });
-  
+      
           // Actualizar el estado de los usuarios en searchResults
           this.searchResults = this.searchResults.map((user) => {
             if (user.id === event.user!.id) {
-              console.log(`Actualizando estado del usuario ${user.nom} a ${event.user!.online ? 'online' : 'offline'}`);
+              console.log(`Actualitzant estat de l'usuari ${user.nom} a ${event.user!.online ? 'online' : 'offline'}`);
               return { ...user, online: event.user!.online };
             }
             return user;
           });
-  
+      
           this.cdr.detectChanges();
         } else {
           console.warn('El evento user.presence.changed no contiene un usuario válido:', event);
         }
       });
-  
-      console.log('Estado actual de los usuarios:', this.chatClient.state.users);
     } catch (error) {
-      console.error('Error al inicializar el chat:', error);
+      console.error('Error en inicialitzar el xat:', error);
       throw error;
     }
   }
@@ -158,36 +188,35 @@ export class ChatComponent implements OnInit {
     try {
       console.log('Iniciant xat amb l\'usuari:', user);
       this.selectedUser = user;
-  
+
       const userData = await this.authService.getUserProfile().toPromise();
       const userKey = `recentChats_${userData.id}`;
-  
+
       if (!this.recentChats.some(chat => chat.id === user.id)) {
         this.recentChats.push(user);
         localStorage.setItem(userKey, JSON.stringify(this.recentChats));
       }
-  
+
       localStorage.setItem('lastUser', JSON.stringify(user));
       console.log('Usuari desat a localStorage:', user);
-  
+
       await this.chatClient.upsertUser({
         id: user.id.toString(),
         name: user.nom || 'Usuari desconegut',
       });
       console.log('Usuari sincronitzat amb Stream Chat.');
-  
-      // Asegúrate de que no haya IDs duplicados
-      const userIds = Array.from(new Set([this.chatClient.userID?.toString(), user.id.toString()]));
+
+      const userIds = [this.chatClient.userID?.toString(), user.id.toString()].sort();
       const channelId = `chat-${userIds.join('-')}`;
-  
+
       this.channel = this.chatClient.channel('messaging', channelId, {
         members: userIds,
       });
       await this.channel.watch();
       console.log('Canal inicialitzat:', this.channel.id);
-  
+
       console.log('Membres del canal:', this.channel.state.members);
-  
+
       this.channel.on('message.new', (event: any) => {
         console.log('Missatge rebut en temps real:', event.message);
         this.messages.push(event.message); 
@@ -195,7 +224,7 @@ export class ChatComponent implements OnInit {
         this.cdr.detectChanges();
         this.scrollToBottom(); 
       });
-  
+
       const response = await this.channel.query({ messages: { limit: 20 } });
       console.log('Missatges carregats del canal:', response.messages);
       this.messages = response?.messages ?? [];
