@@ -323,20 +323,22 @@ export class AdminDashboardComponent implements OnInit {
 
   // Mètode per carregar els usuaris
   loadUsuarios(): void {
-    console.log('Cargando usuarios...');
-    this.http.get<any[]>(`${environment.apiURL2}/usuarios`).subscribe({
+    console.log('Carregant usuaris...');
+    this.http.get<any>(`${environment.apiURL2}/usuarios`).subscribe({
       next: (data) => {
-        console.log('Usuarios cargados:', data);
-        if (data && Array.isArray(data)) {
-          this.usuarios = data;
+        console.log('Usuaris carregats:', data);
+        
+        // Verificar si la resposta té la propietat 'usuarios'
+        if (data && data.usuarios && Array.isArray(data.usuarios)) {
+          this.usuarios = data.usuarios;
+          console.log('Array d\'usuaris processat correctament:', this.usuarios);
         } else {
-          console.error('La respuesta no es un array de usuarios:', data);
+          console.error('La resposta no té el format esperat:', data);
           this.usuarios = [];
         }
       },
       error: (err) => {
-        console.error('Error al cargar usuarios:', err);
-        // Mostrar mensaje al usuario
+        console.error('Error al carregar usuaris:', err);
         alert('No s\'han pogut carregar els usuaris. Si us plau, intenta-ho més tard.');
         this.usuarios = [];
       }
@@ -345,7 +347,7 @@ export class AdminDashboardComponent implements OnInit {
 
   // Mètode per mostrar el modal de nova protectora
   openNewProtectoraModal(): void {
-    // Primero cargamos los usuarios
+    // Cargar usuarios antes de mostrar el modal
     this.loadUsuarios();
     
     this.newProtectora = {
