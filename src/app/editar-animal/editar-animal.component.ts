@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Animal } from '../interfaces/animal';
+import { TokenService } from '../services/token.service';
 import { AnimalPerdutService } from '../services/animal-perdut.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-editar-animal',
@@ -17,7 +19,9 @@ export class EditarAnimalComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private animalPerdutService: AnimalPerdutService,
-    private router: Router
+    private router: Router,
+    private tokenService: TokenService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -76,7 +80,7 @@ export class EditarAnimalComponent implements OnInit {
     this.animalPerdutService.updateAnimal(this.animal.id, formData).subscribe({
       next: () => {
         alert('Animal actualitzat amb éxit.');
-        this.router.navigate(['/user-dashboard']);
+        this.navigateToDashboardOrLogin();
       },
       error: (err) => {
         console.error("Error al actualitzar l'animal:", err);
@@ -84,4 +88,22 @@ export class EditarAnimalComponent implements OnInit {
       },
     });
   }
+
+  navigateToDashboardOrLogin(): void {
+    if (this.tokenService.isLoggedIn()) {
+      this.authService.getUserType().subscribe(userType => {
+        if (userType === 'protectora') {
+          this.router.navigate(['/dashboard']);
+        } else {
+          this.router.navigate(['/user-dashboard']);
+        }
+      }, error => {
+        console.error('Error al obtener el tipo de usuario:', error);
+        this.router.navigate(['/dashboard']);
+      });
+    } else {
+      this.router.navigate(['/login']); 
+    }
+  }
 }
+
