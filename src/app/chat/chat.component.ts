@@ -217,7 +217,6 @@ export class ChatComponent implements OnInit {
     // Buscar el usuario en la lista de chats recientes
     const chatIndex = this.recentChats.findIndex(chat => chat.id === senderId);
   
-    
     if (chatIndex !== -1) {
       // Si el usuario ya está en la lista, moverlo al primer lugar y aumentar el contador
       const chat = this.recentChats[chatIndex];
