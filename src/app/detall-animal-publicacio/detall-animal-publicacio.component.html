@@ -1,79 +1,69 @@
 <div class="detall-animal-publicacio-container" *ngIf="animal">
 
-    <div class="back-link-container">
-      <a class="back-link" (click)="goBack()">← Tornar a la llista</a>
+  <!-- Enllaç per tornar enrere -->
+  <div class="back-link-container">
+    <a class="back-link" (click)="goBack()">← Tornar a la llista</a>
+  </div>
+
+  <!-- Nom de l'animal -->
+  <h2 class="animal-name">{{ animal.nom }}</h2>
+
+  <!-- Informació de l'animal -->
+  <div class="animal-info">
+    <p><strong>Edat:</strong> {{ animal.edat || 'No disponible' }}</p>
+    <p><strong>Espècie:</strong> {{ animal.especie || 'No disponible' }}</p>
+    <p><strong>Raça:</strong> {{ animal['raça'] || 'No disponible' }}</p>
+    <p><strong>Descripció:</strong> {{ animal.descripcio || 'No disponible' }}</p>
+    <p><strong>Estat:</strong> {{ animal.estat || 'No disponible' }}</p>
+    <p><strong>Es porta bé amb gats:</strong> {{ animal.compatibleGats ? 'Sí' : 'No' }}</p>
+    <p><strong>Es porta bé amb gossos:</strong> {{ animal.compatibleGossos ? 'Sí' : 'No' }}</p>
+  </div>
+
+  <!-- Frase divertida -->
+  <p class="funny-phrase">"{{ animal.fraseDivertida }}"</p>
+
+  
+  <button class="bone" (click)="toggleContactForm()">
+    <div class="c1"></div>
+    <div class="c2"></div>
+    <div class="c3"></div>
+    <div class="c4"></div>
+    <div class="b1">
+      <div class="b2">Estic interessat</div>
     </div>
-  
-   
-    <h2 class="animal-name">{{ animal.nom }}</h2>
-  
-    <div class="detall-animal-publicacio-container" *ngIf="animal">
-      <div class="back-link-container">
-        <a class="back-link" (click)="goBack()">← Tornar a la llista</a>
-      </div>
-    
-      <h2 class="animal-name">{{ animal.nom }}</h2>
-   
-      <div class="animal-info">
-        <p><strong>Edat:</strong> {{ animal.edat || 'No disponible' }}</p>
-        <p><strong>Espècie:</strong> {{ animal.especie || 'No disponible' }}</p>
-        <p><strong>Raça:</strong> {{ animal['raça'] || 'No disponible' }}</p>
-        <p><strong>Descripció:</strong> {{ animal.descripcio || 'No disponible' }}</p>
-        <p><strong>Estat:</strong> {{ animal.estat || 'No disponible' }}</p>
-        <p><strong>Es porta bé amb gats:</strong> {{ animal.compatibleGats ? 'Sí' : 'No' }}</p>
-        <p><strong>Es porta bé amb gossos:</strong> {{ animal.compatibleGossos ? 'Sí' : 'No' }}</p>
-      </div>
-  </div>
- 
-  
-  
-    
-    
-    <p class="funny-phrase">"{{ animal.fraseDivertida }}"</p>
+  </button>
 
-<button class="bone" (click)="toggleContactForm()">
-  <div class="c1"></div>
-  <div class="c2"></div>
-  <div class="c3"></div>
-  <div class="c4"></div>
-  <div class="b1">
-    <div class="b2">Estic interessat</div>
-  </div>
-</button>
-    
-  
-
-      <div class="contact-form" *ngIf="showContactForm">
-        <div class="container">
-          <h1>Contacta amb nosaltres</h1>
-          <form
-  target="_blank"
-  action="https://formsubmit.co/mrodrigoll13@gmail.com"
-  method="POST"
-  (submit)="onFormSubmit($event)"
->
-            <div class="form-group">
-              <div class="form-row">
-                <div class="col">
-                  <input type="text" name="name" class="form-control" placeholder="El teu nom" required>
-                </div>
-                <div class="col">
-                  <input type="email" name="email" class="form-control" placeholder="Email" required>
-                </div>
-              </div>
+  <!-- Formulari de contacte -->
+  <div class="contact-form" *ngIf="showContactForm">
+    <div class="container">
+      <h1>Contacta amb nosaltres</h1>
+      <form
+        target="_blank"
+        action="https://formsubmit.co/mrodrigoll13@gmail.com"
+        method="POST"
+        (submit)="onFormSubmit($event)"
+      >
+        <div class="form-group">
+          <div class="form-row">
+            <div class="col">
+              <input type="text" name="name" class="form-control" placeholder="El teu nom" required>
             </div>
-            <div class="form-group">
-              <textarea placeholder="Escriu el teu missatge" class="form-control" name="message" rows="10" required></textarea>
+            <div class="col">
+              <input type="email" name="email" class="form-control" placeholder="Email" required>
             </div>
-      
-            <!-- Campo oculto para el mensaje automático al usuario -->
-            <input type="hidden" name="_autoresponse" value="Gràcies per contactar amb nosaltres. Ens posarem en contacte amb tu aviat.">
-      
-            <!-- Opcional: redirigir a una página de éxito -->
-            <input type="hidden" name="_next" value="https://domestius2.vercel.app/gracies">
-      
-            <button type="submit" class="btn btn-lg btn-dark btn-block">Enviar</button>
-          </form>
+          </div>
         </div>
-      </div>
+        <div class="form-group">
+          <textarea placeholder="Escriu el teu missatge" class="form-control" name="message" rows="10" required></textarea>
+        </div>
+
+        <input type="hidden" name="_autoresponse" value="Gràcies per contactar amb nosaltres. Ens posarem en contacte amb tu aviat.">
+
+        <!-- Pàgina d'èxit -->
+        <input type="hidden" name="_next" value="https://domestius2.vercel.app/gracies">
+
+        <button type="submit" class="btn btn-lg btn-dark btn-block">Enviar</button>
+      </form>
+    </div>
   </div>
+</div>
