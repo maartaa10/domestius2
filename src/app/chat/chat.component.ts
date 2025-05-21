@@ -178,7 +178,8 @@ export class ChatComponent implements OnInit {
       });
       console.log('Usuari sincronitzat amb Stream Chat.');
   
-      const userIds = [this.chatClient.userID?.toString(), user.id.toString()].sort();
+      // Asegurarse de que no haya IDs duplicados
+      const userIds = Array.from(new Set([this.chatClient.userID?.toString(), user.id.toString()])).sort();
       const channelId = `chat-${userIds.join('-')}`;
   
       this.channel = this.chatClient.channel('messaging', channelId, {
