@@ -2,7 +2,10 @@
   <div class="row clearfix">
     <div class="col-lg-12">
       <div class="card chat-app">
+
+        <!-- Llista de persones i barra de cerca -->
         <div id="plist" class="people-list">
+
           <!-- Barra de búsqueda -->
           <div class="input-group">
             <div class="input-group-prepend">
@@ -17,7 +20,7 @@
             />
           </div>
 
-          <!-- Xats recents -->
+          <!-- Secció de xats recents -->
           <h5 class="section-title">Xats Recents</h5>
           <ul class="list-unstyled chat-list mt-2 mb-0">
             <li
@@ -43,7 +46,7 @@
             </li>
           </ul>
 
-          <!-- Resultats de búsqueda -->
+          <!-- Secció de resultats de búsqueda -->
           <h5 class="section-title" *ngIf="searchQuery.trim()">Resultats de Búsqueda</h5>
           <ul class="list-unstyled chat-list mt-2 mb-0" *ngIf="searchQuery.trim()">
             <li
@@ -70,8 +73,10 @@
           </ul>
         </div>
 
-        <!-- Área de xat -->
+        <!-- Àrea de xat -->
         <div class="chat">
+
+          <!-- Capçalera del xat -->
           <div class="chat-header clearfix">
             <div class="row">
               <div class="col-lg-6">
@@ -86,23 +91,23 @@
                 </div>
               </div>
               <div class="col-lg-6 text-right">
-               
                 <a href="javascript:void(0);" class="btn btn-outline-danger" (click)="clearChat()" title="Eliminar missatges">
                   <i class="fa fa-trash"></i>
                 </a>
               </div>
             </div>
           </div>
+
+          <!-- Historial de missatges -->
           <div class="chat-history" #chatHistory>
             <ul class="m-b-0">
-              <!-- Iterar sobre los grupos de mensajes -->
               <ng-container *ngFor="let group of groupedMessages">
-                <!-- Separador de fecha -->
+                <!-- Separador de data -->
                 <li class="date-separator">
                   <span>{{ group.date }}</span>
                 </li>
-          
-                <!-- Mensajes del grupo -->
+
+                <!-- Missatges del grup -->
                 <li class="clearfix" *ngFor="let message of group.messages">
                   <div
                     class="message-container"
@@ -123,6 +128,8 @@
               </ng-container>
             </ul>
           </div>
+
+          <!-- Entrada de missatges -->
           <div class="chat-message clearfix">
             <div class="input-group mb-0">
               <div class="input-group-prepend">
@@ -142,6 +149,7 @@
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
