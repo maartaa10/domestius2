@@ -130,6 +130,7 @@ export class ChatComponent implements OnInit {
   
     this.cdr.detectChanges();
   }
+  
   async searchUsers(): Promise<void> {
     if (this.searchQuery.trim() === '') {
       const lastUser = localStorage.getItem('lastUser');
