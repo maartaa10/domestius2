@@ -88,49 +88,55 @@ export class ChatComponent implements OnInit {
       );
       console.log('Usuari connectat al client de Stream Chat.');
   
-      // Escuchar mensajes nuevos en tiempo real
-      this.chatClient.on('message.new', (event) => {
-        console.log('Missatge rebut en temps real:', event.message);
-        this.handleNewMessage(event.message);
-      });
+      // Filtrar al usuario logueado de la lista de recentChats
+      this.recentChats = this.recentChats.filter(chat => chat.id !== this.chatClient.userID);
   
       this.cdr.detectChanges();
+  
+      // Escuchar cambios en la conexión
+      this.chatClient.on('connection.changed', (event) => {
+        console.log('Estat de la connexió:', event.online ? 'Connectat' : 'Desconnectat');
+        if (event.online) {
+          this.recentChats = this.recentChats
+            .map((user) => {
+              if (user.id === userData.id) {
+                console.log(`Usuari ${user.nom} connectat`);
+                return { ...user, online: true };
+              }
+              return user;
+            })
+            .filter(chat => chat.id !== this.chatClient.userID); // Filtrar al usuario logueado
+          this.cdr.detectChanges();
+        }
+      });
+  
+      this.chatClient.on('user.presence.changed', (event) => {
+        console.log('Canvi de presència:', event);
+  
+        if (event.user) {
+          console.log(`Usuari afectat: ${event.user.id}, Estat: ${event.user.online ? 'online' : 'offline'}`);
+  
+          // Actualizar el estado de los usuarios en recentChats y filtrar al usuario logueado
+          this.recentChats = this.recentChats
+            .map((user) => {
+              if (user.id === event.user!.id) {
+                console.log(`Actualitzant estat de l'usuari ${user.nom} a ${event.user!.online ? 'online' : 'offline'}`);
+                return { ...user, online: event.user!.online };
+              }
+              return user;
+            })
+            .filter(chat => chat.id !== this.chatClient.userID); // Filtrar al usuario logueado
+  
+          this.cdr.detectChanges();
+        } else {
+          console.warn('El evento user.presence.changed no contiene un usuario válido:', event);
+        }
+      });
     } catch (error) {
       console.error('Error en inicialitzar el xat:', error);
       throw error;
     }
   }
-  private handleNewMessage(message: any): void {
-    const senderId = message.user?.id;
-  
-    if (!senderId) {
-      console.warn('Missatge rebut sense usuari vàlid:', message);
-      return;
-    }
-  
-    // Buscar el usuario en la lista de chats recientes
-    const chatIndex = this.recentChats.findIndex(chat => chat.id === senderId);
-  
-    if (chatIndex !== -1) {
-      // Si el usuario ya está en la lista, moverlo al primer lugar y aumentar el contador
-      const chat = this.recentChats[chatIndex];
-      chat.unreadCount = (chat.unreadCount || 0) + 1;
-      this.recentChats.splice(chatIndex, 1); // Eliminar de la posición actual
-      this.recentChats.unshift(chat); // Agregar al principio
-    } else {
-      // Si el usuario no está en la lista, agregarlo
-      this.recentChats.unshift({
-        id: senderId,
-        nom: message.user?.name || 'Usuari desconegut',
-        avatar: this.getRandomAvatar(message.user),
-        unreadCount: 1, // Primer mensaje no leído
-        online: this.chatClient.state.users[senderId]?.online || false,
-      });
-    }
-  
-    this.cdr.detectChanges();
-  }
-  
   async searchUsers(): Promise<void> {
     if (this.searchQuery.trim() === '') {
       const lastUser = localStorage.getItem('lastUser');
@@ -144,10 +150,12 @@ export class ChatComponent implements OnInit {
       const results = await this.chatService.searchUsers(this.searchQuery).toPromise();
   
       if (results && results.length > 0) {
-        this.searchResults = results.map((user) => ({
-          ...user,
-          online: this.chatClient.state.users[user.id]?.online || false,
-        }));
+        this.searchResults = results
+          .map((user) => ({
+            ...user,
+            online: this.chatClient.state.users[user.id]?.online || false,
+          }))
+          .filter(user => user.id !== this.chatClient.userID); // Filtrar al usuario logueado
         console.log('Resultats de la cerca amb estat actualitzat:', this.searchResults);
       } else {
         console.log('No s\'han trobat resultats per a la cerca.');
@@ -164,22 +172,18 @@ export class ChatComponent implements OnInit {
       console.log('Iniciant xat amb l\'usuari:', user);
       this.selectedUser = user;
   
-      // Reiniciar el contador de mensajes no leídos
-      const chatIndex = this.recentChats.findIndex(chat => chat.id === user.id);
-      if (chatIndex !== -1) {
-        this.recentChats[chatIndex].unreadCount = 0;
-      }
-  
       const userData = await this.authService.getUserProfile().toPromise();
       const userKey = `recentChats_${userData.id}`;
   
       if (!this.recentChats.some(chat => chat.id === user.id)) {
         this.recentChats.push({
           ...user,
-          online: this.chatClient.state.users[user.id]?.online || false,
-          unreadCount: 0,
+          online: this.chatClient.state.users[user.id]?.online || false, // Verificar el estado online
         });
-        localStorage.setItem(userKey, JSON.stringify(this.recentChats));
+  
+        // Filtrar al usuario logueado antes de guardar en localStorage
+        const filteredChats = this.recentChats.filter(chat => chat.id !== this.chatClient.userID);
+        localStorage.setItem(userKey, JSON.stringify(filteredChats));
       }
   
       localStorage.setItem('lastUser', JSON.stringify(user));

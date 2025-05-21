@@ -40,14 +40,9 @@
                   {{ user.online ? 'en línia' : 'offline' }}
                 </div>
               </div>
-              <!-- Contador de mensajes no leídos -->
-              <span *ngIf="user.unreadCount > 0" class="badge badge-primary">
-                {{ user.unreadCount }}
-              </span>
             </li>
           </ul>
 
-          
           <!-- Resultats de búsqueda -->
           <h5 class="section-title" *ngIf="searchQuery.trim()">Resultats de Búsqueda</h5>
           <ul class="list-unstyled chat-list mt-2 mb-0" *ngIf="searchQuery.trim()">
