@@ -88,55 +88,65 @@ export class ChatComponent implements OnInit {
       );
       console.log('Usuari connectat al client de Stream Chat.');
   
-      // Filtrar al usuario logueado de la lista de recentChats
-      this.recentChats = this.recentChats.filter(chat => chat.id !== this.chatClient.userID);
+      // Obtener el conteo inicial de mensajes no leídos
+      const unreadCounts = await this.chatClient.getUnreadCount();
+      console.log('Total de mensajes no leídos:', unreadCounts.total_unread_count);
+      console.log('Canales con mensajes no leídos:', unreadCounts.channels);
+  
+      // Actualizar la lista de chats recientes con los contadores iniciales
+      this.recentChats = this.recentChats.map(chat => ({
+        ...chat,
+        unreadCount: unreadCounts.channels[chat.id] || 0,
+      }));
   
       this.cdr.detectChanges();
   
-      // Escuchar cambios en la conexión
-      this.chatClient.on('connection.changed', (event) => {
-        console.log('Estat de la connexió:', event.online ? 'Connectat' : 'Desconnectat');
-        if (event.online) {
-          this.recentChats = this.recentChats
-            .map((user) => {
-              if (user.id === userData.id) {
-                console.log(`Usuari ${user.nom} connectat`);
-                return { ...user, online: true };
-              }
-              return user;
-            })
-            .filter(chat => chat.id !== this.chatClient.userID); // Filtrar al usuario logueado
-          this.cdr.detectChanges();
-        }
-      });
-  
-      this.chatClient.on('user.presence.changed', (event) => {
-        console.log('Canvi de presència:', event);
-  
-        if (event.user) {
-          console.log(`Usuari afectat: ${event.user.id}, Estat: ${event.user.online ? 'online' : 'offline'}`);
-  
-          // Actualizar el estado de los usuarios en recentChats y filtrar al usuario logueado
-          this.recentChats = this.recentChats
-            .map((user) => {
-              if (user.id === event.user!.id) {
-                console.log(`Actualitzant estat de l'usuari ${user.nom} a ${event.user!.online ? 'online' : 'offline'}`);
-                return { ...user, online: event.user!.online };
-              }
-              return user;
-            })
-            .filter(chat => chat.id !== this.chatClient.userID); // Filtrar al usuario logueado
-  
-          this.cdr.detectChanges();
-        } else {
-          console.warn('El evento user.presence.changed no contiene un usuario válido:', event);
-        }
-      });
+      // Escuchar eventos en tiempo real
+      this.listenToUnreadEvents();
     } catch (error) {
       console.error('Error en inicialitzar el xat:', error);
       throw error;
     }
   }
+
+  private listenToUnreadEvents(): void {
+    this.chatClient.on((event) => {
+      if (event.type === 'notification.message_new') {
+        const channelId = event.channel_id;
+        const chatIndex = this.recentChats.findIndex(chat => chat.id === channelId);
+  
+        if (chatIndex !== -1) {
+          // Incrementar el contador de mensajes no leídos
+          this.recentChats[chatIndex].unreadCount = (this.recentChats[chatIndex].unreadCount || 0) + 1;
+        } else {
+          // Si el canal no está en la lista, agregarlo
+          this.recentChats.unshift({
+            id: channelId,
+            name: event.channel?.id || 'Canal desconegut',
+            avatar: this.getRandomAvatar(event.channel),
+            unreadCount: 1,
+            online: false,
+          });
+        }
+  
+        this.cdr.detectChanges();
+      }
+  
+      if (event.type === 'notification.mark_read') {
+        const channelId = event.channel_id;
+        const chatIndex = this.recentChats.findIndex(chat => chat.id === channelId);
+  
+        if (chatIndex !== -1) {
+          // Reiniciar el contador de mensajes no leídos
+          this.recentChats[chatIndex].unreadCount = 0;
+          this.cdr.detectChanges();
+        }
+      }
+    });
+  }
+
+
+
   async searchUsers(): Promise<void> {
     if (this.searchQuery.trim() === '') {
       const lastUser = localStorage.getItem('lastUser');
@@ -178,10 +188,10 @@ export class ChatComponent implements OnInit {
       if (!this.recentChats.some(chat => chat.id === user.id)) {
         this.recentChats.push({
           ...user,
-          online: this.chatClient.state.users[user.id]?.online || false, // Verificar el estado online
+          online: this.chatClient.state.users[user.id]?.online || false,
+          unreadCount: 0,
         });
   
-        // Filtrar al usuario logueado antes de guardar en localStorage
         const filteredChats = this.recentChats.filter(chat => chat.id !== this.chatClient.userID);
         localStorage.setItem(userKey, JSON.stringify(filteredChats));
       }
@@ -205,6 +215,9 @@ export class ChatComponent implements OnInit {
       console.log('Canal inicialitzat:', this.channel.id);
   
       console.log('Membres del canal:', this.channel.state.members);
+  
+      // Marcar mensajes como leídos
+      await this.channel.markRead();
   
       this.channel.on('message.new', (event: any) => {
         console.log('Missatge rebut en temps real:', event.message);
