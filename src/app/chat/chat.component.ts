@@ -206,6 +206,7 @@ export class ChatComponent implements OnInit {
     } catch (error) {
       console.error('Error en iniciar el xat:', error);
     }
+    
   }
   private handleNewMessage(message: any): void {
     const senderId = message.user?.id;
