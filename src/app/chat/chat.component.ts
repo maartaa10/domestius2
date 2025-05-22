@@ -527,23 +527,35 @@ private formatDate(date: string): string {
     }
   }
 }
- /**
- * Elimina tots els missatges del xat i actualitza la interfície.
+/**
+ * Elimina tots els missatges del xat tant de la interfície com del servidor.
  */
-clearChat(): void {
+async clearChat(): Promise<void> {
   // Mostrem una confirmació a l'usuari abans d'eliminar els missatges.
   if (confirm('Estàs segur que vols eliminar tots els missatges del xat?')) {
-    // Eliminem tots els missatges de la llista de missatges.
-    this.messages = [];
+    try {
+      // Iterem sobre tots els missatges actuals del canal.
+      for (const message of this.messages) {
+        // Eliminem cada missatge del servidor utilitzant l'API de Stream Chat.
+        await this.chatClient.deleteMessage(message.id);
+      }
 
-    // Eliminem tots els missatges agrupats.
-    this.groupedMessages = [];
+      // Eliminem tots els missatges de la llista de missatges local.
+      this.messages = [];
 
-    // Creem un log per indicar que els missatges han estat eliminats. PER MILLORAR LA GESTIO DE POSSIBLES ERRORS
-    console.log('Missatges eliminats.');
+      // Eliminem tots els missatges agrupats.
+      this.groupedMessages = [];
 
-    // Actualitzem la interfície gràfica per reflectir els canvis.
-    this.cdr.detectChanges();
+      // Creem un log per indicar que els missatges han estat eliminats.
+      console.log('Tots els missatges han estat eliminats del servidor i de la interfície.');
+
+      // Actualitzem la interfície gràfica per reflectir els canvis.
+      this.cdr.detectChanges();
+    } catch (error) {
+      // Gestionem els errors que es produeixin durant l'eliminació.
+      console.error('Error en eliminar els missatges del servidor:', error);
+      alert('Hi ha hagut un error en eliminar els missatges. Si us plau, torna-ho a intentar.');
+    }
   }
 }
 }
