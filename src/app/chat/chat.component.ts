@@ -149,6 +149,8 @@ async initializeChat(): Promise<void> {
       }
     });
 
+    
+
     // Configurem un esdeveniment per detectar canvis en la presència dels usuaris.
     this.chatClient.on('user.presence.changed', (event) => {
       console.log('Canvi de presència:', event);
@@ -162,7 +164,7 @@ async initializeChat(): Promise<void> {
           .map((user) => {
             if (user.id === event.user!.id) {
               console.log(`Actualitzant estat de l'usuari ${user.nom} a ${event.user!.online ? 'online' : 'offline'}`);
-              return { ...user, online: event.user!.online }; // Actualitzem l'estat 
+              return { ...user, online: event.user.online }; // Actualitzem l'estat 
             }
             return user;
           })

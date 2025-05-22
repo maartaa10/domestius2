@@ -212,7 +212,18 @@
   display: flex;
   align-items: center;
 }
+.fa-circle {
+  font-size: 10px;
+  margin-right: 5px;
+}
 
+.online {
+  color: green; 
+}
+
+.offline {
+  color: gray; 
+}
 .publicacio-author i, .publicacio-location i {
   margin-right: 5px;
   color: #4b83e5;
