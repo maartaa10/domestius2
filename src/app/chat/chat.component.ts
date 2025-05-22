@@ -530,26 +530,19 @@ private formatDate(date: string): string {
  /**
  * Elimina tots els missatges del xat i actualitza la interfície.
  */
- clearChat(): void {
+clearChat(): void {
+  // Mostrem una confirmació a l'usuari abans d'eliminar els missatges.
   if (confirm('Estàs segur que vols eliminar tots els missatges del xat?')) {
-    // Sobrescribe el contenido de todos los mensajes.
-    this.messages = this.messages.map((message) => ({
-      ...message,
-      text: 'Aquest missatge ha estat eliminat.',
-    }));
+    // Eliminem tots els missatges de la llista de missatges.
+    this.messages = [];
 
-    // Actualiza los mensajes agrupados.
-    this.groupedMessages = this.groupedMessages.map((group) => ({
-      ...group,
-      messages: group.messages.map((message) => ({
-        ...message,
-        text: 'Aquest missatge ha estat eliminat.',
-      })),
-    }));
+    // Eliminem tots els missatges agrupats.
+    this.groupedMessages = [];
 
-    console.log('Missatges sobrescrits.');
+    // Creem un log per indicar que els missatges han estat eliminats. PER MILLORAR LA GESTIO DE POSSIBLES ERRORS
+    console.log('Missatges eliminats.');
 
-    // Actualiza la interfaz gráfica.
+    // Actualitzem la interfície gràfica per reflectir els canvis.
     this.cdr.detectChanges();
   }
 }
