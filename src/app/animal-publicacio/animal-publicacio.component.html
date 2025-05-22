@@ -17,8 +17,7 @@
       </div>
 
       <div class="publicacio-image-container" *ngIf="publicacio.animal?.imatge">
-        <img [src]="publicacio.animal?.imatge" alt="Imatge de {{ publicacio.animal?.nom }}" class="publicacio-image">
-      </div>
+        <img [src]="getAnimalImageUrl(publicacio.animal?.imatge)" alt="Imatge de {{ publicacio.animal?.nom }}" class="publicacio-image">      </div>
 
       <div class="publicacio-content">
         <h3 class="publicacio-animal"><i class="fas fa-paw"></i> {{ publicacio.animal?.nom || 'Animal sense nom' }}</h3>
