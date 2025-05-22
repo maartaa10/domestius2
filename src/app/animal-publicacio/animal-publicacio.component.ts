@@ -48,7 +48,7 @@ export class AnimalPublicacioComponent implements OnInit, OnDestroy {
       return 'assets/default-animal.jpg'; 
     }
     if (!imagePath.startsWith('http')) {
-      return encodeURI(`http://domestius2.vercel.app/uploads/${imagePath}`);
+      return encodeURI(`https://apidomestius-production.up.railway.app/storage/${imagePath}`);
     }
     return encodeURI(imagePath); 
   }
