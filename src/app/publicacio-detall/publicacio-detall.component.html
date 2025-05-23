@@ -2,14 +2,12 @@
   <div class="publicacio-content" *ngIf="publicacio">
     <!-- Sección superior con información de la publicación -->
     <div class="publicacio-header">
+     
       <div class="back-link">
         <a routerLink="/animal-publicacio"><i class="fas fa-arrow-left"></i> Tornar a publicacions</a>
-       
-        <a routerLink="/mapa-animals-perduts"><i class="fas fa-arrow-left"></i> Tornar al mapa</a>
         <a *ngIf="mostrarEnlaceMapa" routerLink="/mapa-animals-perduts" class="map-link">
           <i class="fas fa-map"></i> Tornar al mapa
         </a>
-        
       </div>
       <div class="publicacio-title">
         <h1>{{ publicacio.tipus || 'Publicació' }}</h1>

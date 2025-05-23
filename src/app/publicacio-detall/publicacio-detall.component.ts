@@ -60,7 +60,8 @@ export class PublicacioDetallComponent implements OnInit {
   
     // Verificar si el usuario viene desde el mapa
     const navigation = this.router.getCurrentNavigation();
-    this.mostrarEnlaceMapa = !!(navigation?.extras.state && navigation.extras.state['fromMapa']);
+    console.log('Estado de navegación:', navigation?.extras.state);
+    this.mostrarEnlaceMapa = !!(navigation?.extras.state && navigation.extras.state['fromMapa'] === true);
   
     this.publicacioService.getPublicacioById(id).subscribe({
       next: (data) => {
