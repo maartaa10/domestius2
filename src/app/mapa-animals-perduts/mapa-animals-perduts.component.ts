@@ -106,6 +106,7 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
               alert('Aquest animal no té una publicació associada.');
             }
           };
+          
         }
       } else {
         popup.setPosition(undefined);

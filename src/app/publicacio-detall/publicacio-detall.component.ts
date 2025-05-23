@@ -96,7 +96,6 @@ export class PublicacioDetallComponent implements OnInit {
         console.error('Error en carregar l\'usuari autenticat:', err);
       }
     });
-  
   }
 
   initMap(): void {
