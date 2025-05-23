@@ -424,7 +424,7 @@
                 <input type="file" id="imatge" (change)="onFileSelected($event)" accept="image/*" class="file-input" />
                 <div class="file-upload-preview">
                   <span *ngIf="!selectedFile" class="upload-text">
-                    Cap fitxer seleccionat
+                    Cap fitxer seleccionat  (formats valids: jpg, png, jpeg i gif )
                   </span>
                   <span *ngIf="selectedFile" class="selected-file">
                     <i class="fas fa-file-image"></i> {{ selectedFile.name }}
