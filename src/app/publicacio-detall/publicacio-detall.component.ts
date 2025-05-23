@@ -61,7 +61,14 @@ export class PublicacioDetallComponent implements OnInit {
     // Verificar si el usuario viene desde el mapa
     const navigation = this.router.getCurrentNavigation();
     console.log('Estado de navegación:', navigation?.extras.state);
-    this.mostrarEnlaceMapa = !!(navigation?.extras.state && navigation.extras.state['fromMapa'] === true);
+  
+    // Comprobar el estado de navegación o localStorage
+    this.mostrarEnlaceMapa = !!(navigation?.extras.state?.['fromMapa'] || localStorage.getItem('fromMapa') === 'true');
+  
+    // Limpiar el estado en localStorage después de usarlo
+    if (localStorage.getItem('fromMapa')) {
+      localStorage.removeItem('fromMapa');
+    }
   
     this.publicacioService.getPublicacioById(id).subscribe({
       next: (data) => {
@@ -89,6 +96,7 @@ export class PublicacioDetallComponent implements OnInit {
         console.error('Error en carregar l\'usuari autenticat:', err);
       }
     });
+  
   }
 
   initMap(): void {
