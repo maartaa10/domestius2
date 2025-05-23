@@ -55,7 +55,7 @@ export class PublicacioDetallComponent implements OnInit {
     private authService: AuthService,
   ) {}
 
-  ngOnInit(): void {
+  /* ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
     const navigation = this.router.getCurrentNavigation();
     this.mostrarEnlaceMapa = navigation?.extras.state?.['fromMapa'] || false;
@@ -85,7 +85,41 @@ export class PublicacioDetallComponent implements OnInit {
         console.error('Error en carregar l\'usuari autenticat:', err);
       }
     });
-  }
+  } */
+    ngOnInit(): void {
+      const id = this.route.snapshot.params['id'];
+    
+      // Verificar si el usuario viene desde el mapa
+      const navigation = this.router.getCurrentNavigation();
+      this.mostrarEnlaceMapa = !!(navigation?.extras.state && navigation.extras.state['fromMapa']);
+    
+      this.publicacioService.getPublicacioById(id).subscribe({
+        next: (data) => {
+          this.publicacio = data;
+    
+          if (data.animal?.geolocalitzacio?.latitud && data.animal?.geolocalitzacio?.longitud) {
+            this.latitude = parseFloat(data.animal.geolocalitzacio.latitud);
+            this.longitude = parseFloat(data.animal.geolocalitzacio.longitud);
+          }
+    
+          if (data.animal_id) {
+            this.loadAnimalDetails(data.animal_id);
+          }
+          this.loadInteraccions(data.id);
+        },
+        error: (err) => {
+          console.error('Error en carregar la publicació:', err);
+          this.errorMessage = 'No s\'ha pogut carregar la publicació. Si us plau, intenta-ho més tard.';
+        }
+      });
+    
+      this.authService.cargarUsuarioActual().subscribe({
+        next: (usuari) => {},
+        error: (err) => {
+          console.error('Error en carregar l\'usuari autenticat:', err);
+        }
+      });
+    }
 
   initMap(): void {
     if (this.map) {
