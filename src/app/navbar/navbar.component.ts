@@ -22,11 +22,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ) {}
   
   ngOnInit(): void {
+    console.log('Inicializando NavbarComponent');
     this.checkUserStatus(); // Verificar estado inicial
     
-    // Suscribirse a eventos de autenticación
-    this.authSubscription = this.authService.authStateChanged.subscribe(() => {
-      // Actualizar cuando cambie el estado de autenticación
+    // Suscribirse a cambios en el estado de autenticación
+    this.authSubscription = this.authService.authState$.subscribe((isLoggedIn) => {
+      console.log('Evento de autenticación recibido en navbar:', isLoggedIn);
       this.checkUserStatus();
     });
   }
@@ -38,11 +39,23 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
   
   checkUserStatus(): void {
+    console.log('Verificando estado del usuario en navbar');
     this.isUserLoggedIn = this.tokenService.isLoggedIn();
+    console.log('¿Usuario autenticado?', this.isUserLoggedIn);
     
     if (this.isUserLoggedIn) {
-      this.authService.getUserType().subscribe(userType => {
-        this.isUserAdmin = userType === 'admin';
+      this.authService.getUserType().subscribe({
+        next: userType => {
+          console.log('Tipo de usuario:', userType);
+          this.isUserAdmin = userType === 'admin';
+          // Forzar la detección de cambios
+          // Si no estás usando ChangeDetectorRef puedes omitir esta línea
+          // this.cdr.detectChanges();
+        },
+        error: err => {
+          console.error('Error al obtener tipo de usuario:', err);
+          this.isUserAdmin = false;
+        }
       });
     } else {
       this.isUserAdmin = false;

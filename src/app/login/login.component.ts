@@ -33,24 +33,37 @@ export class LoginComponent {
 
   onSubmit(): void {
     this.cleanErrors();
-
+  
     const loginData = {
       ...this.loginForm.value,
     };
-
-    this.authService.login(loginData).subscribe(
-      response => {
+  
+    this.authService.login(loginData).subscribe({
+      next: (response) => {
+        // Guardar el token
         this.tokenService.handleToken(response.token);
+        
+        // Forzar la emisión del evento de autenticación
+        this.authService.updateAuthState(true);
+        
+        // Redirección según tipo de usuario
         this.authService.getUserType().subscribe(userType => {
-          if (userType === 'protectora') {
+          if (userType === 'admin') {
+            this.router.navigate(['/admin-dashboard']);
+          } else if (userType === 'protectora') {
             this.router.navigate(['/dashboard']);
           } else {
             this.router.navigate(['/user-dashboard']);
           }
         });
       },
-      errors => this.handleErrors(errors)
-    );
+      error: (errors) => this.handleErrors(errors)
+    });
+  }
+
+  updateAuthState(isLoggedIn: boolean): void {
+    console.log('Actualizando estado de autenticación:', isLoggedIn);
+    this.authStateChanged.next(isLoggedIn);
   }
 
   sendPasswordReset(): void {
