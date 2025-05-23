@@ -13,6 +13,7 @@ import { Icon, Style } from 'ol/style';
 import { AnimalPerdutService } from '../services/animal-perdut.service';
 import { NominatimService } from '../services/nominatim.service';
 import { Router } from '@angular/router';
+import { PublicacioService } from '../services/publicacio.service';
 
 @Component({
   selector: 'app-mapa-animals-perduts',
@@ -28,7 +29,8 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
   constructor(
     private animalPerdutService: AnimalPerdutService,
     private nominatimService: NominatimService,
-    private router: Router
+    private router: Router,
+    private publicacioService: PublicacioService,
   ) {}
 
   ngOnInit(): void {
@@ -69,15 +71,28 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
         const feature = features[0];
         const animal = feature.get('animalData');
         const geometry = feature.getGeometry();
-
+    
         if (animal && geometry instanceof Point) {
           const coordinates = geometry.getCoordinates();
           popup.setPosition(coordinates);
-
+    
           const popupElement = document.getElementById('popup-content')!;
           popupElement.innerHTML = `<strong>${animal.nom}</strong><br>${animal.especie}`;
+    
           popupElement.onclick = () => {
-            this.router.navigate(['/publicacio', animal.id]); // Navega a la página del animal
+            if (animal.id) {
+              // Verificar si el ID es válido antes de redirigir
+              this.publicacioService.getPublicacioById(animal.id).subscribe({
+                next: () => {
+                  this.router.navigate(['/publicacio', animal.id]); // Navega a la página del animal
+                },
+                error: () => {
+                  alert('La publicació no existeix o ha estat eliminada.');
+                },
+              });
+            } else {
+              alert('Aquest animal no té una publicació associada.');
+            }
           };
         }
       } else {
@@ -182,17 +197,17 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
         });
 
         animalesFiltrats.forEach((animal) => {
-          if (animal.geolocalitzacio?.latitud && animal.geolocalitzacio?.longitud) {
+          if (animal.id && animal.geolocalitzacio?.latitud && animal.geolocalitzacio?.longitud) {
             const coords = fromLonLat([
               parseFloat(animal.geolocalitzacio.longitud),
               parseFloat(animal.geolocalitzacio.latitud),
             ]);
-
+        
             const marker = new Feature({
               geometry: new Point(coords),
               animalData: animal,
             });
-
+        
             marker.setStyle(
               new Style({
                 image: new Icon({
@@ -201,10 +216,10 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
                 }),
               })
             );
-
+        
             this.vectorSource.addFeature(marker);
           } else {
-            console.warn(`L'animal amb ID ${animal.id} no té coordenades vàlides.`);
+            console.warn(`L'animal amb ID ${animal.id} no té dades vàlides.`);
           }
         });
       },
