@@ -40,6 +40,7 @@ export class LoginComponent {
       ...this.loginForm.value,
     };
   
+    
     this.authService.login(loginData).subscribe({
       next: (response) => {
         // Guardar el token
