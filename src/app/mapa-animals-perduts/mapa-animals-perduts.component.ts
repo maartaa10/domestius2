@@ -78,7 +78,7 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
       const features = this.map.getFeaturesAtPixel(event.pixel);
       if (features && features.length > 0) {
         const feature = features[0];
-        const animal = feature.get('animalData'); // Datos del animal asociados al marcador
+        const animal = feature.get('animalData'); 
         const geometry = feature.getGeometry();
     
         if (animal && geometry instanceof Point) {
@@ -95,7 +95,7 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
               console.log(`Buscando publicación asociada al animal con ID: ${animal.id}`);
               const publicacion = this.publicacions.find((pub) => pub.animal_id === animal.id);
               if (publicacion) {
-                this.router.navigate(['/publicacio', publicacion.id]); // Navega a la página de la publicación
+                this.router.navigate(['/publicacio', publicacion.id]); 
               } else {
                 console.error('No se encontró una publicación asociada a este animal.');
                 alert('Aquest animal no té una publicació associada.');

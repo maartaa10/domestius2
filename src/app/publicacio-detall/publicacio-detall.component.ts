@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PublicacioService } from '../services/publicacio.service';
 import { Publicacio } from '../interfaces/publicacio';
 import { Interaccio } from '../interfaces/interaccio';
@@ -31,7 +31,8 @@ export class PublicacioDetallComponent implements OnInit {
   animal: Animal | null = null;
   interaccions: any[] = [];
   errorMessage: string = '';
-  
+  mostrarEnlaceMapa: boolean = false; // Nueva propiedad para controlar la visibilidad del enlace
+
   novaInteraccio: Interaccio = {
     accio: '',
     data: new Date(),
@@ -47,6 +48,7 @@ export class PublicacioDetallComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private publicacioService: PublicacioService,
     private animalPerdutService: AnimalPerdutService,
     private interaccioService: InteraccionsService,
@@ -55,8 +57,9 @@ export class PublicacioDetallComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
-
-    this.publicacioService.getPublicacioById(id).subscribe({
+    const navigation = this.router.getCurrentNavigation();
+    this.mostrarEnlaceMapa = navigation?.extras.state?.['fromMapa'] || false;
+        this.publicacioService.getPublicacioById(id).subscribe({
       next: (data) => {
         this.publicacio = data;
     
