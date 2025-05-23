@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { TokenService } from '../services/token.service';
 import { EmailService } from '../services/email.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ export class LoginComponent {
   showPassword: boolean = false;
   emailForReset: string = ''; 
   resetMessage: string = ''; 
+  authStateChanged = new Subject<boolean>();
 
   constructor(
     private authService: AuthService,
@@ -44,7 +46,7 @@ export class LoginComponent {
         this.tokenService.handleToken(response.token);
         
         // Forzar la emisión del evento de autenticación
-        this.authService.updateAuthState(true);
+        this.authService.updateAuthState();
         
         // Redirección según tipo de usuario
         this.authService.getUserType().subscribe(userType => {
