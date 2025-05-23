@@ -153,23 +153,27 @@ async initializeChat(): Promise<void> {
 
     // Configurem un esdeveniment per detectar canvis en la presència dels usuaris.
     this.chatClient.on('user.presence.changed', (event) => {
-      console.log('Evento de presencia recibido:', event);
-    
-      // Verifica si el evento contiene un usuario válido
+      console.log('Canvi de presència:', event);
+
+      // Comprovem si l'esdeveniment conté un usuari vàlid.
       if (event.user) {
-        this.recentChats = this.recentChats.map((user) => {
-          if (user.id === event.user!.id) {
-            console.log(`Actualizando estado del usuario ${user.nom} a ${event.user!.online ? 'online' : 'offline'}`);
-            return { ...user, online: event.user!.online };
-          }
-          return user;
-        });
-      
-    
-        // Actualiza la interfaz gráfica
+        console.log(`Usuari afectat: ${event.user.id}, Estat: ${event.user.online ? 'online' : 'offline'}`);
+
+        // Actualitzem l'estat dels usuaris en la llista de xats recents.
+        this.recentChats = this.recentChats
+          .map((user) => {
+            if (user.id === event.user!.id) {
+              console.log(`Actualitzant estat de l'usuari ${user.nom} a ${event.user!.online ? 'online' : 'offline'}`);
+              return { ...user, online: event.user?.online }; // Actualitzem l'estat 
+            }
+            return user;
+          })
+          .filter(chat => chat.id !== this.chatClient.userID); // Filtrar l'usuari loguejat.
+
+        // Actualitzem la interfície gràfica.
         this.cdr.detectChanges();
       } else {
-        console.warn('El evento no contiene un usuario válido:', event);
+        console.warn('El evento user.presence.changed no contiene un usuario válido:', event);
       }
     });
   } catch (error) {
