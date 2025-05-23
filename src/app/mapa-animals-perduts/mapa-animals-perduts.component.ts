@@ -95,7 +95,7 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
               console.log(`Buscando publicación asociada al animal con ID: ${animal.id}`);
               const publicacion = this.publicacions.find((pub) => pub.animal_id === animal.id);
               if (publicacion) {
-                this.router.navigate(['/publicacio', publicacion.id]); 
+                this.router.navigate(['/publicacio', publicacion.id], { state: { fromMapa: true } }); // Pasar el estado
               } else {
                 console.error('No se encontró una publicación asociada a este animal.');
                 alert('Aquest animal no té una publicació associada.');
