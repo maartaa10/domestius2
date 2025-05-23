@@ -65,4 +65,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.router.navigate(['/login']); 
     }
   }
+
+  navigateToXatOrLogin(): void {
+      if (this.tokenService.isLoggedIn()) {
+      this.router.navigate(['/xat']);
+    } else {
+      this.router.navigate(['/login']); 
+    }
+  }
 }
