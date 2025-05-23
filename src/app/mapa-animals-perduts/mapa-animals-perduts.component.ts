@@ -12,6 +12,7 @@ import VectorSource from 'ol/source/Vector';
 import { Icon, Style } from 'ol/style';
 import { AnimalPerdutService } from '../services/animal-perdut.service';
 import { NominatimService } from '../services/nominatim.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mapa-animals-perduts',
@@ -26,7 +27,8 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
 
   constructor(
     private animalPerdutService: AnimalPerdutService,
-    private nominatimService: NominatimService
+    private nominatimService: NominatimService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -74,6 +76,9 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
 
           const popupElement = document.getElementById('popup-content')!;
           popupElement.innerHTML = `<strong>${animal.nom}</strong><br>${animal.especie}`;
+          popupElement.onclick = () => {
+            this.router.navigate(['/publicacio', animal.id]); // Navega a la página del animal
+          };
         }
       } else {
         popup.setPosition(undefined);
