@@ -61,7 +61,8 @@ export class PublicacioDetallComponent implements OnInit {
     // Verificar si el usuario viene desde el mapa
     const navigation = this.router.getCurrentNavigation();
     console.log('Estado de navegación:', navigation?.extras.state);
-  
+    console.log('Estado en localStorage:', localStorage.getItem('fromMapa'));
+    
     // Comprobar el estado de navegación o localStorage
     this.mostrarEnlaceMapa = !!(navigation?.extras.state?.['fromMapa'] || localStorage.getItem('fromMapa') === 'true');
   
