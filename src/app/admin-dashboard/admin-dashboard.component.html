@@ -222,13 +222,15 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngIf="protectoras.length === 0">
+              <!-- Mostrar mensaje si no hay protectoras filtradas -->
+              <tr *ngIf="filteredProtectoras.length === 0">
                 <td colspan="7" class="no-data">
                   <i class="fas fa-home"></i>
                   <p>No hi ha protectores registrades al sistema</p>
                 </td>
               </tr>
-              <tr *ngFor="let protectora of protectoras">
+              <!-- Mostrar las protectoras filtradas -->
+              <tr *ngFor="let protectora of filteredProtectoras">
                 <td>{{ protectora.id }}</td>
                 <td class="protectora-image-cell">
                   <img [src]="protectora.imatge || 'assets/default-profile.jpg'" alt="Protectora"
@@ -242,8 +244,6 @@
             </tbody>
           </table>
         </div>
-      </div>
-    </div>
 
   </div>
   <div class="modal-overlay" *ngIf="showEditModal" (click)="closeEditModal()">
