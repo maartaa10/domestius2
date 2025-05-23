@@ -194,8 +194,12 @@
       <div *ngIf="!loadingProtectoras && !protectorasError" class="admin-table-section">
         <div class="admin-controls">
           <div class="search-container">
-            <input type="text" placeholder="Cerca per nom, direcció..." class="admin-search-input"
-              [(ngModel)]="searchQueryProtectora" />
+            <input 
+  type="text" 
+  placeholder="Cerca per nom, direcció..." 
+  class="admin-search-input"
+  [(ngModel)]="searchQueryProtectora" 
+  (input)="filterProtectoras()" />
             <button class="admin-search-btn">
               <i class="fas fa-search"></i>
             </button>

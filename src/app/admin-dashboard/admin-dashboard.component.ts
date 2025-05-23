@@ -398,4 +398,18 @@ export class AdminDashboardComponent implements OnInit {
       }
     });
   }
+  filterProtectoras(): void {
+    if (!this.searchQueryProtectora.trim()) {
+      // Si no hay texto en el campo de búsqueda, mostrar todas las protectoras
+      this.filteredProtectoras = this.protectoras;
+    } else {
+      const searchTermLower = this.searchQueryProtectora.toLowerCase();
+      // Filtrar protectoras por dirección, teléfono o cualquier otro campo relevante
+      this.filteredProtectoras = this.protectoras.filter(protectora =>
+        protectora.direccion?.toLowerCase().includes(searchTermLower) ||
+        protectora.telefono?.toLowerCase().includes(searchTermLower) ||
+        protectora.usuari?.nom?.toLowerCase().includes(searchTermLower)
+      );
+    }
+  }
 }
