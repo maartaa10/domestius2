@@ -325,7 +325,7 @@
                 <div class="file-upload-preview">
                   <span *ngIf="!selectedFileName" class="upload-text">
                     {{ editingAnimal.imatge ? 'Imatge actual: ' + getImageName(editingAnimal.imatge) : 'Cap fitxer
-                    seleccionat' }}
+                    seleccionat (formats valids: jpg, png, jpeg i gif ) }}
                   </span>
                   <span *ngIf="selectedFileName" class="selected-file">
                     <i class="fas fa-file-image"></i> {{ selectedFileName }}
