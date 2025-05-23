@@ -25,7 +25,7 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
   searchQuery: string = '';
   map!: Map;
   vectorSource!: VectorSource;
-
+  public publicacions: any[] = [];
   constructor(
     private animalPerdutService: AnimalPerdutService,
     private nominatimService: NominatimService,
@@ -34,6 +34,15 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.publicacioService.getPublicacions().subscribe({
+      next: (data) => {
+        this.publicacions = data;
+        console.log('Publicacions carregades:', this.publicacions);
+      },
+      error: (err) => {
+        console.error('Error en carregar les publicacions:', err);
+      }
+    });
     this.initMap();
   }
 
@@ -84,20 +93,13 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
           popupElement.onclick = () => {
             if (animal.id) {
               console.log(`Buscando publicación asociada al animal con ID: ${animal.id}`);
-              this.publicacioService.getPublicacioByAnimalId(animal.id).subscribe({
-                next: (publicacion) => {
-                  if (publicacion) {
-                    this.router.navigate(['/publicacio', publicacion.id]); // Navega a la página de la publicación
-                  } else {
-                    console.error('No se encontró una publicación asociada a este animal.');
-                    alert('Aquest animal no té una publicació associada.');
-                  }
-                },
-                error: (err) => {
-                  console.error('Error al intentar cargar la publicación:', err);
-                  alert('Hi ha hagut un error al carregar la publicació.');
-                },
-              });
+              const publicacion = this.publicacions.find((pub) => pub.animal_id === animal.id);
+              if (publicacion) {
+                this.router.navigate(['/publicacio', publicacion.id]); // Navega a la página de la publicación
+              } else {
+                console.error('No se encontró una publicación asociada a este animal.');
+                alert('Aquest animal no té una publicació associada.');
+              }
             } else {
               alert('Aquest animal no té una publicació associada.');
             }
