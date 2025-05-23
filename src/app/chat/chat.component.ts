@@ -183,136 +183,103 @@ async initializeChat(): Promise<void> {
   }
 }
 
-/**
- * Cerca usuaris segons el terme introduït i actualitza els resultats de cerca.
- */
 async searchUsers(): Promise<void> {
-  // Comprovem si el camp de cerca està buit.
   if (this.searchQuery.trim() === '') {
-    // Recuperem l'últim usuari seleccionat del localStorage, si existeix.
     const lastUser = localStorage.getItem('lastUser');
-    this.searchResults = lastUser ? [JSON.parse(lastUser)] : []; // Afegim l'últim usuari als resultats de cerca.
+    this.searchResults = lastUser ? [JSON.parse(lastUser)] : [];
     console.log('Cerca buida. Últim usuari carregat:', this.searchResults);
-    return; // Sortim del mètode si no hi ha cap terme de cerca.
+    return;
   }
 
   try {
-    // Creem un log per indicar que s'està cercant usuaris amb el terme introduït. PER MILLORAR LA GESTIO DE POSSIBLES ERRORS
     console.log('Cercant usuaris amb el terme:', this.searchQuery);
 
-    // Fem una crida al servei de xat per cercar usuaris segons el terme introduït.
     const results = await this.chatService.searchUsers(this.searchQuery).toPromise();
 
-    // Comprovem si s'han trobat resultats.
     if (results && results.length > 0) {
-      // Actualitzem els resultats de cerca amb els usuaris trobats.
-      this.searchResults = results
-        .map((user) => ({
-          ...user,
-          online: this.chatClient.state.users[user.id]?.online || false, // Afegim l'estat "online" de cada usuari.
+      // Registra els usuaris a Stream Chat abans d'actualitzar els resultats
+      await this.chatClient.upsertUsers(
+        results.map(user => ({
+          id: user.id.toString(),
+          name: user.nom || 'Usuari desconegut',
         }))
-        .filter(user => user.id !== this.chatClient.userID); // Filtrar l'usuari loguejat.
+      );
+
+      this.searchResults = results
+        .map(user => ({
+          ...user,
+          online: this.chatClient.state.users[user.id]?.online || false,
+        }))
+        .filter(user => user.id !== this.chatClient.userID);
+
       console.log('Resultats de la cerca amb estat actualitzat:', this.searchResults);
     } else {
-      // Si no s'han trobat resultats, buidem els resultats de cerca.
       console.log('No s\'han trobat resultats per a la cerca.');
       this.searchResults = [];
     }
   } catch (error) {
-    // Gestionem els errors que es produeixin durant la cerca.
     console.error('Error en cercar usuaris:', error);
     alert('No s\'ha pogut realitzar la cerca. Torna-ho a intentar.');
-    this.searchResults = []; // Buidem els resultats de cerca en cas d'error.
+    this.searchResults = [];
   }
 }
 
- /**
- * Inicia un xat amb un usuari seleccionat i configura el canal de missatgeria.
- * @param user L'usuari amb qui es vol iniciar el xat.
- */
 async startChat(user: any): Promise<void> {
   try {
-    // Creem un log per indicar que s'està iniciant un xat amb l'usuari seleccionat. PER MILLORAR LA GESTIO DE POSSIBLES ERRORS
     console.log('Iniciant xat amb l\'usuari:', user);
 
-    // Establim l'usuari seleccionat com a usuari actiu.
     this.selectedUser = user;
 
-    // Obtenim el perfil de l'usuari actual mitjançant el servei d'autenticació.
     const userData = await this.authService.getUserProfile().toPromise();
 
-    // Creem una clau única per als xats recents de l'usuari.
     const userKey = `recentChats_${userData.id}`;
 
-    // Comprovem si l'usuari seleccionat ja està a la llista de xats recents.
     if (!this.recentChats.some(chat => chat.id === user.id)) {
-      // Afegim l'usuari seleccionat a la llista de xats recents.
       this.recentChats.push({
         ...user,
-        online: this.chatClient.state.users[user.id]?.online || false, // Verifiquem l'estat "online".
+        online: this.chatClient.state.users[user.id]?.online || false,
       });
 
-      // Filtrar l'usuari loguejat abans de guardar la llista al localStorage.
       const filteredChats = this.recentChats.filter(chat => chat.id !== this.chatClient.userID);
       localStorage.setItem(userKey, JSON.stringify(filteredChats));
     }
 
-    // Desa l'usuari seleccionat al localStorage com a "últim usuari".
     localStorage.setItem('lastUser', JSON.stringify(user));
     console.log('Usuari desat a localStorage:', user);
 
-    // Sincronitzem l'usuari seleccionat amb el client de Stream Chat.
     await this.chatClient.upsertUser({
       id: user.id.toString(),
       name: user.nom || 'Usuari desconegut',
     });
+
     console.log('Usuari sincronitzat amb Stream Chat.');
 
-    // Creem un identificador únic per al canal basat en els IDs dels usuaris.
     const userIds = [this.chatClient.userID?.toString(), user.id.toString()].sort();
     const channelId = `chat-${userIds.join('-')}`;
 
-    // Inicialitzem el canal de missatgeria amb els membres corresponents.
     this.channel = this.chatClient.channel('messaging', channelId, {
       members: userIds,
     });
     await this.channel.watch();
     console.log('Canal inicialitzat:', this.channel.id);
 
-    // Mostrem els membres del canal al log.
     console.log('Membres del canal:', this.channel.state.members);
 
-    // Configurem un esdeveniment per escoltar missatges nous en temps real.
     this.channel.on('message.new', (event: any) => {
       console.log('Missatge rebut en temps real:', event.message);
-
-      // Afegim el missatge rebut a la llista de missatges.
       this.messages.push(event.message);
-
-      // Agrupem els missatges per data.
       this.groupMessagesByDate(this.messages);
-
-      // Actualitzem la interfície gràfica.
       this.cdr.detectChanges();
-
-      // Fem scroll fins al final del xat.
       this.scrollToBottom();
     });
 
-    // Carreguem els missatges existents del canal (fins a un màxim de 20).
     const response = await this.channel.query({ messages: { limit: 20 } });
     console.log('Missatges carregats del canal:', response.messages);
 
-    // Assignem els missatges carregats a la llista de missatges.
     this.messages = response?.messages ?? [];
-
-    // Agrupem els missatges per data.
     this.groupMessagesByDate(this.messages);
-
-    // Fem scroll fins al final del xat.
     this.scrollToBottom();
   } catch (error) {
-    // Gestionem els errors que es produeixin durant l'inici del xat.
     console.error('Error en iniciar el xat:', error);
   }
 }
