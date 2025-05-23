@@ -69,10 +69,12 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
       const features = this.map.getFeaturesAtPixel(event.pixel);
       if (features && features.length > 0) {
         const feature = features[0];
-        const animal = feature.get('animalData');
+        const animal = feature.get('animalData'); // Datos del animal asociados al marcador
         const geometry = feature.getGeometry();
     
         if (animal && geometry instanceof Point) {
+          console.log(`Animal seleccionado: ID=${animal.id}, nombre=${animal.nom}`);
+    
           const coordinates = geometry.getCoordinates();
           popup.setPosition(coordinates);
     
@@ -81,14 +83,19 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
     
           popupElement.onclick = () => {
             if (animal.id) {
-              console.log(`Intentando navegar a la publicación con ID: ${animal.id}`);
-              this.publicacioService.getPublicacioById(animal.id).subscribe({
-                next: () => {
-                  this.router.navigate(['/publicacio', animal.id]); // Navega a la página del animal
+              console.log(`Buscando publicación asociada al animal con ID: ${animal.id}`);
+              this.publicacioService.getPublicacioByAnimalId(animal.id).subscribe({
+                next: (publicacion) => {
+                  if (publicacion) {
+                    this.router.navigate(['/publicacio', publicacion.id]); // Navega a la página de la publicación
+                  } else {
+                    console.error('No se encontró una publicación asociada a este animal.');
+                    alert('Aquest animal no té una publicació associada.');
+                  }
                 },
                 error: (err) => {
                   console.error('Error al intentar cargar la publicación:', err);
-                  alert('La publicació no existeix o ha estat eliminada.');
+                  alert('Hi ha hagut un error al carregar la publicació.');
                 },
               });
             } else {
@@ -199,7 +206,8 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
 
         animalesFiltrats.forEach((animal) => {
           if (animal.id && animal.geolocalitzacio?.latitud && animal.geolocalitzacio?.longitud) {
-            console.log(`Creando marcador para el animal con ID: ${animal.id}`);
+            console.log(`Creando marcador para el animal con ID: ${animal.id}, nombre: ${animal.nom}`);
+        
             const coords = fromLonLat([
               parseFloat(animal.geolocalitzacio.longitud),
               parseFloat(animal.geolocalitzacio.latitud),
@@ -207,7 +215,7 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
         
             const marker = new Feature({
               geometry: new Point(coords),
-              animalData: animal,
+              animalData: animal, // Aquí se asocia el animal al marcador
             });
         
             marker.setStyle(

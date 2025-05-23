@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 import { Publicacio } from '../interfaces/publicacio';
 
 @Injectable({
@@ -36,5 +36,14 @@ export class PublicacioService {
   }
   deletePublicacio(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/publicacio/delete/${id}`);
+  }
+  getPublicacioByAnimalId(animalId: number): Observable<Publicacio | null> {
+    return this.http.get<Publicacio[]>(`${this.apiUrl}/publicacio`).pipe(
+      map((publicacions) => publicacions.find((publicacio) => publicacio.animal_id === animalId) || null),
+      catchError((err) => {
+        console.error('Error al buscar la publicación por animal_id:', err);
+        return of(null); // Devuelve null si ocurre un error
+      })
+    );
   }
 }
