@@ -59,12 +59,12 @@ export class PublicacioDetallComponent implements OnInit {
     this.publicacioService.getPublicacioById(id).subscribe({
       next: (data) => {
         this.publicacio = data;
-
+    
         if (data.animal?.geolocalitzacio?.latitud && data.animal?.geolocalitzacio?.longitud) {
           this.latitude = parseFloat(data.animal.geolocalitzacio.latitud);
           this.longitude = parseFloat(data.animal.geolocalitzacio.longitud);
         }
-
+    
         if (data.animal_id) {
           this.loadAnimalDetails(data.animal_id);
         }

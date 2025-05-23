@@ -81,12 +81,13 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
     
           popupElement.onclick = () => {
             if (animal.id) {
-              // Verificar si el ID es válido antes de redirigir
+              console.log(`Intentando navegar a la publicación con ID: ${animal.id}`);
               this.publicacioService.getPublicacioById(animal.id).subscribe({
                 next: () => {
                   this.router.navigate(['/publicacio', animal.id]); // Navega a la página del animal
                 },
-                error: () => {
+                error: (err) => {
+                  console.error('Error al intentar cargar la publicación:', err);
                   alert('La publicació no existeix o ha estat eliminada.');
                 },
               });
@@ -198,6 +199,7 @@ export class MapaAnimalsPerdutsComponent implements OnInit {
 
         animalesFiltrats.forEach((animal) => {
           if (animal.id && animal.geolocalitzacio?.latitud && animal.geolocalitzacio?.longitud) {
+            console.log(`Creando marcador para el animal con ID: ${animal.id}`);
             const coords = fromLonLat([
               parseFloat(animal.geolocalitzacio.longitud),
               parseFloat(animal.geolocalitzacio.latitud),
