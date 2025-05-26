@@ -1,59 +1,64 @@
-# Domestius2
+# 🐾 Doméstius
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.3.
+**Doméstius** is a full-featured web application designed to help locate lost pets and promote responsible adoption.  
+Developed as a Final Degree Project by two Full-Stack Developers: Marta Rodrigo & Eric Gómez.
 
-## Development server
+[![Live Demo](https://img.shields.io/badge/demo-online-blue)](https://domestius2.vercel.app)  
+[![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-red.svg)](#license)
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+## 🔍 Overview
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Doméstius bridges the gap between individuals, animal shelters, and local governments by providing:
 
-## Code scaffolding
+- 🐶 Geolocation of lost pets via an interactive map  
+- 🏡 Adoption listings managed by shelters  
+- 💬 Real-time chat between users and shelters  
+- 🔐 Role-based access (Admin, Shelter, Registered, Public)  
+- 🎯 Personal dashboards for managing pets and publications
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+---
 
-```bash
-ng generate component component-name
-```
+## 🚀 Technologies Used
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- **Frontend**: Angular, OpenLayers, Stream Chat, CSS, Bootstrap, Sass  
+- **Backend**: Node.js, Firebase, MongoDB  
+- **Other Tools**: EmailJS, FormSubmit, Vercel
 
-```bash
-ng generate --help
-```
+---
 
-## Building
+## 📂 Project Status
 
-To build the project run:
+✅ MVP (Minimum Viable Product)  
+🧪 Currently live and under testing  
+📬 Publicly accessible for academic review purposes only  
+🔒 Not intended for public use or distribution
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 👥 Authors
 
-## Running unit tests
+| Name          | Role                 | Contact Info                                                                                               |
+|---------------|----------------------|------------------------------------------------------------------------------------------------------------|
+| Marta Rodrigo | Full-Stack Developer | [LinkedIn](https://www.linkedin.com/in/martar13) · [GitHub](https://github.com/maartaa10) · [Portfolio](https://martarllgranollers.wixsite.com/portfolio) |
+| Eric Gómez    | Full-Stack Developer | [GitHub](https://github.com/EricGomezPerez)                                                                |
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+## ⚠️ License and Legal Notice
 
-For end-to-end (e2e) testing, run:
+This project is **NOT open source**.
 
-```bash
-ng e2e
-```
+All code, structure, content, name, visual identity, and related assets are **fully protected** under intellectual property law.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+You are **NOT allowed** to:
 
-## Additional Resources
+- Copy, reuse, or reproduce this repository or any of its parts  
+- Modify or redistribute it  
+- Reference or present it publicly or privately without explicit written permission  
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+This repository is public **for academic evaluation only**, as required by the authors' institution.
+
+> 📄 [View full license](./LICENSE.md)
